@@ -1,0 +1,26 @@
+# Build artifacts
+bin/
+tmp/
+*.exe
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+*.log
+build-errors.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage.out
