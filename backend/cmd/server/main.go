@@ -28,7 +28,7 @@ func main() {
 	// Configure CORS
 	allowedOrigins := os.Getenv("ALLOWED_ORIGINS")
 	if allowedOrigins == "" {
-		allowedOrigins = "http://localhost:3000,http://localhost:5173" // Default origins for development
+		allowedOrigins = "http://localhost:3000,http://localhost:5173,http://localhost:4001,http://localhost:4000" // Default origins for development
 	}
 
 	config := cors.Config{
