@@ -11,6 +11,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// BusinessResponse represents the business data sent to frontend
+type BusinessResponse struct {
+	models.Business
+	MarketCap        float64 `json:"market_cap"`
+	EBITDAMultiplier float64 `json:"ebitda_multiplier"`
+}
+
+// convertToBusinessResponse converts a Business model to BusinessResponse
+func convertToBusinessResponse(business models.Business) BusinessResponse {
+	return BusinessResponse{
+		Business:         business,
+		MarketCap:        business.GetMarketCap(),
+		EBITDAMultiplier: business.GetEBITDAMultiplier(),
+	}
+}
+
 type BusinessController struct {
 	businessService *services.BusinessService
 }
@@ -33,17 +49,22 @@ func (bc *BusinessController) GetUserBusinesses(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, businesses)
+	// Convert to response format with calculated market cap
+	var businessResponses []BusinessResponse
+	for _, business := range businesses {
+		businessResponses = append(businessResponses, convertToBusinessResponse(business))
+	}
+
+	c.JSON(http.StatusOK, businessResponses)
 }
 
 // ===== Step 1: Create Business + Products + Additional Info =====
 type CreateBusinessRequestData struct {
-	Name        string   `json:"name" binding:"required"`
-	Type        string   `json:"type,omitempty"`
-	MarketCap   *float64 `json:"market_cap,omitempty"`
-	Description string   `json:"description,omitempty"`
-	Industry    string   `json:"industry,omitempty"`
-	FoundedAt   string   `json:"founded_at,omitempty"` // Accept as string first
+	Name        string `json:"name" binding:"required"`
+	Type        string `json:"type,omitempty"`
+	Description string `json:"description,omitempty"`
+	Industry    string `json:"industry,omitempty"`
+	FoundedAt   string `json:"founded_at,omitempty"` // Accept as string first
 }
 
 type CreateBusinessRequest struct {
@@ -65,7 +86,6 @@ func (bc *BusinessController) CreateBusiness(c *gin.Context) {
 		UserID:      req.UserID,
 		Name:        req.Business.Name,
 		Type:        req.Business.Type,
-		MarketCap:   req.Business.MarketCap,
 		Description: req.Business.Description,
 		Industry:    req.Business.Industry,
 	}
@@ -104,7 +124,9 @@ func (bc *BusinessController) GetBusiness(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, business)
+	// Convert to response format with calculated market cap
+	businessResponse := convertToBusinessResponse(*business)
+	c.JSON(http.StatusOK, businessResponse)
 }
 
 // ===== Update Business Basic Info =====
@@ -126,7 +148,6 @@ func (bc *BusinessController) UpdateBusiness(c *gin.Context) {
 	business := models.Business{
 		Name:        req.Name,
 		Type:        req.Type,
-		MarketCap:   req.MarketCap,
 		Description: req.Description,
 		Industry:    req.Industry,
 	}

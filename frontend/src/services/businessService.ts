@@ -11,6 +11,7 @@ export interface Business {
   name: string;
   type?: string;
   market_cap?: number;
+  ebitda_multiplier?: number;
   description?: string;
   industry?: string;
   founded_at?: string;
@@ -65,6 +66,7 @@ export interface Financial {
   UpdatedAt: string;
   DeletedAt?: string;
   business_id: number;
+  revenue?: number;
   ebitda?: number;
   assets?: number;
   liabilities?: number;
