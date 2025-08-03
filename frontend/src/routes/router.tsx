@@ -4,6 +4,8 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
 import ProtectedRoute from "../components/ProtectedRoute";
+import BusinessPage from "../pages/business/BusinessPage";
+import InvestmentPage from "../pages/investment/InvestmentPage";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,22 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <DashboardPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business",
+    element: (
+      <ProtectedRoute>
+        <BusinessPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/investments",
+    element: (
+      <ProtectedRoute>
+        <InvestmentPage />
       </ProtectedRoute>
     ),
   },
