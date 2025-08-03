@@ -2,6 +2,7 @@ package routes
 
 import (
 	"go-gin-backend/internal/routes/auth"
+	"go-gin-backend/internal/routes/docs"
 	"go-gin-backend/internal/routes/investment"
 	"go-gin-backend/internal/routes/user"
 
@@ -13,4 +14,5 @@ func SetupRoutes(router *gin.Engine) {
 	auth.SetupAuthRoutes(router)
 	user.SetupUserRoutes(router)
 	investment.SetupInvestmentRoutes(router)
+	docs.SetupGenAIRoutes(router)
 }
