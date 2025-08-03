@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { Link } from "react-router";
+import api from "../../lib/api";
+
+interface Business {
+  id: number;
+  name: string;
+  type: string;
+  industry: string;
+  description: string;
+}
 
 const BusinessPage: React.FC = () => {
+  const [businesses, setBusinesses] = useState<Business[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBusinesses = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const res = await api.get(`/business/user`);
+        setBusinesses(res.data);
+      } catch (err: unknown) {
+        console.error("Failed to load businesses:", err);
+        setError("Failed to load businesses");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBusinesses();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <Navbar />
@@ -20,19 +52,27 @@ const BusinessPage: React.FC = () => {
             Start New Evaluation
           </Link>
 
-          {/* Example list of businesses already being evaluated */}
           <div className="bg-white shadow rounded-lg p-6 border border-gray-200">
             <h3 className="text-lg font-semibold mb-4">Your Businesses</h3>
-            <ul className="space-y-3">
-              <li className="flex justify-between items-center">
-                <span>🚀 Tech Startup Ltd.</span>
-                <span className="text-sm text-blue-600">In Progress (Step 2)</span>
-              </li>
-              <li className="flex justify-between items-center">
-                <span>🏪 Retail Mart</span>
-                <span className="text-sm text-green-600">Completed</span>
-              </li>
-            </ul>
+
+            {loading ? (
+              <p className="text-gray-500">Loading...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : businesses.length === 0 ? (
+              <p className="text-gray-500">You don’t have any businesses yet.</p>
+            ) : (
+              <ul className="space-y-3">
+                {businesses.map((b) => (
+                  <li key={b.id} className="flex justify-between items-center">
+                    <span>🏢 {b.name}</span>
+                    <Link to={`/business/${b.id}/step-2`} className="text-sm text-blue-600 hover:underline">
+                      Continue Evaluation
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>

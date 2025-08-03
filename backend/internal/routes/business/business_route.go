@@ -18,9 +18,10 @@ func SetupBusinessRoutes(router *gin.Engine) {
 	// Business routes
 	businessGroup := router.Group("/business")
 	{
-		businessGroup.POST("", businessController.CreateBusiness)       // Create
-		businessGroup.GET("/:id", businessController.GetBusiness)       // Fetch one
-		businessGroup.PUT("/:id", businessController.UpdateBusiness)    // Update
-		businessGroup.DELETE("/:id", businessController.DeleteBusiness) // Delete
+		businessGroup.POST("", businessController.CreateBusiness)        // Create
+		businessGroup.GET("/:id", businessController.GetBusiness)        // Fetch one
+		businessGroup.PUT("/:id", businessController.UpdateBusiness)     // Update
+		businessGroup.DELETE("/:id", businessController.DeleteBusiness)  // Delete
+		businessGroup.GET("/user", businessController.GetUserBusinesses) // Fetch User's business
 	}
 }

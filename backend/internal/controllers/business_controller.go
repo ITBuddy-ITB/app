@@ -3,6 +3,7 @@ package controllers
 import (
 	"go-gin-backend/internal/models"
 	"go-gin-backend/internal/services"
+	"go-gin-backend/internal/utils"
 	"net/http"
 	"strconv"
 
@@ -15,6 +16,23 @@ type BusinessController struct {
 
 func NewBusinessController(businessService *services.BusinessService) *BusinessController {
 	return &BusinessController{businessService: businessService}
+}
+
+// GET /business/user/:userId -> get all businesses for a user
+func (bc *BusinessController) GetUserBusinesses(c *gin.Context) {
+	userID, err := utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	businesses, err := bc.businessService.GetBusinessesByUserID(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch businesses"})
+		return
+	}
+
+	c.JSON(http.StatusOK, businesses)
 }
 
 // ===== Step 1: Create Business + Products + Additional Info =====

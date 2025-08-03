@@ -14,6 +14,20 @@ func NewBusinessService(db *gorm.DB) *BusinessService {
 	return &BusinessService{DB: db}
 }
 
+// Get all businesses by user_id
+func (s *BusinessService) GetBusinessesByUserID(userID uint) ([]models.Business, error) {
+	var businesses []models.Business
+	if err := s.DB.
+		Preload("Products").
+		Preload("Financial").
+		Preload("Legals").
+		Where("user_id = ?", userID).
+		Find(&businesses).Error; err != nil {
+		return nil, err
+	}
+	return businesses, nil
+}
+
 // Create new business
 func (s *BusinessService) CreateBusiness(business *models.Business, additionalInfo []models.BusinessAdditionalInfo, products []models.Product) error {
 	return s.DB.Transaction(func(tx *gorm.DB) error {
