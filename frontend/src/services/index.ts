@@ -17,3 +17,6 @@ export type {
   AddProductsRequest,
   AddProductsResponse,
 } from "./businessService";
+
+export { InvestmentService } from "./investmentService";
+export type { Investment, PaginatedBusinessResponse, GetAllBusinessesParams } from "./investmentService";
