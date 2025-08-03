@@ -89,50 +89,62 @@ const Step1Page: React.FC = () => {
           <div className="bg-white shadow rounded-lg p-6 space-y-4 border border-gray-200">
             <h3 className="text-lg font-semibold text-gray-800">Business Profile</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Business Name *"
-                className="border rounded-lg px-4 py-2"
-                value={business.name}
-                onChange={(e) => setBusiness({ ...business, name: e.target.value })}
-                required
-              />
-              <input
-                type="text"
-                placeholder="Business Type"
-                className="border rounded-lg px-4 py-2"
-                value={business.type}
-                onChange={(e) => setBusiness({ ...business, type: e.target.value })}
-              />
-              <input
-                type="number"
-                placeholder="Market Cap"
-                className="border rounded-lg px-4 py-2"
-                value={business.marketCap}
-                onChange={(e) => setBusiness({ ...business, marketCap: e.target.value })}
-              />
-              <input
-                type="text"
-                placeholder="Industry"
-                className="border rounded-lg px-4 py-2"
-                value={business.industry}
-                onChange={(e) => setBusiness({ ...business, industry: e.target.value })}
-              />
-              <input
-                type="date"
-                placeholder="Founded At"
-                className="border rounded-lg px-4 py-2"
-                value={business.foundedAt}
-                onChange={(e) => setBusiness({ ...business, foundedAt: e.target.value })}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Business Name *</label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-4 py-2"
+                  value={business.name}
+                  onChange={(e) => setBusiness({ ...business, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Business Type</label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-4 py-2"
+                  value={business.type}
+                  onChange={(e) => setBusiness({ ...business, type: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Market Cap</label>
+                <input
+                  type="number"
+                  className="w-full border rounded-lg px-4 py-2"
+                  value={business.marketCap}
+                  onChange={(e) => setBusiness({ ...business, marketCap: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Industry</label>
+                <input
+                  type="text"
+                  className="w-full border rounded-lg px-4 py-2"
+                  value={business.industry}
+                  onChange={(e) => setBusiness({ ...business, industry: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Founded At</label>
+                <input
+                  type="date"
+                  className="w-full border rounded-lg px-4 py-2"
+                  value={business.foundedAt}
+                  onChange={(e) => setBusiness({ ...business, foundedAt: e.target.value })}
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                className="w-full border rounded-lg px-4 py-2"
+                rows={3}
+                value={business.description}
+                onChange={(e) => setBusiness({ ...business, description: e.target.value })}
               />
             </div>
-            <textarea
-              placeholder="Description"
-              className="w-full border rounded-lg px-4 py-2"
-              rows={3}
-              value={business.description}
-              onChange={(e) => setBusiness({ ...business, description: e.target.value })}
-            />
           </div>
 
           {/* Additional Info */}
@@ -140,21 +152,25 @@ const Step1Page: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-800">Additional Info (Optional)</h3>
             {additionalInfo.map((info, index) => (
               <div key={index} className="grid grid-cols-2 gap-4 items-center">
-                <input
-                  type="text"
-                  placeholder="Key"
-                  className="border rounded-lg px-4 py-2"
-                  value={info.name}
-                  onChange={(e) => updateAdditionalInfo(index, "name", e.target.value)}
-                />
-                <div className="flex gap-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Key</label>
                   <input
                     type="text"
-                    placeholder="Value"
-                    className="border rounded-lg px-4 py-2 flex-grow"
-                    value={info.value}
-                    onChange={(e) => updateAdditionalInfo(index, "value", e.target.value)}
+                    className="w-full border rounded-lg px-4 py-2"
+                    value={info.name}
+                    onChange={(e) => updateAdditionalInfo(index, "name", e.target.value)}
                   />
+                </div>
+                <div className="flex gap-2 items-end">
+                  <div className="flex-grow">
+                    <label className="block text-sm font-medium text-gray-700">Value</label>
+                    <input
+                      type="text"
+                      className="w-full border rounded-lg px-4 py-2"
+                      value={info.value}
+                      onChange={(e) => updateAdditionalInfo(index, "value", e.target.value)}
+                    />
+                  </div>
                   <button
                     type="button"
                     onClick={() => removeAdditionalInfo(index)}
@@ -182,50 +198,62 @@ const Step1Page: React.FC = () => {
                   <X size={16} />
                 </button>
 
-                <input
-                  type="text"
-                  placeholder="Product Name *"
-                  className="w-full border rounded-lg px-4 py-2"
-                  value={product.name}
-                  onChange={(e) => updateProduct(index, "name", e.target.value)}
-                  required
-                />
-                <textarea
-                  placeholder="Product Description"
-                  className="w-full border rounded-lg px-4 py-2"
-                  rows={2}
-                  value={product.description}
-                  onChange={(e) => updateProduct(index, "description", e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Category"
-                  className="w-full border rounded-lg px-4 py-2"
-                  value={product.category}
-                  onChange={(e) => updateProduct(index, "category", e.target.value)}
-                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Product Name *</label>
+                  <input
+                    type="text"
+                    className="w-full border rounded-lg px-4 py-2"
+                    value={product.name}
+                    onChange={(e) => updateProduct(index, "name", e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Product Description</label>
+                  <textarea
+                    className="w-full border rounded-lg px-4 py-2"
+                    rows={2}
+                    value={product.description}
+                    onChange={(e) => updateProduct(index, "description", e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Category</label>
+                  <input
+                    type="text"
+                    className="w-full border rounded-lg px-4 py-2"
+                    value={product.category}
+                    onChange={(e) => updateProduct(index, "category", e.target.value)}
+                  />
+                </div>
                 <div className="grid grid-cols-3 gap-4">
-                  <input
-                    type="number"
-                    placeholder="HPP"
-                    className="border rounded-lg px-4 py-2"
-                    value={product.hpp || ""}
-                    onChange={(e) => updateProduct(index, "hpp", parseFloat(e.target.value))}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Revenue"
-                    className="border rounded-lg px-4 py-2"
-                    value={product.revenue || ""}
-                    onChange={(e) => updateProduct(index, "revenue", parseFloat(e.target.value))}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Profit"
-                    className="border rounded-lg px-4 py-2"
-                    value={product.profit || ""}
-                    onChange={(e) => updateProduct(index, "profit", parseFloat(e.target.value))}
-                  />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">HPP</label>
+                    <input
+                      type="number"
+                      className="w-full border rounded-lg px-4 py-2"
+                      value={product.hpp || ""}
+                      onChange={(e) => updateProduct(index, "hpp", parseFloat(e.target.value))}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Revenue</label>
+                    <input
+                      type="number"
+                      className="w-full border rounded-lg px-4 py-2"
+                      value={product.revenue || ""}
+                      onChange={(e) => updateProduct(index, "revenue", parseFloat(e.target.value))}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Profit</label>
+                    <input
+                      type="number"
+                      className="w-full border rounded-lg px-4 py-2"
+                      value={product.profit || ""}
+                      onChange={(e) => updateProduct(index, "profit", parseFloat(e.target.value))}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
