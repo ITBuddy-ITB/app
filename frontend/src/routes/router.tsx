@@ -6,6 +6,7 @@ import DashboardPage from "../pages/DashboardPage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import BusinessPage from "../pages/business/BusinessPage";
 import InvestmentPage from "../pages/investment/InvestmentPage";
+import Step1Page from "../pages/business/StepOne";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,24 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <BusinessPage />
+      </ProtectedRoute>
+    ),
+    // children: [
+    //   {
+    //     path: "step-1",
+    //     element: (
+    //       <ProtectedRoute>
+    //         <Step1Page />
+    //       </ProtectedRoute>
+    //     ),
+    //   },
+    // ],
+  },
+  {
+    path: "/business/step-1",
+    element: (
+      <ProtectedRoute>
+        <Step1Page />
       </ProtectedRoute>
     ),
   },
