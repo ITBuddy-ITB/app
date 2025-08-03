@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router";
 import Navbar from "../../components/Navbar";
 import { BusinessService, type Legal, type ProductLegal, type Product } from "../../services/businessService";
 
+const API_BASE_URL = "http://localhost:8080";
+
 const LegalPage: React.FC = () => {
   const { businessId } = useParams<{ businessId: string }>();
   const [businessLegals, setBusinessLegals] = useState<Legal[]>([]);
@@ -330,7 +332,7 @@ const LegalPage: React.FC = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         {legal.file_url && (
-                          <a href={legal.file_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                          <a href={`${API_BASE_URL}${legal.file_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
                             View Document
                           </a>
                         )}
@@ -358,7 +360,7 @@ const LegalPage: React.FC = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         {legal.file_url && (
-                          <a href={legal.file_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                          <a href={`${API_BASE_URL}${legal.file_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
                             View Document
                           </a>
                         )}

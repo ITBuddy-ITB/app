@@ -50,6 +50,9 @@ func main() {
 	}
 	router.Use(cors.New(config))
 
+	// Serve static files from uploads directory
+	router.Static("/uploads", "./uploads")
+
 	// Setup application routes
 	routes.SetupRoutes(router)
 

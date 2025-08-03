@@ -1,206 +1,173 @@
 import React from "react";
+import { Link } from "react-router";
+import { TrendingUp, Building2, Target, CheckCircle, AlertTriangle, DollarSign, FileText, Users } from "lucide-react";
 import Navbar from "../components/Navbar";
 
 const DashboardPage: React.FC = () => {
+  // Mock data - replace with actual API calls
+  const investmentReadinessScore = 67; // percentage
+  const monthlyRevenue = 1250000000; // IDR
+  const profitMargin = 15.5; // percentage
+  const complianceScore = 78; // percentage
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-white">
       <Navbar />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        {/* Welcome Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-blue-100 p-8 mb-8">
-          <div className="flex items-center space-x-4">
-            <div className="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center">
-              <svg className="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
+        {/* Investment Readiness Header */}
+        <div className="bg-gradient-to-r from-emerald-600 to-blue-600 rounded-2xl shadow-xl text-white p-8 mb-8">
+          <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Welcome to your Dashboard!</h2>
-              <p className="text-gray-600">You have successfully accessed the protected area.</p>
+              <h1 className="text-3xl font-bold mb-2">Investment Readiness Dashboard</h1>
+              <p className="text-emerald-100">Track your journey from UMKM to investment-ready business</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold">{investmentReadinessScore}%</div>
+              <div className="text-sm text-emerald-100">Investment Ready</div>
             </div>
           </div>
         </div>
 
-        {/* Stats Grid */}
+        {/* Key Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-xl shadow-lg border border-emerald-100 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Monthly Revenue</p>
+                <p className="text-2xl font-bold text-gray-900">IDR {(monthlyRevenue / 1000000000).toFixed(1)}B</p>
+                <p className="text-xs text-emerald-600 flex items-center mt-1">
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  +12.5% from last month
+                </p>
+              </div>
+              <div className="h-12 w-12 bg-emerald-100 rounded-lg flex items-center justify-center">
+                <DollarSign className="h-6 w-6 text-emerald-600" />
+              </div>
+            </div>
+          </div>
+
           <div className="bg-white rounded-xl shadow-lg border border-blue-100 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900">1,234</p>
+                <p className="text-sm font-medium text-gray-600">Profit Margin</p>
+                <p className="text-2xl font-bold text-gray-900">{profitMargin}%</p>
+                <p className="text-xs text-blue-600 flex items-center mt-1">
+                  <Target className="w-3 h-3 mr-1" />
+                  Target: 20% for IPO
+                </p>
               </div>
               <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg className="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
-                  />
-                </svg>
+                <TrendingUp className="h-6 w-6 text-blue-600" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg border border-blue-100 p-6">
+          <div className="bg-white rounded-xl shadow-lg border border-purple-100 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Active Sessions</p>
-                <p className="text-2xl font-bold text-gray-900">56</p>
-              </div>
-              <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg border border-blue-100 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Success Rate</p>
-                <p className="text-2xl font-bold text-gray-900">99.9%</p>
-              </div>
-              <div className="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <svg className="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg border border-blue-100 p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Response Time</p>
-                <p className="text-2xl font-bold text-gray-900">12ms</p>
+                <p className="text-sm font-medium text-gray-600">Compliance Score</p>
+                <p className="text-2xl font-bold text-gray-900">{complianceScore}%</p>
+                <p className="text-xs text-yellow-600 flex items-center mt-1">
+                  <AlertTriangle className="w-3 h-3 mr-1" />
+                  Need 95% for listing
+                </p>
               </div>
               <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <svg className="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <FileText className="h-6 w-6 text-purple-600" />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-lg border border-orange-100 p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Business Stage</p>
+                <p className="text-lg font-bold text-gray-900">Growing</p>
+                <p className="text-xs text-orange-600 flex items-center mt-1">
+                  <Building2 className="w-3 h-3 mr-1" />
+                  Scale-up phase
+                </p>
+              </div>
+              <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                <Users className="h-6 w-6 text-orange-600" />
               </div>
             </div>
           </div>
         </div>
-
-        {/* Content Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="bg-white rounded-xl shadow-lg border border-blue-100 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+        {/* Investment Requirements Progress */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">Investment Readiness Checklist</h3>
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="h-8 w-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <svg className="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+              {[
+                { item: "Financial Audits (2 years)", completed: true, critical: true },
+                { item: "Legal Compliance", completed: true, critical: true },
+                { item: "Corporate Governance", completed: false, critical: true },
+                { item: "Consistent Profitability", completed: false, critical: true },
+                { item: "Business Valuation", completed: false, critical: false },
+                { item: "Growth Strategy Documentation", completed: false, critical: false },
+              ].map((req, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${req.completed ? "bg-emerald-100" : "bg-gray-100"}`}>
+                      {req.completed && <CheckCircle className="w-3 h-3 text-emerald-600" />}
+                    </div>
+                    <span className={`text-sm ${req.completed ? "text-gray-900" : "text-gray-600"}`}>{req.item}</span>
+                  </div>
+                  {req.critical && <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Critical</span>}
                 </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">User login successful</p>
-                  <p className="text-xs text-gray-500">2 minutes ago</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
-                  <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">Data backup completed</p>
-                  <p className="text-xs text-gray-500">1 hour ago</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <div className="h-8 w-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                  <svg className="h-4 w-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 15.5c-.77.833.192 2.5 1.732 2.5z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-900">System maintenance scheduled</p>
-                  <p className="text-xs text-gray-500">3 hours ago</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-lg border border-blue-100 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
             <div className="grid grid-cols-2 gap-4">
+              <Link to="/business" className="bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-lg transition-colors duration-200 text-center block">
+                <Building2 className="h-6 w-6 mx-auto mb-2" />
+                <span className="text-sm font-medium">Manage Business</span>
+              </Link>
+
               <button className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-lg transition-colors duration-200 text-center">
-                <svg className="h-6 w-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-                <span className="text-sm font-medium">Add User</span>
-              </button>
-              <button className="bg-green-600 hover:bg-green-700 text-white p-4 rounded-lg transition-colors duration-200 text-center">
-                <svg className="h-6 w-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
+                <FileText className="h-6 w-6 mx-auto mb-2" />
                 <span className="text-sm font-medium">Generate Report</span>
               </button>
+
               <button className="bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-lg transition-colors duration-200 text-center">
-                <svg className="h-6 w-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                  />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span className="text-sm font-medium">Settings</span>
+                <Target className="h-6 w-6 mx-auto mb-2" />
+                <span className="text-sm font-medium">Set Goals</span>
               </button>
-              <button className="bg-orange-600 hover:bg-orange-700 text-white p-4 rounded-lg transition-colors duration-200 text-center">
-                <svg className="h-6 w-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
-                  />
-                </svg>
-                <span className="text-sm font-medium">Share</span>
-              </button>
+
+              <Link to="/investments" className="bg-orange-600 hover:bg-orange-700 text-white p-4 rounded-lg transition-colors duration-200 text-center block">
+                <DollarSign className="h-6 w-6 mx-auto mb-2" />
+                <span className="text-sm font-medium">Investments</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Growth Recommendations */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6">Investment Readiness Recommendations</h3>
+          <div className="space-y-4">
+            <div className="flex items-start space-x-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-gray-900">Improve Profit Margin</h4>
+                <p className="text-sm text-gray-600 mt-1">
+                  Your current profit margin of {profitMargin}% needs to reach 20% to attract private investors. Consider optimizing operational costs and increasing revenue streams.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5" />
+              <div>
+                <h4 className="font-medium text-gray-900">Complete Corporate Governance</h4>
+                <p className="text-sm text-gray-600 mt-1">Establish board of directors, audit committee, and implement proper internal controls to meet private equity investment requirements.</p>
+              </div>
             </div>
           </div>
         </div>

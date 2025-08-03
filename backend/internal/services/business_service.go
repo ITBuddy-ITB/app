@@ -3,7 +3,9 @@ package services
 import (
 	"fmt"
 	"go-gin-backend/internal/models"
+	"io"
 	"mime/multipart"
+	"os"
 	"path/filepath"
 	"time"
 
@@ -127,17 +129,33 @@ func (s *BusinessService) GetBusinessLegal(businessID uint) ([]models.Legal, err
 func (s *BusinessService) AddBusinessLegal(businessID uint, file multipart.File, header *multipart.FileHeader, legalType, issuedBy, validUntil, notes string) (*models.Legal, error) {
 	// Create upload directory if it doesn't exist
 	uploadDir := "uploads/legal/business"
+	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+		return nil, fmt.Errorf("failed to create upload directory: %v", err)
+	}
 
 	// Generate unique filename
 	filename := fmt.Sprintf("%d_%d_%s", businessID, time.Now().Unix(), header.Filename)
-	filepath := filepath.Join(uploadDir, filename)
+	filePath := filepath.Join(uploadDir, filename)
 
-	// For now, just create the legal record without actual file handling
-	// In a real implementation, you'd save the file to disk or cloud storage
+	// Create the file on disk
+	dst, err := os.Create(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create file: %v", err)
+	}
+	defer dst.Close()
+
+	// Copy the uploaded file to the destination
+	if _, err := io.Copy(dst, file); err != nil {
+		return nil, fmt.Errorf("failed to save file: %v", err)
+	}
+
+	// Create URL for frontend access (relative to server root)
+	fileURL := fmt.Sprintf("/uploads/legal/business/%s", filename)
+
 	legal := &models.Legal{
 		BusinessID: businessID,
 		FileName:   header.Filename,
-		FileURL:    filepath, // This would be the actual URL after upload
+		FileURL:    fileURL,
 		LegalType:  legalType,
 		IssuedBy:   issuedBy,
 		Notes:      notes,
@@ -188,16 +206,33 @@ func (s *BusinessService) AddProductLegal(businessID, productID uint, file multi
 
 	// Create upload directory if it doesn't exist
 	uploadDir := "uploads/legal/products"
+	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+		return nil, fmt.Errorf("failed to create upload directory: %v", err)
+	}
 
 	// Generate unique filename
 	filename := fmt.Sprintf("%d_%d_%d_%s", businessID, productID, time.Now().Unix(), header.Filename)
-	filepath := filepath.Join(uploadDir, filename)
+	filePath := filepath.Join(uploadDir, filename)
 
-	// For now, just create the legal record without actual file handling
+	// Create the file on disk
+	dst, err := os.Create(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create file: %v", err)
+	}
+	defer dst.Close()
+
+	// Copy the uploaded file to the destination
+	if _, err := io.Copy(dst, file); err != nil {
+		return nil, fmt.Errorf("failed to save file: %v", err)
+	}
+
+	// Create URL for frontend access (relative to server root)
+	fileURL := fmt.Sprintf("/uploads/legal/products/%s", filename)
+
 	legal := &models.ProductLegal{
 		ProductID: productID,
 		FileName:  header.Filename,
-		FileURL:   filepath, // This would be the actual URL after upload
+		FileURL:   fileURL,
 		LegalType: legalType,
 		IssuedBy:  issuedBy,
 		Notes:     notes,
