@@ -9,15 +9,6 @@ const BusinessPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Function to check if business is complete enough to be listed
-  const isBusinessComplete = (business: Business) => {
-    let score = 0;
-    if (business.financial && business.market_cap && business.market_cap > 0) score += 40;
-    if (business.legals && business.legals.length > 0) score += 30;
-    if (business.products && business.products.length > 0) score += 30;
-    return score >= 80; // Only show businesses that are 80% complete
-  };
-
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
@@ -25,9 +16,7 @@ const BusinessPage: React.FC = () => {
         setError(null);
 
         const allBusinesses = await BusinessService.getUserBusinesses();
-        // Filter to only show complete businesses (80% or more)
-        const completeBusinesses = allBusinesses.filter((business) => isBusinessComplete(business));
-        setBusinesses(completeBusinesses);
+        setBusinesses(allBusinesses);
       } catch (err: unknown) {
         console.error("Failed to load businesses:", err);
         const errorMessage = err instanceof Error ? err.message : "Failed to load businesses";
@@ -93,9 +82,9 @@ const BusinessPage: React.FC = () => {
                   <Building2 className="w-16 h-16 mx-auto" />
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">No Complete Businesses Yet</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">No Businesses Ready Yet</h3>
               <p className="text-base text-gray-600 mb-6 max-w-lg mx-auto leading-relaxed">
-                Complete your business profile with all required information to see it listed here. Only fully completed businesses are shown.
+                You don't have any complete business profiles yet. Create a new business and complete all the required steps to see it listed here.
               </p>
               <Link
                 to="/business/step-1"
