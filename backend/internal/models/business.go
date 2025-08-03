@@ -8,6 +8,9 @@ import (
 
 type Business struct {
 	gorm.Model
+	UserID uint  `json:"user_id"`
+	User   *User `json:"user,omitempty"`
+
 	Name        string     `gorm:"not null" json:"name"` // required
 	Type        string     `json:"type,omitempty"`
 	MarketCap   *float64   `json:"market_cap,omitempty"` // optional
