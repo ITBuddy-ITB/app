@@ -33,10 +33,10 @@ func main() {
 
 	config := cors.Config{
 		AllowOriginFunc: func(origin string) bool {
-			// Split the allowed origins and check if the request origin is in the list
 			allowed := strings.Split(allowedOrigins, ",")
+			origin = strings.TrimSuffix(origin, "/")
 			for _, allowedOrigin := range allowed {
-				if strings.TrimSpace(allowedOrigin) == origin {
+				if strings.TrimSuffix(strings.TrimSpace(allowedOrigin), "/") == origin {
 					return true
 				}
 			}
