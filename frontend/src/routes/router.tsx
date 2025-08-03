@@ -8,6 +8,7 @@ import BusinessPage from "../pages/business/BusinessPage";
 import InvestmentPage from "../pages/investment/InvestmentPage";
 import Step1Page from "../pages/business/StepOne";
 import Step2Page from "../pages/business/StepTwo";
+import Step3Page from "../pages/business/StepThree";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Step2Page />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business/step-3",
+    element: (
+      <ProtectedRoute>
+        <Step3Page />
       </ProtectedRoute>
     ),
   },

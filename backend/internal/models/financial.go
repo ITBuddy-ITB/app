@@ -10,7 +10,6 @@ type Financial struct {
 
 	Revenue     float64 `json:"revenue,omitempty"`
 	EBITDA      float64 `json:"ebitda,omitempty"`
-	HPP         float64 `json:"hpp,omitempty"` // Harga Pokok Penjualan
 	Profit      float64 `json:"profit,omitempty"`
 	Assets      float64 `json:"assets,omitempty"`
 	Liabilities float64 `json:"liabilities,omitempty"`
