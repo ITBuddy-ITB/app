@@ -13,7 +13,6 @@ type Product struct {
 	Name        string `gorm:"not null" json:"name"`
 	Description string `json:"description,omitempty"`
 	Category    string `json:"category,omitempty"` // e.g. Food, Tech, Service
-	Unit        string `json:"unit,omitempty"`     // e.g. "kg", "piece", "service hour" // ? is this necessary ?
 
 	// Financial metrics
 	HPP     *float64 `json:"hpp,omitempty"` // cost per unit
