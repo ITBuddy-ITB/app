@@ -7,6 +7,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import BusinessPage from "../pages/business/BusinessPage";
 import InvestmentPage from "../pages/investment/InvestmentPage";
 import Step1Page from "../pages/business/StepOne";
+import Step2Page from "../pages/business/StepTwo";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Step1Page />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business/step-2",
+    element: (
+      <ProtectedRoute>
+        <Step2Page />
       </ProtectedRoute>
     ),
   },
