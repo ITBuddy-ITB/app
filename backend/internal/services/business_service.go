@@ -1,7 +1,11 @@
 package services
 
 import (
+	"fmt"
 	"go-gin-backend/internal/models"
+	"mime/multipart"
+	"path/filepath"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -77,4 +81,192 @@ func (s *BusinessService) UpdateBusiness(business *models.Business) error {
 // Delete business
 func (s *BusinessService) DeleteBusiness(id uint) error {
 	return s.DB.Delete(&models.Business{}, id).Error
+}
+
+// ===== Product Management =====
+func (s *BusinessService) GetBusinessProducts(businessID uint) ([]models.Product, error) {
+	var products []models.Product
+	if err := s.DB.Where("business_id = ?", businessID).Find(&products).Error; err != nil {
+		return nil, err
+	}
+	return products, nil
+}
+
+func (s *BusinessService) AddBusinessProducts(businessID uint, products []models.Product) ([]models.Product, error) {
+	for i := range products {
+		products[i].BusinessID = businessID
+	}
+
+	if err := s.DB.Create(&products).Error; err != nil {
+		return nil, err
+	}
+
+	return products, nil
+}
+
+func (s *BusinessService) UpdateBusinessProduct(businessID, productID uint, updateData map[string]interface{}) error {
+	return s.DB.Model(&models.Product{}).
+		Where("id = ? AND business_id = ?", productID, businessID).
+		Updates(updateData).Error
+}
+
+func (s *BusinessService) DeleteBusinessProduct(businessID, productID uint) error {
+	return s.DB.Where("id = ? AND business_id = ?", productID, businessID).
+		Delete(&models.Product{}).Error
+}
+
+// ===== Legal Document Management =====
+func (s *BusinessService) GetBusinessLegal(businessID uint) ([]models.Legal, error) {
+	var legals []models.Legal
+	if err := s.DB.Where("business_id = ?", businessID).Find(&legals).Error; err != nil {
+		return nil, err
+	}
+	return legals, nil
+}
+
+func (s *BusinessService) AddBusinessLegal(businessID uint, file multipart.File, header *multipart.FileHeader, legalType, issuedBy, validUntil, notes string) (*models.Legal, error) {
+	// Create upload directory if it doesn't exist
+	uploadDir := "uploads/legal/business"
+
+	// Generate unique filename
+	filename := fmt.Sprintf("%d_%d_%s", businessID, time.Now().Unix(), header.Filename)
+	filepath := filepath.Join(uploadDir, filename)
+
+	// For now, just create the legal record without actual file handling
+	// In a real implementation, you'd save the file to disk or cloud storage
+	legal := &models.Legal{
+		BusinessID: businessID,
+		FileName:   header.Filename,
+		FileURL:    filepath, // This would be the actual URL after upload
+		LegalType:  legalType,
+		IssuedBy:   issuedBy,
+		Notes:      notes,
+	}
+
+	if validUntil != "" {
+		if parsedTime, err := time.Parse("2006-01-02", validUntil); err == nil {
+			legal.ValidUntil = &parsedTime
+		}
+	}
+
+	if err := s.DB.Create(legal).Error; err != nil {
+		return nil, err
+	}
+
+	return legal, nil
+}
+
+func (s *BusinessService) GetProductsLegal(businessID uint) ([]models.ProductLegal, error) {
+	var legals []models.ProductLegal
+
+	// Use a simpler approach: get all products for the business first
+	var productIDs []uint
+	if err := s.DB.Model(&models.Product{}).
+		Where("business_id = ?", businessID).
+		Pluck("id", &productIDs).Error; err != nil {
+		return nil, err
+	}
+
+	// Then get all legal documents for those products
+	if len(productIDs) > 0 {
+		if err := s.DB.Preload("Product").
+			Where("product_id IN ?", productIDs).
+			Find(&legals).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	return legals, nil
+}
+
+func (s *BusinessService) AddProductLegal(businessID, productID uint, file multipart.File, header *multipart.FileHeader, legalType, issuedBy, validUntil, notes string) (*models.ProductLegal, error) {
+	// First verify the product belongs to the business
+	var product models.Product
+	if err := s.DB.Where("id = ? AND business_id = ?", productID, businessID).First(&product).Error; err != nil {
+		return nil, err
+	}
+
+	// Create upload directory if it doesn't exist
+	uploadDir := "uploads/legal/products"
+
+	// Generate unique filename
+	filename := fmt.Sprintf("%d_%d_%d_%s", businessID, productID, time.Now().Unix(), header.Filename)
+	filepath := filepath.Join(uploadDir, filename)
+
+	// For now, just create the legal record without actual file handling
+	legal := &models.ProductLegal{
+		ProductID: productID,
+		FileName:  header.Filename,
+		FileURL:   filepath, // This would be the actual URL after upload
+		LegalType: legalType,
+		IssuedBy:  issuedBy,
+		Notes:     notes,
+	}
+
+	if validUntil != "" {
+		if parsedTime, err := time.Parse("2006-01-02", validUntil); err == nil {
+			legal.ValidUntil = &parsedTime
+		}
+	}
+
+	if err := s.DB.Create(legal).Error; err != nil {
+		return nil, err
+	}
+
+	return legal, nil
+}
+
+// ===== Financial Data Management =====
+
+// Get financial data for a business
+func (s *BusinessService) GetFinancialData(businessID uint) (*models.Financial, error) {
+	var financial models.Financial
+	if err := s.DB.Where("business_id = ?", businessID).First(&financial).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			// Return empty financial record if not found
+			return &models.Financial{BusinessID: businessID}, nil
+		}
+		return nil, err
+	}
+	return &financial, nil
+}
+
+// Update financial data for a business
+func (s *BusinessService) UpdateFinancialData(businessID uint, ebitda, assets, liabilities, equity *float64, notes *string) (*models.Financial, error) {
+	var financial models.Financial
+
+	// Try to find existing financial record
+	err := s.DB.Where("business_id = ?", businessID).First(&financial).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return nil, err
+	}
+
+	// If record doesn't exist, create new one
+	if err == gorm.ErrRecordNotFound {
+		financial = models.Financial{BusinessID: businessID}
+	}
+
+	// Update fields if provided
+	if ebitda != nil {
+		financial.EBITDA = *ebitda
+	}
+	if assets != nil {
+		financial.Assets = *assets
+	}
+	if liabilities != nil {
+		financial.Liabilities = *liabilities
+	}
+	if equity != nil {
+		financial.Equity = *equity
+	}
+	if notes != nil {
+		financial.Notes = *notes
+	}
+
+	// Save the record
+	if err := s.DB.Save(&financial).Error; err != nil {
+		return nil, err
+	}
+
+	return &financial, nil
 }

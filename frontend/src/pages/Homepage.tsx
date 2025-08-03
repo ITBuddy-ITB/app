@@ -12,19 +12,13 @@ const Homepage: React.FC = () => {
       <main className="max-w-7xl mx-auto py-16 sm:px-6 lg:px-8">
         <div className="px-4 text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Evaluate. Comply. Invest.</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-            AI-powered business evaluation platform — check your compliance, showcase your growth, and invest in other businesses.
-          </p>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">AI-powered business platform — check your compliance, showcase your growth, and invest in other businesses.</p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/dashboard/businesses"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
-              Start Business Evaluation
+            <Link to="/dashboard/businesses" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+              Start Business
             </Link>
-            <Link
-              to="/dashboard/investments"
-              className="bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
+            <Link to="/dashboard/investments" className="bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg font-semibold transition-colors duration-200">
               Browse Investment Opportunities
             </Link>
           </div>
@@ -36,7 +30,7 @@ const Homepage: React.FC = () => {
             <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
               <SearchCheck className="text-blue-600" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Step-by-Step Evaluation</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Step-by-Step Process</h3>
             <p className="text-gray-600">Profile, legal, and financial checklists — guided by AI.</p>
           </div>
 

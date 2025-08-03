@@ -6,6 +6,7 @@ import (
 	"go-gin-backend/internal/utils"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,9 +37,18 @@ func (bc *BusinessController) GetUserBusinesses(c *gin.Context) {
 }
 
 // ===== Step 1: Create Business + Products + Additional Info =====
+type CreateBusinessRequestData struct {
+	Name        string   `json:"name" binding:"required"`
+	Type        string   `json:"type,omitempty"`
+	MarketCap   *float64 `json:"market_cap,omitempty"`
+	Description string   `json:"description,omitempty"`
+	Industry    string   `json:"industry,omitempty"`
+	FoundedAt   string   `json:"founded_at,omitempty"` // Accept as string first
+}
+
 type CreateBusinessRequest struct {
 	UserID     uint                            `json:"user_id" binding:"required"`
-	Business   models.Business                 `json:"business" binding:"required"`
+	Business   CreateBusinessRequestData       `json:"business" binding:"required"`
 	Additional []models.BusinessAdditionalInfo `json:"additional_info"`
 	Products   []models.Product                `json:"products"`
 }
@@ -50,10 +60,24 @@ func (bc *BusinessController) CreateBusiness(c *gin.Context) {
 		return
 	}
 
-	// Attach UserID
-	req.Business.UserID = req.UserID
+	// Convert the request data to Business model
+	business := models.Business{
+		UserID:      req.UserID,
+		Name:        req.Business.Name,
+		Type:        req.Business.Type,
+		MarketCap:   req.Business.MarketCap,
+		Description: req.Business.Description,
+		Industry:    req.Business.Industry,
+	}
 
-	err := bc.businessService.CreateBusiness(&req.Business, req.Additional, req.Products)
+	// Parse founded_at if provided
+	if req.Business.FoundedAt != "" {
+		if parsedTime, err := time.Parse("2006-01-02", req.Business.FoundedAt); err == nil {
+			business.FoundedAt = &parsedTime
+		}
+	}
+
+	err := bc.businessService.CreateBusiness(&business, req.Additional, req.Products)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create business"})
 		return
@@ -61,7 +85,7 @@ func (bc *BusinessController) CreateBusiness(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{
 		"message":  "Business created successfully",
-		"business": req.Business,
+		"business": business,
 	})
 }
 
@@ -92,10 +116,26 @@ func (bc *BusinessController) UpdateBusiness(c *gin.Context) {
 		return
 	}
 
-	var business models.Business
-	if err := c.ShouldBindJSON(&business); err != nil {
+	var req CreateBusinessRequestData
+	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	// Convert the request data to Business model
+	business := models.Business{
+		Name:        req.Name,
+		Type:        req.Type,
+		MarketCap:   req.MarketCap,
+		Description: req.Description,
+		Industry:    req.Industry,
+	}
+
+	// Parse founded_at if provided
+	if req.FoundedAt != "" {
+		if parsedTime, err := time.Parse("2006-01-02", req.FoundedAt); err == nil {
+			business.FoundedAt = &parsedTime
+		}
 	}
 
 	business.ID = uint(businessID)
@@ -125,4 +165,294 @@ func (bc *BusinessController) DeleteBusiness(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Business deleted successfully"})
+}
+
+// ===== Product Management =====
+func (bc *BusinessController) GetBusinessProducts(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	products, err := bc.businessService.GetBusinessProducts(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch products"})
+		return
+	}
+
+	c.JSON(http.StatusOK, products)
+}
+
+type AddProductsRequest struct {
+	Products []models.Product `json:"products" binding:"required"`
+}
+
+func (bc *BusinessController) AddBusinessProducts(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	var req AddProductsRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Set business ID for all products
+	for i := range req.Products {
+		req.Products[i].BusinessID = uint(businessID)
+	}
+
+	addedProducts, err := bc.businessService.AddBusinessProducts(uint(businessID), req.Products)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add products"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{
+		"message":  "Products added successfully",
+		"products": addedProducts,
+	})
+}
+
+func (bc *BusinessController) UpdateBusinessProduct(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	productIDStr := c.Param("productId")
+
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	productID, err := strconv.ParseUint(productIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid product ID"})
+		return
+	}
+
+	var updateData map[string]interface{}
+	if err := c.ShouldBindJSON(&updateData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = bc.businessService.UpdateBusinessProduct(uint(businessID), uint(productID), updateData)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update product"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Product updated successfully"})
+}
+
+func (bc *BusinessController) DeleteBusinessProduct(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	productIDStr := c.Param("productId")
+
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	productID, err := strconv.ParseUint(productIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid product ID"})
+		return
+	}
+
+	err = bc.businessService.DeleteBusinessProduct(uint(businessID), uint(productID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete product"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Product deleted successfully"})
+}
+
+// ===== Legal Document Management =====
+func (bc *BusinessController) GetBusinessLegal(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	legals, err := bc.businessService.GetBusinessLegal(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch legal documents"})
+		return
+	}
+
+	c.JSON(http.StatusOK, legals)
+}
+
+func (bc *BusinessController) AddBusinessLegal(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	// Handle multipart form data
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No file uploaded"})
+		return
+	}
+	defer file.Close()
+
+	legalType := c.PostForm("legal_type")
+	issuedBy := c.PostForm("issued_by")
+	validUntil := c.PostForm("valid_until")
+	notes := c.PostForm("notes")
+
+	legal, err := bc.businessService.AddBusinessLegal(uint(businessID), file, header, legalType, issuedBy, validUntil, notes)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add legal document"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, legal)
+}
+
+func (bc *BusinessController) GetProductsLegal(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	legals, err := bc.businessService.GetProductsLegal(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch product legal documents"})
+		return
+	}
+
+	c.JSON(http.StatusOK, legals)
+}
+
+func (bc *BusinessController) AddProductLegal(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	productIDStr := c.Param("productId")
+
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	productID, err := strconv.ParseUint(productIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid product ID"})
+		return
+	}
+
+	// Handle multipart form data
+	file, header, err := c.Request.FormFile("file")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No file uploaded"})
+		return
+	}
+	defer file.Close()
+
+	legalType := c.PostForm("legal_type")
+	issuedBy := c.PostForm("issued_by")
+	validUntil := c.PostForm("valid_until")
+	notes := c.PostForm("notes")
+
+	legal, err := bc.businessService.AddProductLegal(uint(businessID), uint(productID), file, header, legalType, issuedBy, validUntil, notes)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add product legal document"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, legal)
+}
+
+// ===== Financial Data Management =====
+
+// GET /business/:id/financial -> get financial data for business
+func (bc *BusinessController) GetBusinessFinancial(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.Atoi(businessIDStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	_, err = utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	// Verify business exists
+	_, err = bc.businessService.GetBusinessByID(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	financial, err := bc.businessService.GetFinancialData(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch financial data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, financial)
+}
+
+type UpdateFinancialRequest struct {
+	EBITDA      *float64 `json:"ebitda,omitempty"`
+	Assets      *float64 `json:"assets,omitempty"`
+	Liabilities *float64 `json:"liabilities,omitempty"`
+	Equity      *float64 `json:"equity,omitempty"`
+	Notes       *string  `json:"notes,omitempty"`
+}
+
+// PUT /business/:id/financial -> update financial data for business
+func (bc *BusinessController) UpdateBusinessFinancial(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.Atoi(businessIDStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	_, err = utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	// Verify business exists
+	_, err = bc.businessService.GetBusinessByID(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	var req UpdateFinancialRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	financial, err := bc.businessService.UpdateFinancialData(uint(businessID), req.EBITDA, req.Assets, req.Liabilities, req.Equity, req.Notes)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update financial data"})
+		return
+	}
+
+	c.JSON(http.StatusOK, financial)
 }

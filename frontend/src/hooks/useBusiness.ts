@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../lib/api";
+import { BusinessService, type CreateBusinessRequest } from "../services/businessService";
 
 interface Business {
   name: string;
@@ -17,11 +17,6 @@ interface BusinessAdditionalInfo {
 
 interface Product {
   name: string;
-  description: string;
-  category: string;
-  hpp?: number;
-  revenue?: number;
-  profit?: number;
 }
 
 export const useBusiness = () => {
@@ -49,8 +44,8 @@ export const useBusiness = () => {
   const removeAdditionalInfo = (i: number) => setAdditionalInfo(additionalInfo.filter((_, idx) => idx !== i));
 
   // ---------- Products ----------
-  const addProduct = () => setProducts([...products, { name: "", description: "", category: "" }]);
-  const updateProduct = (i: number, field: keyof Product, value: string | number) => {
+  const addProduct = () => setProducts([...products, { name: "" }]);
+  const updateProduct = (i: number, field: keyof Product, value: string) => {
     const updated = [...products];
     updated[i] = { ...updated[i], [field]: value };
     setProducts(updated);
@@ -63,7 +58,7 @@ export const useBusiness = () => {
       setLoading(true);
       setError(null);
 
-      const payload = {
+      const payload: CreateBusinessRequest = {
         user_id: 1, // TODO: Replace with real logged-in user
         business: {
           name: business.name,
@@ -74,24 +69,18 @@ export const useBusiness = () => {
           founded_at: business.foundedAt || undefined,
         },
         additional_info: additionalInfo,
-        products: products.map((p) => ({
-          name: p.name,
-          description: p.description,
-          category: p.category,
-          hpp: p.hpp || undefined,
-          revenue: p.revenue || undefined,
-          profit: p.profit || undefined,
-        })),
+        products: [], // Products will be added later in business detail page
       };
 
-      const res = await api.post("/business", payload);
+      const result = await BusinessService.createBusiness(payload);
 
-      console.log("Business saved:", res.data);
-      return res.data;
+      console.log("Business saved:", result);
+      return result.business;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error("Error saving business:", err);
-      setError(err.response?.data?.error || err.message || "Something went wrong");
+      const errorMessage = err instanceof Error ? err.message : "Something went wrong";
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

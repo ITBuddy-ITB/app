@@ -9,6 +9,11 @@ import InvestmentPage from "../pages/investment/InvestmentPage";
 import Step1Page from "../pages/business/StepOne";
 import Step2Page from "../pages/business/StepTwo";
 import Step3Page from "../pages/business/StepThree";
+import BusinessDetailPage from "../pages/business/BusinessDetailPage";
+import ProductsPage from "../pages/business/ProductsPage";
+import LegalPage from "../pages/business/LegalPage";
+import FinancialPage from "../pages/business/FinancialPage";
+import ProjectionsPage from "../pages/business/ProjectionsPage";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +75,46 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Step3Page />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business/:businessId/details",
+    element: (
+      <ProtectedRoute>
+        <BusinessDetailPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business/:businessId/products",
+    element: (
+      <ProtectedRoute>
+        <ProductsPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business/:businessId/legal",
+    element: (
+      <ProtectedRoute>
+        <LegalPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business/:businessId/finance",
+    element: (
+      <ProtectedRoute>
+        <FinancialPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business/:businessId/projections",
+    element: (
+      <ProtectedRoute>
+        <ProjectionsPage />
       </ProtectedRoute>
     ),
   },

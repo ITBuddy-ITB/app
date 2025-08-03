@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/dashboard", label: "Dashboard" },
-    { to: "/business", label: "Business Evaluation" },
+    { to: "/business", label: "Business" },
     { to: "/investments", label: "Investment" },
   ];
 
@@ -40,31 +40,23 @@ const Navbar: React.FC = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                className={`text-sm font-medium transition-colors duration-200 ${
-                  location.pathname === link.to ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
-                }`}>
+                className={`text-sm font-medium transition-colors duration-200 ${location.pathname === link.to ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"}`}>
                 {link.label}
               </Link>
             ))}
 
             {isAuthenticated ? (
               <>
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+                <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  className="bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200">
+                <Link to="/login" className="bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200">
                   Login
                 </Link>
-                <Link
-                  to="/register"
-                  className="bg-blue-600 border-2 hover:bg-blue-700 border-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
+                <Link to="/register" className="bg-blue-600 border-2 hover:bg-blue-700 border-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200">
                   Sign Up
                 </Link>
               </>
@@ -88,9 +80,7 @@ const Navbar: React.FC = () => {
               key={link.to}
               to={link.to}
               onClick={() => setMenuOpen(false)}
-              className={`block text-sm font-medium transition-colors duration-200 ${
-                location.pathname === link.to ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"
-              }`}>
+              className={`block text-sm font-medium transition-colors duration-200 ${location.pathname === link.to ? "text-blue-600 font-semibold" : "text-gray-700 hover:text-blue-600"}`}>
               {link.label}
             </Link>
           ))}

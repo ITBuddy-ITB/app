@@ -8,9 +8,7 @@ type Financial struct {
 	gorm.Model
 	BusinessID uint `gorm:"unique" json:"business_id"`
 
-	Revenue     float64 `json:"revenue,omitempty"`
 	EBITDA      float64 `json:"ebitda,omitempty"`
-	Profit      float64 `json:"profit,omitempty"`
 	Assets      float64 `json:"assets,omitempty"`
 	Liabilities float64 `json:"liabilities,omitempty"`
 	Equity      float64 `json:"equity,omitempty"`
