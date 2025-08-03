@@ -1,10 +1,13 @@
 package middleware
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
+	"os"
+
 	"net/http"
 	"strings"
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -19,7 +22,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 		claims := &jwt.StandardClaims{}
 		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-			return []byte("your_secret_key"), nil // Replace with your actual secret key
+			return []byte(os.Getenv("JWT_SECRET")), nil // Use environment variable
 		})
 
 		if err != nil || !token.Valid {

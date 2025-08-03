@@ -50,6 +50,14 @@ func (s *InvestmentService) GetInvestmentsByBusinessID(businessID uint) ([]model
 	return investments, nil
 }
 
+func (s *InvestmentService) GetUserInvestmentsForBusiness(investorID uint, businessID uint) ([]models.Investment, error) {
+	var investments []models.Investment
+	if err := s.DB.Where("investor_id = ? AND business_id = ?", investorID, businessID).Find(&investments).Error; err != nil {
+		return nil, err
+	}
+	return investments, nil
+}
+
 func (s *InvestmentService) UpdateInvestment(investment *models.Investment) error {
 	return s.DB.Save(investment).Error
 }

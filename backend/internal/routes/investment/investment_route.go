@@ -3,6 +3,7 @@ package investment
 import (
 	"go-gin-backend/internal/controllers"
 	"go-gin-backend/internal/database"
+	"go-gin-backend/internal/middleware"
 	"go-gin-backend/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -20,19 +21,25 @@ func SetupInvestmentRoutes(router *gin.Engine) {
 	// Investment routes
 	investmentGroup := router.Group("/investment")
 	{
-		// Core investment operations
-		investmentGroup.POST("", investmentController.CreateInvestment)
-		investmentGroup.GET("", investmentController.GetAllInvestments)
-		investmentGroup.GET("/:id", investmentController.GetInvestment)
-		investmentGroup.PUT("/:id", investmentController.UpdateInvestment)
-		investmentGroup.DELETE("/:id", investmentController.DeleteInvestment)
-
-		// Investment filtering routes
-		investmentGroup.GET("/investor/:investor_id", investmentController.GetInvestmentsByInvestor)
-		investmentGroup.GET("/business/:business_id", investmentController.GetInvestmentsByBusiness)
-
-		// Business discovery for investment
+		// Public routes (for browsing businesses)
 		investmentGroup.GET("/businesses", businessController.GetAllBusinessesForInvestment)
 		investmentGroup.GET("/businesses/:id", businessController.GetBusinessForInvestment)
+
+		// Protected routes (require authentication)
+		protectedGroup := investmentGroup.Group("")
+		protectedGroup.Use(middleware.AuthMiddleware())
+		{
+			// Core investment operations
+			protectedGroup.POST("", investmentController.CreateInvestment)
+			protectedGroup.GET("", investmentController.GetAllInvestments)
+			protectedGroup.GET("/:id", investmentController.GetInvestment)
+			protectedGroup.PUT("/:id", investmentController.UpdateInvestment)
+			protectedGroup.DELETE("/:id", investmentController.DeleteInvestment)
+
+			// Investment filtering routes
+			protectedGroup.GET("/investor/:investor_id", investmentController.GetInvestmentsByInvestor)
+			protectedGroup.GET("/business/:business_id", investmentController.GetInvestmentsByBusiness)
+			protectedGroup.GET("/user/business/:business_id", investmentController.GetUserInvestmentsForBusiness)
+		}
 	}
 }

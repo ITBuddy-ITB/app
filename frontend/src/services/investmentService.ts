@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 // Import business interfaces from business service
 import type { Business } from "./businessService";
 
-// Investment-specific interfaces
+// Investment-specific interfaces (matching backend model)
 export interface Investment {
   ID: number;
   CreatedAt: string;
@@ -12,12 +12,7 @@ export interface Investment {
   DeletedAt?: string;
   investor_id: number;
   business_id: number;
-  amount: number;
-  investment_date: string;
-  investment_type?: string;
-  equity_percentage?: number;
-  status?: string;
-  notes?: string;
+  investment_amount: number; // Backend expects this as a float64 (number)
   business?: Business;
 }
 
@@ -81,7 +76,7 @@ export class InvestmentService {
 
   // Create an investment
   static async createInvestment(
-    investment: Omit<Investment, "ID" | "CreatedAt" | "UpdatedAt" | "DeletedAt">
+    investment: Omit<Investment, "ID" | "CreatedAt" | "UpdatedAt" | "DeletedAt" | "investor_id">
   ): Promise<Investment> {
     try {
       const response = await api.post<Investment>("/investment", investment);
@@ -120,6 +115,21 @@ export class InvestmentService {
         throw new Error(errorMessage);
       }
       throw new Error("Failed to fetch business investments");
+    }
+  }
+
+  // Get user's investments for a specific business
+  static async getUserInvestmentsForBusiness(businessId: number): Promise<Investment[]> {
+    try {
+      const response = await api.get<Investment[]>(`/investment/user/business/${businessId}`);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const errorMessage =
+          (error.response?.data as ErrorResponse)?.error || "Failed to fetch user investments for business";
+        throw new Error(errorMessage);
+      }
+      throw new Error("Failed to fetch user investments for business");
     }
   }
 }
