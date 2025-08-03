@@ -58,6 +58,61 @@ func (bc *BusinessController) GetUserBusinesses(c *gin.Context) {
 	c.JSON(http.StatusOK, businessResponses)
 }
 
+// GET /investment/businesses -> get all businesses for investment with pagination
+func (bc *BusinessController) GetAllBusinessesForInvestment(c *gin.Context) {
+	// Parse query parameters
+	pageStr := c.DefaultQuery("page", "1")
+	limitStr := c.DefaultQuery("limit", "10")
+	industry := c.Query("industry")
+	search := c.Query("search")
+
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil || limit < 1 || limit > 100 {
+		limit = 10
+	}
+
+	businesses, total, err := bc.businessService.GetAllBusinessesWithPagination(page, limit, industry, search)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch businesses"})
+		return
+	}
+
+	totalPages := int((total + int64(limit) - 1) / int64(limit))
+
+	response := gin.H{
+		"businesses":  businesses,
+		"total":       total,
+		"page":        page,
+		"limit":       limit,
+		"totalPages":  totalPages,
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+// GET /investment/businesses/:id -> get business details for investment
+func (bc *BusinessController) GetBusinessForInvestment(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	business, err := bc.businessService.GetBusinessByID(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, business)
+}
+
 // ===== Step 1: Create Business + Products + Additional Info =====
 type CreateBusinessRequestData struct {
 	Name        string `json:"name" binding:"required"`

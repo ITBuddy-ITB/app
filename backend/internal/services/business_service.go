@@ -305,3 +305,37 @@ func (s *BusinessService) UpdateFinancialData(businessID uint, ebitda, assets, l
 
 	return &financial, nil
 }
+
+// ===== Investment-related methods =====
+
+// GetAllBusinessesWithPagination gets all businesses with pagination and filters for investment purposes
+func (s *BusinessService) GetAllBusinessesWithPagination(page, limit int, industry, search string) ([]models.Business, int64, error) {
+	var businesses []models.Business
+	var total int64
+
+	query := s.DB.Model(&models.Business{}).
+		Preload("Products").
+		Preload("Financial").
+		Preload("Legals")
+
+	// Apply filters
+	if industry != "" {
+		query = query.Where("industry = ?", industry)
+	}
+	if search != "" {
+		query = query.Where("name ILIKE ? OR description ILIKE ?", "%"+search+"%", "%"+search+"%")
+	}
+
+	// Get total count
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	// Apply pagination
+	offset := (page - 1) * limit
+	if err := query.Offset(offset).Limit(limit).Find(&businesses).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return businesses, total, nil
+}
