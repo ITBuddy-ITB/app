@@ -1,87 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "../../components/Navbar";
 import StepIndicator from "../../components/StepIndicator";
 import { X } from "lucide-react";
-
-interface BusinessAdditionalInfo {
-  name: string;
-  value: string;
-}
-
-interface Product {
-  name: string;
-  description: string;
-  category: string;
-  hpp?: number;
-  revenue?: number;
-  profit?: number;
-}
+import { useBusiness } from "../../hooks/useBusiness";
 
 const Step1Page: React.FC = () => {
-  // Business state
-  const [business, setBusiness] = useState({
-    name: "",
-    type: "",
-    marketCap: "",
-    description: "",
-    industry: "",
-    foundedAt: "",
-  });
+  const {
+    business,
+    setBusiness,
+    additionalInfo,
+    addAdditionalInfo,
+    updateAdditionalInfo,
+    removeAdditionalInfo,
+    products,
+    addProduct,
+    updateProduct,
+    removeProduct,
+    submitBusiness,
+    loading,
+    error,
+  } = useBusiness();
 
-  // Additional Info
-  const [additionalInfo, setAdditionalInfo] = useState<BusinessAdditionalInfo[]>([]);
-
-  // Products
-  const [products, setProducts] = useState<Product[]>([]);
-
-  // Add / Remove additional info
-  const addAdditionalInfo = () => {
-    setAdditionalInfo([...additionalInfo, { name: "", value: "" }]);
-  };
-  const updateAdditionalInfo = (index: number, field: keyof BusinessAdditionalInfo, value: string) => {
-    const updated = [...additionalInfo];
-    updated[index] = { ...updated[index], [field]: value };
-    setAdditionalInfo(updated);
-  };
-  const removeAdditionalInfo = (index: number) => {
-    setAdditionalInfo(additionalInfo.filter((_, i) => i !== index));
-  };
-
-  // Add / Update / Remove product
-  const addProduct = () => {
-    setProducts([...products, { name: "", description: "", category: "" }]);
-  };
-  const updateProduct = (index: number, field: keyof Product, value: string | number) => {
-    const updated = [...products];
-    updated[index] = { ...updated[index], [field]: value };
-    setProducts(updated);
-  };
-  const removeProduct = (index: number) => {
-    setProducts(products.filter((_, i) => i !== index));
-  };
-
-  // Submit handler
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = {
-      business,
-      additionalInfo,
-      products,
-    };
-    console.log("Step 1 Payload:", payload);
-
-    // TODO: Send to backend
-    // navigate("/business/step-2");
+    const result = await submitBusiness();
+    if (result) {
+      // TODO: redirect to Step 2
+      //   navigate("/business/step-2");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <Navbar />
-
       <div className="max-w-4xl mx-auto py-10 px-4">
-        {/* Step Indicator */}
         <StepIndicator />
-
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Step 1: Business & Products Profile</h2>
 
         <form onSubmit={handleSubmit} className="space-y-10">
@@ -190,7 +143,6 @@ const Step1Page: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-800">Products</h3>
             {products.map((product, index) => (
               <div key={index} className="border border-gray-200 rounded-lg p-4 space-y-2 relative">
-                {/* Remove Button */}
                 <button
                   type="button"
                   onClick={() => removeProduct(index)}
@@ -263,11 +215,13 @@ const Step1Page: React.FC = () => {
           </div>
 
           {/* Submit */}
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+            {error && <span className="text-red-600">{error}</span>}
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
-              Save & Continue to Step 2
+              disabled={loading}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
+              {loading ? "Saving..." : "Save & Continue to Step 2"}
             </button>
           </div>
         </form>
