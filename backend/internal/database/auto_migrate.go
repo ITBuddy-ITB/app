@@ -11,5 +11,13 @@ func AutoMigrateAll(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&models.User{},
 		&models.Investment{},
+		&models.Business{},
+		&models.BusinessAdditionalInfo{},
+		&models.Product{},
+		&models.ProductLegal{},
+		&models.Financial{},
+		&models.FinancialAdditionalInfo{},
+		&models.Legal{},
+		&models.LegalAdditionalInfo{},
 	)
 }
