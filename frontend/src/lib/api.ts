@@ -16,6 +16,10 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // Don't override Content-Type if it's multipart/form-data
+    if (typeof config.headers["Content-Type"] === "string" && !config.headers["Content-Type"].includes("multipart/form-data")) {
+      config.headers["Content-Type"] = "application/json";
+    }
     return config;
   },
   (error) => {

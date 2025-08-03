@@ -1,4 +1,4 @@
-package docs
+package genai
 
 import (
 	"go-gin-backend/internal/controllers"
@@ -16,8 +16,9 @@ func SetupGenAIRoutes(router *gin.Engine) {
 	genAIController := controllers.NewGenAIController(genAIService)
 
 	// User routes
-	userGroup := router.Group("/genai")
+	genAIGroup := router.Group("/genai")
 	{
-		userGroup.GET("/response", genAIController.GetAIResponse)
+		genAIGroup.GET("/response", genAIController.GetAIResponse)
+		genAIGroup.POST("/infer-products", genAIController.GetProductsFromFile)
 	}
 }

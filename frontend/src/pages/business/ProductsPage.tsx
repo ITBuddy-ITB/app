@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router";
 import Navbar from "../../components/Navbar";
 import { X } from "lucide-react";
 import { BusinessService, type Product } from "../../services/businessService";
+import api from "../../lib/api"; // Import the Axios API instance
 
 const ProductsPage: React.FC = () => {
   const { businessId } = useParams<{ businessId: string }>();
@@ -89,6 +90,34 @@ const ProductsPage: React.FC = () => {
     }
   };
 
+  const handleProductsFileOnChange = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    if (e.target.files && e.target.files[0]) {
+      const file: File = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await api.post("/genai/infer-products", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        const productNames = response.data.products.join("\n");
+        setNewProductsText(productNames);
+      } catch (err: unknown) {
+        console.error("Failed to process file:", err);
+        const errorMessage = err instanceof Error ? err.message : "Failed to process file";
+        setError(errorMessage);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <Navbar />
@@ -97,7 +126,9 @@ const ProductsPage: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Products Management</h1>
-          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+          <Link
+            to={`/business/${businessId}/details`}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
             Back to Business
           </Link>
         </div>
@@ -108,6 +139,21 @@ const ProductsPage: React.FC = () => {
         <div className="bg-white shadow rounded-lg p-6 mb-8">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Add New Products</h3>
           <p className="text-gray-600 mb-4">Enter product names, one per line:</p>
+
+          <div className="mb-4">
+            <label htmlFor="productsFile" className="block text-sm font-medium text-gray-700 mb-2">
+              Upload Products File (PDF)
+            </label>
+            <input
+              id="productsFile"
+              type="file"
+              accept="application/pdf"
+              className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 
+                 file:rounded-md file:border-0 file:text-sm file:font-semibold 
+                 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              onChange={handleProductsFileOnChange}
+            />
+          </div>
 
           <textarea
             className="w-full border rounded-lg px-4 py-2 mb-4"
@@ -135,14 +181,21 @@ const ProductsPage: React.FC = () => {
             <div className="space-y-4">
               {products.map((product, index) => (
                 <div key={product.ID || index} className="border border-gray-200 rounded-lg p-4 relative">
-                  <button onClick={() => product.ID && handleDeleteProduct(product.ID)} className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full">
+                  <button
+                    onClick={() => product.ID && handleDeleteProduct(product.ID)}
+                    className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full">
                     <X size={16} />
                   </button>
 
                   <div className="grid grid-cols-1 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                      <input type="text" className="w-full border rounded-lg px-3 py-2" value={product.name} onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)} />
+                      <input
+                        type="text"
+                        className="w-full border rounded-lg px-3 py-2"
+                        value={product.name}
+                        onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)}
+                      />
                     </div>
                   </div>
                 </div>
