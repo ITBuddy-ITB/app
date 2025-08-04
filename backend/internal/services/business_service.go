@@ -305,3 +305,173 @@ func (s *BusinessService) UpdateFinancialData(businessID uint, ebitda, assets, l
 
 	return &financial, nil
 }
+
+func (s *BusinessService) StoreLegalAnalysis(businessID uint, analysis *BusinessLegalAnalysis) error {
+	return s.DB.Transaction(func(tx *gorm.DB) error {
+		// Store business legals
+		for _, legal := range analysis.BusinessLegals {
+			missingLegal := &models.MissingLegal{
+				BusinessID: businessID,
+				LegalType:  legal.LegalType,
+				Notes:      legal.Notes,
+			}
+			if err := tx.Create(missingLegal).Error; err != nil {
+				return err
+			}
+
+			// Store steps for this legal
+			for _, step := range legal.Steps {
+				legalStep := &models.StepToGetLegal{
+					MissingLegalID: missingLegal.ID,
+					StepNumber:     step.StepNumber,
+					Description:    step.Description,
+					RedirectURL:    step.RedirectURL,
+				}
+				if err := tx.Create(legalStep).Error; err != nil {
+					return err
+				}
+			}
+		}
+
+		// Store product legals
+		for _, prodLegal := range analysis.ProductLegals {
+			// Find product by name
+			var product models.Product
+			if err := tx.Where("business_id = ? AND name LIKE ?", businessID, "%"+prodLegal.ProductName+"%").
+				First(&product).Error; err != nil {
+				continue // Skip if product not found
+			}
+
+			missingLegal := &models.MissingProductLegal{
+				ProductID: product.ID,
+				LegalType: prodLegal.LegalType,
+				Notes:     prodLegal.Notes,
+			}
+			if err := tx.Create(missingLegal).Error; err != nil {
+				return err
+			}
+
+			// Store steps for this product legal
+			for _, step := range prodLegal.Steps {
+				legalStep := &models.StepToGetLegal{
+					MissingLegalID: missingLegal.ID,
+					StepNumber:     step.StepNumber,
+					Description:    step.Description,
+					RedirectURL:    step.RedirectURL,
+				}
+				if err := tx.Create(legalStep).Error; err != nil {
+					return err
+				}
+			}
+		}
+
+		return nil
+	})
+}
+
+type LegalComparison struct {
+	Required []struct {
+		Type     string                  `json:"type"`
+		HasLegal bool                    `json:"has_legal"`
+		Notes    string                  `json:"notes,omitempty"`
+		Steps    []models.StepToGetLegal `json:"steps,omitempty"`
+	} `json:"required"`
+	Products []struct {
+		ProductName string `json:"product_name"`
+		Required    []struct {
+			Type     string                  `json:"type"`
+			HasLegal bool                    `json:"has_legal"`
+			Notes    string                  `json:"notes,omitempty"`
+			Steps    []models.StepToGetLegal `json:"steps,omitempty"`
+		} `json:"required"`
+	} `json:"products"`
+}
+
+func (s *BusinessService) GetLegalComparison(businessID uint) (*LegalComparison, error) {
+	comparison := &LegalComparison{}
+
+	// Get existing legals
+	existingLegals := make(map[string]bool)
+	var legals []models.Legal
+	if err := s.DB.Where("business_id = ?", businessID).Find(&legals).Error; err != nil {
+		return nil, err
+	}
+	for _, l := range legals {
+		existingLegals[l.LegalType] = true
+	}
+
+	// Get missing legals with steps
+	var missingLegals []models.MissingLegal
+	if err := s.DB.Preload("Steps").Where("business_id = ?", businessID).Find(&missingLegals).Error; err != nil {
+		return nil, err
+	}
+
+	// Compare and build required list
+	for _, ml := range missingLegals {
+		comparison.Required = append(comparison.Required, struct {
+			Type     string                  `json:"type"`
+			HasLegal bool                    `json:"has_legal"`
+			Notes    string                  `json:"notes,omitempty"`
+			Steps    []models.StepToGetLegal `json:"steps,omitempty"`
+		}{
+			Type:     ml.LegalType,
+			HasLegal: existingLegals[ml.LegalType],
+			Notes:    ml.Notes,
+			Steps:    []models.StepToGetLegal{},
+		})
+	}
+
+	// Get products comparison
+	var products []models.Product
+	if err := s.DB.Where("business_id = ?", businessID).Find(&products).Error; err != nil {
+		return nil, err
+	}
+
+	for _, prod := range products {
+		productComparison := struct {
+			ProductName string `json:"product_name"`
+			Required    []struct {
+				Type     string                  `json:"type"`
+				HasLegal bool                    `json:"has_legal"`
+				Notes    string                  `json:"notes,omitempty"`
+				Steps    []models.StepToGetLegal `json:"steps,omitempty"`
+			} `json:"required"`
+		}{
+			ProductName: prod.Name,
+		}
+
+		// Get existing product legals
+		existingProdLegals := make(map[string]bool)
+		var prodLegals []models.ProductLegal
+		if err := s.DB.Where("product_id = ?", prod.ID).Find(&prodLegals).Error; err != nil {
+			return nil, err
+		}
+		for _, l := range prodLegals {
+			existingProdLegals[l.LegalType] = true
+		}
+
+		// Get missing product legals
+		var missingProdLegals []models.MissingProductLegal
+		if err := s.DB.Preload("Steps").Where("product_id = ?", prod.ID).Find(&missingProdLegals).Error; err != nil {
+			return nil, err
+		}
+
+		for _, mpl := range missingProdLegals {
+			productComparison.Required = append(productComparison.Required, struct {
+				Type     string                  `json:"type"`
+				HasLegal bool                    `json:"has_legal"`
+				Notes    string                  `json:"notes,omitempty"`
+				Steps    []models.StepToGetLegal `json:"steps,omitempty"`
+			}{
+				Type:     mpl.LegalType,
+				HasLegal: existingProdLegals[mpl.LegalType],
+				Notes:    mpl.Notes,
+				Steps:    []models.StepToGetLegal{},
+			})
+		}
+
+		comparison.Products = append(comparison.Products, productComparison)
+	}
+
+	return comparison, nil
+}

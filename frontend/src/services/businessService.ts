@@ -45,6 +45,8 @@ export interface Legal {
 }
 
 export interface ProductLegal {
+  required: boolean;
+  product_name: string;
   ID: number;
   CreatedAt: string;
   UpdatedAt: string;
@@ -81,6 +83,29 @@ export interface BusinessAdditionalInfo {
   business_id: number;
   name: string;
   value: string;
+}
+
+export interface RequiredLegal {
+  type: string;
+  has_legal: boolean;
+  notes?: string;
+  steps?: LegalStep[];
+}
+
+export interface ProductLegalRequirement {
+  product_name: string;
+  required: RequiredLegal[];
+}
+
+export interface LegalComparison {
+  required: RequiredLegal[];
+  products: ProductLegalRequirement[];
+}
+
+export interface LegalStep {
+  step_number: number;
+  description: string;
+  redirect_url: string;
 }
 
 // Request/Response interfaces
@@ -221,7 +246,11 @@ export class BusinessService {
     }
   }
 
-  static async updateBusinessProduct(businessId: number, productId: number, data: Partial<Product>): Promise<{ message: string }> {
+  static async updateBusinessProduct(
+    businessId: number,
+    productId: number,
+    data: Partial<Product>
+  ): Promise<{ message: string }> {
     try {
       const response = await api.put<{ message: string }>(`/business/${businessId}/products/${productId}`, data);
       return response.data;

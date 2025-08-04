@@ -12,13 +12,17 @@ func SetupGenAIRoutes(router *gin.Engine) {
 	// Initialize services
 	genAIService := services.NewGenAIService(database.DB)
 
+	// Initialize services
+	businessService := services.NewBusinessService(database.DB)
+
 	// Initialize controllers
-	genAIController := controllers.NewGenAIController(genAIService)
+	genAIController := controllers.NewGenAIController(genAIService, businessService)
 
 	// User routes
 	genAIGroup := router.Group("/genai")
 	{
 		genAIGroup.GET("/response", genAIController.GetAIResponse)
 		genAIGroup.POST("/infer-products", genAIController.GetProductsFromFile)
+		genAIGroup.POST("/analyze-business-legals", genAIController.AnalyzeBusinessLegals)
 	}
 }

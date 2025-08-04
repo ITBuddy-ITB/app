@@ -14,6 +14,7 @@ import ProductsPage from "../pages/business/ProductsPage";
 import LegalPage from "../pages/business/LegalPage";
 import FinancialPage from "../pages/business/FinancialPage";
 import ProjectionsPage from "../pages/business/ProjectionsPage";
+import LegalStepsPage from "../pages/business/LegalStepsPage";
 
 const router = createBrowserRouter([
   {
@@ -43,16 +44,6 @@ const router = createBrowserRouter([
         <BusinessPage />
       </ProtectedRoute>
     ),
-    // children: [
-    //   {
-    //     path: "step-1",
-    //     element: (
-    //       <ProtectedRoute>
-    //         <Step1Page />
-    //       </ProtectedRoute>
-    //     ),
-    //   },
-    // ],
   },
   {
     path: "/business/step-1",
@@ -99,6 +90,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <LegalPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/business/:businessId/legal/steps/:type",
+    element: (
+      <ProtectedRoute>
+        <LegalStepsPage />
       </ProtectedRoute>
     ),
   },

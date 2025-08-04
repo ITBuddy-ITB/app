@@ -19,5 +19,9 @@ func AutoMigrateAll(db *gorm.DB) error {
 		&models.FinancialAdditionalInfo{},
 		&models.Legal{},
 		&models.LegalAdditionalInfo{},
+		&models.MissingLegal{},
+		&models.StepToGetLegal{},
+		&models.MissingProductLegal{},
+		&models.StepToGetProductLegal{},
 	)
 }

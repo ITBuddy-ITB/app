@@ -26,3 +26,33 @@ type LegalAdditionalInfo struct {
 	Name    string `json:"name"`
 	Value   string `json:"value"`
 }
+
+type MissingLegal struct {
+	gorm.Model
+	BusinessID uint   `json:"business_id"`
+	LegalType  string `json:"legal_type"` // e.g. License, Certificate, Permit
+	Notes      string `json:"notes,omitempty"`
+}
+
+type StepToGetLegal struct {
+	gorm.Model	
+	MissingLegalID uint   `json:"missing_legal_id"`
+	StepNumber     int    `json:"step_number"`
+	Description    string `json:"description"`
+	RedirectURL   string `json:"redirect_url,omitempty"`
+}
+
+type MissingProductLegal struct {
+	gorm.Model				
+	ProductID uint   `json:"product_id"`
+	LegalType  string `json:"legal_type"`
+	Notes      string `json:"notes,omitempty"`
+}
+
+type StepToGetProductLegal struct {
+	gorm.Model			
+	MissingProductLegalID uint   `json:"missing_product_legal_id"`
+	StepNumber     int    `json:"step_number"`
+	Description    string `json:"description"`
+	RedirectURL   string `json:"redirect_url,omitempty"`
+}

@@ -8,11 +8,11 @@ import (
 )
 
 type GenAIController struct {
-	genAIService *services.GenAIService
+	genAIService    *services.GenAIService
+	businessService *services.BusinessService
 }
-
-func NewGenAIController(genAIService *services.GenAIService) *GenAIController {
-	return &GenAIController{genAIService: genAIService}
+func NewGenAIController(genAIService *services.GenAIService, businessService *services.BusinessService) *GenAIController {
+	return &GenAIController{genAIService: genAIService, businessService: businessService}
 }
 
 func (gc *GenAIController) GetAIResponse(c *gin.Context) {
@@ -35,4 +35,27 @@ func (gc *GenAIController) GetProductsFromFile(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"products": products})
+}
+
+func (gc *GenAIController) AnalyzeBusinessLegals(c *gin.Context) {
+	businessID := c.GetUint("businessId")
+	file, err := c.FormFile("file")
+	if err != nil {
+		c.JSON(400, gin.H{"error": "File is required"})
+		return
+	}
+
+	analysis, err := gc.genAIService.AnalyzeBusinessLegals(file)
+	if err != nil {
+		c.JSON(500, gin.H{"error": fmt.Sprintf("Failed to analyze business: %v", err)})
+		return
+	}
+
+	// Store the analysis results
+	if err := gc.businessService.StoreLegalAnalysis(businessID, analysis); err != nil {
+		c.JSON(500, gin.H{"error": fmt.Sprintf("Failed to store analysis: %v", err)})
+		return
+	}
+
+	c.JSON(200, analysis)
 }

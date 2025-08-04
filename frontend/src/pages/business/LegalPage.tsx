@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
 import Navbar from "../../components/Navbar";
-import { BusinessService, type Legal, type ProductLegal, type Product } from "../../services/businessService";
+import { BusinessService, type Legal, type ProductLegal, type Product, type RequiredLegal } from "../../services/businessService";
+import LegalRequirements from "../../components/legal/LegalRequirements";
+import api from "../../lib/api";
 
 const API_BASE_URL = "http://localhost:8080";
+
+interface LegalComparison {
+  required: RequiredLegal[];
+  products: ProductLegal[];
+}
 
 const LegalPage: React.FC = () => {
   const { businessId } = useParams<{ businessId: string }>();
@@ -12,6 +19,7 @@ const LegalPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [comparison, setComparison] = useState<LegalComparison | null>(null);
 
   // Form states
   const [activeTab, setActiveTab] = useState<"business" | "product">("business");
@@ -120,7 +128,13 @@ const LegalPage: React.FC = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Upload Legal Document (PDF)</label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-            <input type="file" accept=".pdf" onChange={(e) => setSelectedFile(e.target.files?.[0] || null)} className="w-full" required />
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+              className="w-full"
+              required
+            />
             {selectedFile && <p className="text-sm text-gray-600 mt-2">Selected: {selectedFile.name}</p>}
           </div>
         </div>
@@ -152,7 +166,12 @@ const LegalPage: React.FC = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Valid Until (Optional)</label>
-          <input type="date" className="w-full border rounded-lg px-3 py-2" value={formData.valid_until} onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })} />
+          <input
+            type="date"
+            className="w-full border rounded-lg px-3 py-2"
+            value={formData.valid_until}
+            onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
+          />
         </div>
 
         <div>
@@ -166,7 +185,10 @@ const LegalPage: React.FC = () => {
           />
         </div>
 
-        <button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
           {loading ? "Uploading..." : "Upload Document"}
         </button>
       </form>
@@ -210,7 +232,11 @@ const LegalPage: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Select Product</label>
-          <select className="w-full border rounded-lg px-3 py-2" value={formData.product_id} onChange={(e) => setFormData({ ...formData, product_id: e.target.value })} required>
+          <select
+            className="w-full border rounded-lg px-3 py-2"
+            value={formData.product_id}
+            onChange={(e) => setFormData({ ...formData, product_id: e.target.value })}
+            required>
             <option value="">Choose a product...</option>
             {products.map((product) => (
               <option key={product.ID} value={product.ID}>
@@ -223,7 +249,13 @@ const LegalPage: React.FC = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Upload Legal Document (PDF)</label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-            <input type="file" accept=".pdf" onChange={(e) => setSelectedFile(e.target.files?.[0] || null)} className="w-full" required />
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+              className="w-full"
+              required
+            />
             {selectedFile && <p className="text-sm text-gray-600 mt-2">Selected: {selectedFile.name}</p>}
           </div>
         </div>
@@ -255,7 +287,12 @@ const LegalPage: React.FC = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Valid Until (Optional)</label>
-          <input type="date" className="w-full border rounded-lg px-3 py-2" value={formData.valid_until} onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })} />
+          <input
+            type="date"
+            className="w-full border rounded-lg px-3 py-2"
+            value={formData.valid_until}
+            onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
+          />
         </div>
 
         <div>
@@ -269,10 +306,51 @@ const LegalPage: React.FC = () => {
           />
         </div>
 
-        <button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
           {loading ? "Uploading..." : "Upload Document"}
         </button>
       </form>
+    );
+  };
+
+  const AnalyzeBusinessSection = () => {
+    const [analyzing, setAnalyzing] = useState(false);
+
+    const handleProfileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files[0]) {
+        try {
+          setAnalyzing(true);
+          const file = e.target.files[0];
+          const formData = new FormData();
+          formData.append("file", file);
+
+          // Analyze business profile
+          await api.post(`/genai/analyze-business-legals`, formData);
+
+          // Get comparison results
+          const response = await api.get(`/business/${businessId}/legal/comparison`);
+          setComparison(response.data);
+        } catch (err) {
+          console.error("Failed to analyze business profile:", err);
+          setError("Failed to analyze business profile");
+        } finally {
+          setAnalyzing(false);
+        }
+      }
+    };
+
+    return (
+      <div className="bg-white shadow rounded-lg p-6 mb-8">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Analyze Business Requirements</h3>
+        <p className="text-gray-600 mb-4">Upload your business profile to get recommendations for required legal documents.</p>
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+          <input type="file" accept=".pdf" onChange={handleProfileUpload} className="w-full" disabled={analyzing} />
+          {analyzing && <p className="text-sm text-blue-600 mt-2">Analyzing your business profile...</p>}
+        </div>
+      </div>
     );
   };
 
@@ -284,7 +362,9 @@ const LegalPage: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Legal Documents</h1>
-          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+          <Link
+            to={`/business/${businessId}/details`}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
             Back to Business
           </Link>
         </div>
@@ -295,26 +375,44 @@ const LegalPage: React.FC = () => {
         <div className="flex space-x-1 mb-8">
           <button
             onClick={() => setActiveTab("business")}
-            className={`px-4 py-2 rounded-lg font-medium ${activeTab === "business" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}>
+            className={`px-4 py-2 rounded-lg font-medium ${
+              activeTab === "business" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"
+            }`}>
             Business Legal Documents
           </button>
           <button
             onClick={() => setActiveTab("product")}
-            className={`px-4 py-2 rounded-lg font-medium ${activeTab === "product" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}>
+            className={`px-4 py-2 rounded-lg font-medium ${
+              activeTab === "product" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"
+            }`}>
             Product Legal Documents
           </button>
         </div>
 
+        {/* Add Analysis Section */}
+        <AnalyzeBusinessSection />
+
+        {/* Show Requirements Comparison if available */}
+        {comparison && (
+          <div className="mb-8">
+            <LegalRequirements comparison={comparison} />
+          </div>
+        )}
+
         {/* Upload Form */}
         <div className="bg-white shadow rounded-lg p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">{activeTab === "business" ? "Add Business Legal Document" : "Add Product Legal Document"}</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            {activeTab === "business" ? "Add Business Legal Document" : "Add Product Legal Document"}
+          </h3>
 
           {activeTab === "business" ? <BusinessLegalForm /> : <ProductLegalForm />}
         </div>
 
         {/* Existing Documents */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Existing {activeTab === "business" ? "Business" : "Product"} Documents</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            Existing {activeTab === "business" ? "Business" : "Product"} Documents
+          </h3>
 
           {activeTab === "business" ? (
             businessLegals.length === 0 ? (
@@ -327,12 +425,18 @@ const LegalPage: React.FC = () => {
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-900">{legal.legal_type}</h4>
                         <p className="text-sm text-gray-600">Issued by: {legal.issued_by}</p>
-                        {legal.valid_until && <p className="text-sm text-gray-600">Valid until: {new Date(legal.valid_until).toLocaleDateString()}</p>}
+                        {legal.valid_until && (
+                          <p className="text-sm text-gray-600">Valid until: {new Date(legal.valid_until).toLocaleDateString()}</p>
+                        )}
                         {legal.notes && <p className="text-sm text-gray-600 mt-2">{legal.notes}</p>}
                       </div>
                       <div className="flex items-center space-x-2">
                         {legal.file_url && (
-                          <a href={`${API_BASE_URL}${legal.file_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
+                          <a
+                            href={`${API_BASE_URL}${legal.file_url}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 font-medium">
                             View Document
                           </a>
                         )}
@@ -355,12 +459,18 @@ const LegalPage: React.FC = () => {
                         <h4 className="font-medium text-gray-900">{legal.legal_type}</h4>
                         <p className="text-sm text-gray-600">Product: {product?.name || "Unknown Product"}</p>
                         <p className="text-sm text-gray-600">Issued by: {legal.issued_by}</p>
-                        {legal.valid_until && <p className="text-sm text-gray-600">Valid until: {new Date(legal.valid_until).toLocaleDateString()}</p>}
+                        {legal.valid_until && (
+                          <p className="text-sm text-gray-600">Valid until: {new Date(legal.valid_until).toLocaleDateString()}</p>
+                        )}
                         {legal.notes && <p className="text-sm text-gray-600 mt-2">{legal.notes}</p>}
                       </div>
                       <div className="flex items-center space-x-2">
                         {legal.file_url && (
-                          <a href={`${API_BASE_URL}${legal.file_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
+                          <a
+                            href={`${API_BASE_URL}${legal.file_url}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 font-medium">
                             View Document
                           </a>
                         )}

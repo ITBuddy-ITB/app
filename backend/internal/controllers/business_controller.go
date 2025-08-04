@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"go-gin-backend/internal/models"
 	"go-gin-backend/internal/services"
 	"go-gin-backend/internal/utils"
@@ -377,6 +378,18 @@ func (bc *BusinessController) AddProductLegal(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, legal)
+}
+
+func (bc *BusinessController) GetLegalComparison(c *gin.Context) {
+	businessID := c.GetUint("businessId")
+
+	comparison, err := bc.businessService.GetLegalComparison(businessID)
+	if err != nil {
+		c.JSON(500, gin.H{"error": fmt.Sprintf("Failed to get legal comparison: %v", err)})
+		return
+	}
+
+	c.JSON(200, comparison)
 }
 
 // ===== Financial Data Management =====
