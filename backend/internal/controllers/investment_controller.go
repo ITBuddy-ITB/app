@@ -6,6 +6,7 @@ import (
 	"go-gin-backend/internal/utils"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -91,6 +92,24 @@ func (ic *InvestmentController) GetInvestmentsByInvestor(c *gin.Context) {
 	c.JSON(http.StatusOK, investments)
 }
 
+// GetCurrentUserInvestments retrieves investments for the current authenticated user
+func (ic *InvestmentController) GetCurrentUserInvestments(c *gin.Context) {
+	// Get investor ID from authenticated user
+	investorID, err := utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized: " + err.Error()})
+		return
+	}
+
+	investments, err := ic.investmentService.GetInvestmentsByInvestorID(investorID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve investments"})
+		return
+	}
+
+	c.JSON(http.StatusOK, investments)
+}
+
 // GetInvestmentsByBusiness retrieves investments by business ID
 func (ic *InvestmentController) GetInvestmentsByBusiness(c *gin.Context) {
 	businessIDStr := c.Param("business_id")
@@ -132,6 +151,62 @@ func (ic *InvestmentController) GetUserInvestmentsForBusiness(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, investments)
+}
+
+// UpdateInvestmentStatus updates the status of an investment
+func (ic *InvestmentController) UpdateInvestmentStatus(c *gin.Context) {
+	// Get investor ID from authenticated user
+	investorID, err := utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized: " + err.Error()})
+		return
+	}
+
+	investmentIDStr := c.Param("id")
+	investmentID, err := strconv.ParseUint(investmentIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid investment ID"})
+		return
+	}
+
+	var statusUpdate struct {
+		Status string `json:"investment_status" binding:"required"`
+	}
+	if err := c.ShouldBindJSON(&statusUpdate); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Validate that the investment belongs to the user
+	investment, err := ic.investmentService.GetInvestmentByID(uint(investmentID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Investment not found"})
+		return
+	}
+
+	if investment.InvestorID != investorID {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Access denied: Investment does not belong to user"})
+		return
+	}
+
+	switch statusUpdate.Status {
+	case models.InvestmentStatusActive:
+		now := time.Now()
+		investment.TimeBought = &now
+	case models.InvestmentStatusExited:
+		now := time.Now()
+		investment.TimeSold = &now
+	}
+
+	// Update the status
+	investment.InvestmentStatus = statusUpdate.Status
+	err = ic.investmentService.UpdateInvestment(investment)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update investment status"})
+		return
+	}
+
+	c.JSON(http.StatusOK, investment)
 }
 
 // UpdateInvestment updates an existing investment

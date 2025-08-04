@@ -9,10 +9,12 @@ import {
   Target,
   FileText,
   BarChart3,
+  Briefcase,
 } from "lucide-react";
+import { useNavigate } from "react-router";
 import { useInvestment } from "../../hooks/useInvestment";
 import type { Business } from "../../services/businessService";
-import { InvestmentService } from "../../services/investmentService";
+import { InvestmentService, INVESTMENT_STATUS, type Investment } from "../../services/investmentService";
 
 const API_BASE_URL = "http://localhost:8080";
 
@@ -149,6 +151,7 @@ const BusinessDetailsModal: React.FC<{
   const [investmentError, setInvestmentError] = useState<string | null>(null);
   const [existingInvestments, setExistingInvestments] = useState<number>(0);
   const [isLoadingInvestments, setIsLoadingInvestments] = useState(false);
+  const [investmentsList, setInvestmentsList] = useState<Investment[]>([]);
 
   // Fetch existing investments when modal opens
   useEffect(() => {
@@ -159,9 +162,11 @@ const BusinessDetailsModal: React.FC<{
           const investments = await InvestmentService.getUserInvestmentsForBusiness(business.ID);
           const totalExisting = investments.reduce((sum, inv) => sum + inv.investment_amount, 0);
           setExistingInvestments(totalExisting);
+          setInvestmentsList(investments);
         } catch (error) {
           console.error("Failed to fetch existing investments:", error);
           setExistingInvestments(0);
+          setInvestmentsList([]);
         } finally {
           setIsLoadingInvestments(false);
         }
@@ -181,6 +186,29 @@ const BusinessDetailsModal: React.FC<{
       return `IDR ${(amount / 1000000).toFixed(0)}M`;
     }
     return `IDR ${amount.toLocaleString()}`;
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case INVESTMENT_STATUS.BUYING:
+        return "bg-blue-100 text-blue-800";
+      case INVESTMENT_STATUS.PENDING:
+        return "bg-yellow-100 text-yellow-800";
+      case INVESTMENT_STATUS.APPROVED:
+        return "bg-green-100 text-green-800";
+      case INVESTMENT_STATUS.FUNDED:
+        return "bg-emerald-100 text-emerald-800";
+      case INVESTMENT_STATUS.ACTIVE:
+        return "bg-purple-100 text-purple-800";
+      case INVESTMENT_STATUS.EXITED:
+        return "bg-orange-100 text-orange-800";
+      case INVESTMENT_STATUS.REJECTED:
+        return "bg-red-100 text-red-800";
+      case INVESTMENT_STATUS.CANCELLED:
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
   };
 
   // Revenue thresholds and EBITDA multipliers (matching backend constants)
@@ -258,8 +286,9 @@ const BusinessDetailsModal: React.FC<{
     try {
       await InvestmentService.createInvestment({
         business_id: business.ID,
-        investment_amount: investmentAmount, // Send as number since backend expects float64
-        // Note: investor_id should be set by backend from authenticated user
+        investment_amount: investmentAmount,
+        investment_status: INVESTMENT_STATUS.BUYING,
+        time_bought: new Date().toISOString(),
       });
 
       setInvestmentSuccess(true);
@@ -270,6 +299,7 @@ const BusinessDetailsModal: React.FC<{
         const investments = await InvestmentService.getUserInvestmentsForBusiness(business.ID);
         const totalExisting = investments.reduce((sum, inv) => sum + inv.investment_amount, 0);
         setExistingInvestments(totalExisting);
+        setInvestmentsList(investments);
       } catch (error) {
         console.error("Failed to refresh existing investments:", error);
       }
@@ -405,6 +435,35 @@ const BusinessDetailsModal: React.FC<{
                 {business.products.map((product) => (
                   <div key={product.ID} className="bg-gray-50 p-4 rounded-lg">
                     <p className="font-medium">{product.name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Existing Investments */}
+          {investmentsList.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold mb-4">Your Existing Investments</h3>
+              <div className="space-y-3">
+                {investmentsList.map((investment) => (
+                  <div key={investment.ID} className="bg-gray-50 p-4 rounded-lg">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-medium text-gray-900">Investment #{investment.ID}</p>
+                        <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
+                          <span>Amount: {formatCurrency(investment.investment_amount)}</span>
+                          <span>Date: {new Date(investment.CreatedAt).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                          investment.investment_status
+                        )}`}
+                      >
+                        {investment.investment_status.charAt(0).toUpperCase() + investment.investment_status.slice(1)}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -700,6 +759,7 @@ const BusinessDetailsModal: React.FC<{
 };
 
 const InvestmentPage: React.FC = () => {
+  const navigate = useNavigate();
   const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } =
     useInvestment();
 
@@ -740,9 +800,18 @@ const InvestmentPage: React.FC = () => {
     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Private <span className="text-blue-600">Investment</span> Opportunities
-        </h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-bold text-gray-900">
+            Private <span className="text-blue-600">Investment</span> Opportunities
+          </h1>
+          <button
+            onClick={() => navigate("/investments/portfolio")}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center"
+          >
+            <Briefcase className="w-5 h-5 mr-2" />
+            My Portfolio
+          </button>
+        </div>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
           Invest in promising Indonesian businesses with complete financial and legal documentation. Support growth
           while earning attractive returns.

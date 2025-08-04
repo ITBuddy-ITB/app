@@ -15,6 +15,7 @@ import ProductsPage from "../pages/business/ProductsPage";
 import LegalPage from "../pages/business/LegalPage";
 import FinancialPage from "../pages/business/FinancialPage";
 import ProjectionsPage from "../pages/business/ProjectionsPage";
+import PortofolioPage from "../pages/investment/PortfolioPage";
 
 const router = createBrowserRouter([
   {
@@ -118,6 +119,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <InvestmentPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "investments/portfolio",
+        element: (
+          <ProtectedRoute>
+            <PortofolioPage />
           </ProtectedRoute>
         ),
       },

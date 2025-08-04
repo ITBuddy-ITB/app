@@ -32,8 +32,10 @@ func SetupInvestmentRoutes(router *gin.Engine) {
 			// Core investment operations
 			protectedGroup.POST("", investmentController.CreateInvestment)
 			protectedGroup.GET("", investmentController.GetAllInvestments)
+			protectedGroup.GET("/user", investmentController.GetCurrentUserInvestments) // Get current user's investments
 			protectedGroup.GET("/:id", investmentController.GetInvestment)
 			protectedGroup.PUT("/:id", investmentController.UpdateInvestment)
+			protectedGroup.PATCH("/:id/status", investmentController.UpdateInvestmentStatus)
 			protectedGroup.DELETE("/:id", investmentController.DeleteInvestment)
 
 			// Investment filtering routes
