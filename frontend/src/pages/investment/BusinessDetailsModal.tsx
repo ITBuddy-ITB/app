@@ -257,8 +257,8 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
 
   return (
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center">
+      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-center z-10">
           <h2 className="text-2xl font-bold text-gray-900">{business.name}</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl">
             ×
@@ -353,27 +353,29 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
           {businessValueHistory.length > 0 && (
             <div className="mb-8">
               <h3 className="text-lg font-semibold mb-4">Business Value Over Time</h3>
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg">
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={businessValueHistory}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis tickFormatter={(value) => formatCurrency(value)} />
-                    <Tooltip
-                      formatter={(value: number) => formatCurrency(value)}
-                      labelFormatter={(label) => `Month: ${label}`}
-                    />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="value"
-                      name="Business Value"
-                      stroke="#3182CE"
-                      strokeWidth={2}
-                      dot={{ r: 3 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg relative z-0">
+                <div className="w-full overflow-hidden">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={businessValueHistory}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis tickFormatter={(value) => formatCurrency(value)} />
+                      <Tooltip
+                        formatter={(value: number) => formatCurrency(value)}
+                        labelFormatter={(label) => `Month: ${label}`}
+                      />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        name="Business Value"
+                        stroke="#3182CE"
+                        strokeWidth={2}
+                        dot={{ r: 3 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
           )}
