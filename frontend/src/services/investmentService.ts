@@ -157,7 +157,7 @@ export class InvestmentService {
   // Update investment status
   static async updateInvestmentStatus(investmentId: number, status: string): Promise<Investment> {
     try {
-      const response = await api.patch<Investment>(`/investment/${investmentId}/status`, {
+      const response = await api.put<Investment>(`/investment/${investmentId}/status`, {
         investment_status: status,
       });
       return response.data;

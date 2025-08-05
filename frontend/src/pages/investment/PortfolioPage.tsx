@@ -20,6 +20,7 @@ const PortofolioPage: React.FC = () => {
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updatingStatus, setUpdatingStatus] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
     const fetchInvestments = async () => {
@@ -88,6 +89,36 @@ const PortofolioPage: React.FC = () => {
     }
   };
 
+  // Handle selling investment (update status to "exited")
+  const handleSellInvestment = async (investmentId: number) => {
+    setUpdatingStatus((prev) => ({ ...prev, [investmentId]: true }));
+    try {
+      await InvestmentService.updateInvestmentStatus(investmentId, INVESTMENT_STATUS.EXITED);
+
+      // Update local state to reflect the change
+      setInvestments((prev) =>
+        prev.map((inv) =>
+          inv.ID === investmentId
+            ? { ...inv, investment_status: INVESTMENT_STATUS.EXITED, time_sold: new Date().toISOString() }
+            : inv
+        )
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to sell investment");
+    } finally {
+      setUpdatingStatus((prev) => ({ ...prev, [investmentId]: false }));
+    }
+  };
+
+  // Check if investment can be sold (not already exited, rejected, or cancelled)
+  const canSellInvestment = (status: string) => {
+    return (
+      status !== INVESTMENT_STATUS.EXITED &&
+      status !== INVESTMENT_STATUS.REJECTED &&
+      status !== INVESTMENT_STATUS.CANCELLED
+    );
+  };
+
   // Calculate portfolio statistics
   const totalInvested = investments.reduce((sum, inv) => sum + inv.investment_amount, 0);
   const activeInvestments = investments.filter(
@@ -96,9 +127,13 @@ const PortofolioPage: React.FC = () => {
       inv.investment_status === INVESTMENT_STATUS.FUNDED ||
       inv.investment_status === INVESTMENT_STATUS.APPROVED
   );
+  const exitedInvestments = investments.filter((inv) => inv.investment_status === INVESTMENT_STATUS.EXITED);
   const pendingInvestments = investments.filter(
     (inv) => inv.investment_status === INVESTMENT_STATUS.BUYING || inv.investment_status === INVESTMENT_STATUS.PENDING
   );
+
+  const activeInvestedAmount = activeInvestments.reduce((sum, inv) => sum + inv.investment_amount, 0);
+  const exitedInvestedAmount = exitedInvestments.reduce((sum, inv) => sum + inv.investment_amount, 0);
 
   if (loading) {
     return (
@@ -144,7 +179,7 @@ const PortofolioPage: React.FC = () => {
       </div>
 
       {/* Portfolio Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-12">
         <div className="bg-white rounded-xl shadow-lg border border-blue-100 p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -168,11 +203,27 @@ const PortofolioPage: React.FC = () => {
               <p className="text-2xl font-bold text-gray-900">{activeInvestments.length}</p>
               <p className="text-xs text-green-600 flex items-center mt-1">
                 <CheckCircle className="w-3 h-3 mr-1" />
-                Currently active
+                {formatCurrency(activeInvestedAmount)}
               </p>
             </div>
             <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
               <Building2 className="h-6 w-6 text-green-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-lg border border-orange-100 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Exited Investments</p>
+              <p className="text-2xl font-bold text-gray-900">{exitedInvestments.length}</p>
+              <p className="text-xs text-orange-600 flex items-center mt-1">
+                <TrendingUp className="w-3 h-3 mr-1" />
+                {formatCurrency(exitedInvestedAmount)}
+              </p>
+            </div>
+            <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
+              <TrendingUp className="h-6 w-6 text-orange-600" />
             </div>
           </div>
         </div>
@@ -211,97 +262,351 @@ const PortofolioPage: React.FC = () => {
       </div>
 
       {/* Investments List */}
-      <div className="bg-white rounded-lg shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">All Investments</h2>
+      <div className="space-y-6">
+        {/* Active Investments Section */}
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="px-6 py-4 border-b border-gray-200 bg-green-50">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+                Active Investments ({activeInvestments.length})
+              </h2>
+              <span className="text-sm font-medium text-green-600">Total: {formatCurrency(activeInvestedAmount)}</span>
+            </div>
+          </div>
+
+          {activeInvestments.length === 0 ? (
+            <div className="text-center py-8">
+              <CheckCircle className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+              <p className="text-gray-500">No active investments</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-200">
+              {activeInvestments.map((investment) => (
+                <div key={investment.ID} className="p-6 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <Building2 className="h-6 w-6 text-green-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {investment.business?.name || `Business #${investment.business_id}`}
+                        </h3>
+                        <p className="text-sm text-gray-500">Investment #{investment.ID}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center space-x-6">
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500">Amount</p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {formatCurrency(investment.investment_amount)}
+                        </p>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500">Date</p>
+                        <p className="text-sm font-medium text-gray-900 flex items-center">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          {new Date(investment.CreatedAt).toLocaleDateString()}
+                        </p>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500 mb-1">Status</p>
+                        <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                            investment.investment_status
+                          )}`}
+                        >
+                          {getStatusIcon(investment.investment_status)}
+                          <span className="ml-1">
+                            {investment.investment_status.charAt(0).toUpperCase() +
+                              investment.investment_status.slice(1)}
+                          </span>
+                        </span>
+                      </div>
+
+                      {/* Sell Button */}
+                      <div className="text-right">
+                        <button
+                          onClick={() => handleSellInvestment(investment.ID)}
+                          disabled={updatingStatus[investment.ID]}
+                          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                        >
+                          {updatingStatus[investment.ID] ? (
+                            <>
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                              Selling...
+                            </>
+                          ) : (
+                            <>
+                              <TrendingUp className="w-4 h-4 mr-1" />
+                              Sell
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Additional investment details */}
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    {investment.time_bought && (
+                      <div>
+                        <p className="text-gray-500">Bought On</p>
+                        <p className="font-medium text-gray-900">
+                          {new Date(investment.time_bought).toLocaleDateString()}
+                        </p>
+                      </div>
+                    )}
+                    {investment.business?.industry && (
+                      <div>
+                        <p className="text-gray-500">Industry</p>
+                        <p className="font-medium text-gray-900">{investment.business.industry}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {investments.length === 0 ? (
-          <div className="text-center py-12">
-            <Building2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg mb-4">No investments yet</p>
-            <p className="text-gray-400 mb-6">Start investing in promising businesses to build your portfolio</p>
-            <button
-              onClick={() => navigate("/investments")}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-            >
-              Explore Investment Opportunities
-            </button>
+        {/* Exited Investments Section */}
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="px-6 py-4 border-b border-gray-200 bg-orange-50">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                <TrendingUp className="w-5 h-5 text-orange-600 mr-2" />
+                Exited Investments ({exitedInvestments.length})
+              </h2>
+              <span className="text-sm font-medium text-orange-600">Total: {formatCurrency(exitedInvestedAmount)}</span>
+            </div>
           </div>
-        ) : (
-          <div className="divide-y divide-gray-200">
-            {investments.map((investment) => (
-              <div key={investment.ID} className="p-6 hover:bg-gray-50 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <Building2 className="h-6 w-6 text-blue-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {investment.business?.name || `Business #${investment.business_id}`}
-                      </h3>
-                      <p className="text-sm text-gray-500">Investment #{investment.ID}</p>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center space-x-6">
-                    <div className="text-right">
-                      <p className="text-sm text-gray-500">Amount</p>
-                      <p className="text-lg font-semibold text-gray-900">
-                        {formatCurrency(investment.investment_amount)}
-                      </p>
+          {exitedInvestments.length === 0 ? (
+            <div className="text-center py-8">
+              <TrendingUp className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+              <p className="text-gray-500">No exited investments</p>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-200">
+              {exitedInvestments.map((investment) => (
+                <div key={investment.ID} className="p-6 hover:bg-gray-50 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <Building2 className="h-6 w-6 text-orange-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {investment.business?.name || `Business #${investment.business_id}`}
+                        </h3>
+                        <p className="text-sm text-gray-500">Investment #{investment.ID}</p>
+                      </div>
                     </div>
 
-                    <div className="text-right">
-                      <p className="text-sm text-gray-500">Date</p>
-                      <p className="text-sm font-medium text-gray-900 flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {new Date(investment.CreatedAt).toLocaleDateString()}
-                      </p>
-                    </div>
+                    <div className="flex items-center space-x-6">
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500">Amount</p>
+                        <p className="text-lg font-semibold text-gray-900">
+                          {formatCurrency(investment.investment_amount)}
+                        </p>
+                      </div>
 
-                    <div className="text-right">
-                      <p className="text-sm text-gray-500 mb-1">Status</p>
-                      <span
-                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                          investment.investment_status
-                        )}`}
-                      >
-                        {getStatusIcon(investment.investment_status)}
-                        <span className="ml-1">
-                          {investment.investment_status.charAt(0).toUpperCase() + investment.investment_status.slice(1)}
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500">Invested</p>
+                        <p className="text-sm font-medium text-gray-900 flex items-center">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          {new Date(investment.CreatedAt).toLocaleDateString()}
+                        </p>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-sm text-gray-500 mb-1">Status</p>
+                        <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                            investment.investment_status
+                          )}`}
+                        >
+                          {getStatusIcon(investment.investment_status)}
+                          <span className="ml-1">Exited</span>
                         </span>
-                      </span>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="text-sm text-gray-400 px-4 py-2">Sold</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Additional investment details */}
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  {investment.time_bought && (
-                    <div>
-                      <p className="text-gray-500">Bought On</p>
-                      <p className="font-medium text-gray-900">
-                        {new Date(investment.time_bought).toLocaleDateString()}
-                      </p>
-                    </div>
-                  )}
-                  {investment.time_sold && (
-                    <div>
-                      <p className="text-gray-500">Sold On</p>
-                      <p className="font-medium text-gray-900">{new Date(investment.time_sold).toLocaleDateString()}</p>
-                    </div>
-                  )}
-                  {investment.business?.industry && (
-                    <div>
-                      <p className="text-gray-500">Industry</p>
-                      <p className="font-medium text-gray-900">{investment.business.industry}</p>
-                    </div>
-                  )}
+                  {/* Additional investment details */}
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    {investment.time_bought && (
+                      <div>
+                        <p className="text-gray-500">Bought On</p>
+                        <p className="font-medium text-gray-900">
+                          {new Date(investment.time_bought).toLocaleDateString()}
+                        </p>
+                      </div>
+                    )}
+                    {investment.time_sold && (
+                      <div>
+                        <p className="text-gray-500">Sold On</p>
+                        <p className="font-medium text-gray-900">
+                          {new Date(investment.time_sold).toLocaleDateString()}
+                        </p>
+                      </div>
+                    )}
+                    {investment.business?.industry && (
+                      <div>
+                        <p className="text-gray-500">Industry</p>
+                        <p className="font-medium text-gray-900">{investment.business.industry}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Other Investments Section (Pending, Rejected, Cancelled) */}
+        {investments.filter(
+          (inv) =>
+            inv.investment_status !== INVESTMENT_STATUS.ACTIVE &&
+            inv.investment_status !== INVESTMENT_STATUS.FUNDED &&
+            inv.investment_status !== INVESTMENT_STATUS.APPROVED &&
+            inv.investment_status !== INVESTMENT_STATUS.EXITED
+        ).length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm">
+            <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                <AlertCircle className="w-5 h-5 text-gray-600 mr-2" />
+                Other Investments
+              </h2>
+            </div>
+
+            <div className="divide-y divide-gray-200">
+              {investments
+                .filter(
+                  (inv) =>
+                    inv.investment_status !== INVESTMENT_STATUS.ACTIVE &&
+                    inv.investment_status !== INVESTMENT_STATUS.FUNDED &&
+                    inv.investment_status !== INVESTMENT_STATUS.APPROVED &&
+                    inv.investment_status !== INVESTMENT_STATUS.EXITED
+                )
+                .map((investment) => (
+                  <div key={investment.ID} className="p-6 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="h-12 w-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                          <Building2 className="h-6 w-6 text-gray-600" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {investment.business?.name || `Business #${investment.business_id}`}
+                          </h3>
+                          <p className="text-sm text-gray-500">Investment #{investment.ID}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-6">
+                        <div className="text-right">
+                          <p className="text-sm text-gray-500">Amount</p>
+                          <p className="text-lg font-semibold text-gray-900">
+                            {formatCurrency(investment.investment_amount)}
+                          </p>
+                        </div>
+
+                        <div className="text-right">
+                          <p className="text-sm text-gray-500">Date</p>
+                          <p className="text-sm font-medium text-gray-900 flex items-center">
+                            <Calendar className="w-4 h-4 mr-1" />
+                            {new Date(investment.CreatedAt).toLocaleDateString()}
+                          </p>
+                        </div>
+
+                        <div className="text-right">
+                          <p className="text-sm text-gray-500 mb-1">Status</p>
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                              investment.investment_status
+                            )}`}
+                          >
+                            {getStatusIcon(investment.investment_status)}
+                            <span className="ml-1">
+                              {investment.investment_status.charAt(0).toUpperCase() +
+                                investment.investment_status.slice(1)}
+                            </span>
+                          </span>
+                        </div>
+
+                        <div className="text-right">
+                          {canSellInvestment(investment.investment_status) ? (
+                            <button
+                              onClick={() => handleSellInvestment(investment.ID)}
+                              disabled={updatingStatus[investment.ID]}
+                              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                            >
+                              {updatingStatus[investment.ID] ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                  Selling...
+                                </>
+                              ) : (
+                                <>
+                                  <TrendingUp className="w-4 h-4 mr-1" />
+                                  Sell
+                                </>
+                              )}
+                            </button>
+                          ) : (
+                            <span className="text-sm text-gray-400 px-4 py-2">Cannot sell</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Additional investment details */}
+                    <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      {investment.time_bought && (
+                        <div>
+                          <p className="text-gray-500">Bought On</p>
+                          <p className="font-medium text-gray-900">
+                            {new Date(investment.time_bought).toLocaleDateString()}
+                          </p>
+                        </div>
+                      )}
+                      {investment.business?.industry && (
+                        <div>
+                          <p className="text-gray-500">Industry</p>
+                          <p className="font-medium text-gray-900">{investment.business.industry}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* Empty State - No investments at all */}
+        {investments.length === 0 && (
+          <div className="bg-white rounded-lg shadow-sm">
+            <div className="text-center py-12">
+              <Building2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-500 text-lg mb-4">No investments yet</p>
+              <p className="text-gray-400 mb-6">Start investing in promising businesses to build your portfolio</p>
+              <button
+                onClick={() => navigate("/investments")}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Explore Investment Opportunities
+              </button>
+            </div>
           </div>
         )}
       </div>

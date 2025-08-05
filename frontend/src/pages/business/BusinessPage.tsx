@@ -15,7 +15,7 @@ const BusinessPage: React.FC = () => {
         setError(null);
 
         const allBusinesses = await BusinessService.getUserBusinesses();
-        setBusinesses(allBusinesses);
+        if (allBusinesses) setBusinesses(allBusinesses);
       } catch (err: unknown) {
         console.error("Failed to load businesses:", err);
         const errorMessage = err instanceof Error ? err.message : "Failed to load businesses";

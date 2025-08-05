@@ -22,7 +22,7 @@ const (
 
 type Financial struct {
 	gorm.Model
-	BusinessID uint `gorm:"unique" json:"business_id"`
+	BusinessID uint `json:"business_id"`
 
 	Revenue     float64 `json:"revenue,omitempty"`
 	EBITDA      float64 `json:"ebitda,omitempty"`

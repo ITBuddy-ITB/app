@@ -25,12 +25,22 @@ func (s *BusinessService) GetBusinessesByUserID(userID uint) ([]models.Business,
 	var businesses []models.Business
 	if err := s.DB.
 		Preload("Products").
-		Preload("Financial").
+		Preload("Financials", func(db *gorm.DB) *gorm.DB {
+			return db.Order("created_at DESC") // Load financials ordered by most recent first
+		}).
 		Preload("Legals").
 		Where("user_id = ?", userID).
 		Find(&businesses).Error; err != nil {
 		return nil, err
 	}
+
+	// Set the latest financial record as the primary financial for compatibility
+	for i := range businesses {
+		if len(businesses[i].Financials) > 0 {
+			businesses[i].Financial = &businesses[i].Financials[0] // Most recent is first due to DESC order
+		}
+	}
+
 	return businesses, nil
 }
 
@@ -68,10 +78,18 @@ func (s *BusinessService) GetBusinessByID(id uint) (*models.Business, error) {
 	var business models.Business
 	if err := s.DB.Preload("Legals").
 		Preload("Products").
-		Preload("Financial").
+		Preload("Financials", func(db *gorm.DB) *gorm.DB {
+			return db.Order("created_at DESC") // Load financials ordered by most recent first
+		}).
 		First(&business, id).Error; err != nil {
 		return nil, err
 	}
+
+	// Set the latest financial record as the primary financial for compatibility
+	if len(business.Financials) > 0 {
+		business.Financial = &business.Financials[0] // Most recent is first due to DESC order
+	}
+
 	return &business, nil
 }
 
@@ -266,6 +284,17 @@ func (s *BusinessService) GetFinancialData(businessID uint) (*models.Financial, 
 	return &financial, nil
 }
 
+// Get financial history for a business
+func (s *BusinessService) GetFinancialHistory(businessID uint) ([]models.Financial, error) {
+	var financials []models.Financial
+	if err := s.DB.Where("business_id = ?", businessID).
+		Order("created_at DESC").
+		Find(&financials).Error; err != nil {
+		return nil, err
+	}
+	return financials, nil
+}
+
 // Update financial data for a business
 func (s *BusinessService) UpdateFinancialData(businessID uint, ebitda, assets, liabilities, equity *float64, notes *string) (*models.Financial, error) {
 	var financial models.Financial
@@ -315,7 +344,9 @@ func (s *BusinessService) GetAllBusinessesWithPagination(page, limit int, indust
 
 	query := s.DB.Model(&models.Business{}).
 		Preload("Products").
-		Preload("Financial").
+		Preload("Financials", func(db *gorm.DB) *gorm.DB {
+			return db.Order("created_at DESC") // Load financials ordered by most recent first
+		}).
 		Preload("Legals")
 
 	// Apply filters
@@ -335,6 +366,13 @@ func (s *BusinessService) GetAllBusinessesWithPagination(page, limit int, indust
 	offset := (page - 1) * limit
 	if err := query.Offset(offset).Limit(limit).Find(&businesses).Error; err != nil {
 		return nil, 0, err
+	}
+
+	// Set the latest financial record as the primary financial for compatibility
+	for i := range businesses {
+		if len(businesses[i].Financials) > 0 {
+			businesses[i].Financial = &businesses[i].Financials[0] // Most recent is first due to DESC order
+		}
 	}
 
 	return businesses, total, nil

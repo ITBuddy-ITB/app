@@ -18,9 +18,10 @@ type Business struct {
 	FoundedAt   *time.Time `json:"founded_at,omitempty"`
 
 	// Relations
-	Legals    []Legal    `gorm:"foreignKey:BusinessID" json:"legals,omitempty"`
-	Products  []Product  `gorm:"foreignKey:BusinessID" json:"products,omitempty"`
-	Financial *Financial `gorm:"foreignKey:BusinessID" json:"financial,omitempty"`
+	Legals     []Legal     `gorm:"foreignKey:BusinessID" json:"legals,omitempty"`
+	Products   []Product   `gorm:"foreignKey:BusinessID" json:"products,omitempty"`
+	Financials []Financial `gorm:"foreignKey:BusinessID" json:"financials,omitempty"`
+	Financial  *Financial  `gorm:"foreignKey:BusinessID" json:"financial,omitempty"` // Latest financial record for compatibility
 }
 
 // GetMarketCap returns the calculated market cap based on financial data

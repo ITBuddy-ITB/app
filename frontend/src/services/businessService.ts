@@ -17,7 +17,8 @@ export interface Business {
   founded_at?: string;
   legals?: Legal[];
   products?: Product[];
-  financial?: Financial;
+  financials?: Financial[]; // All financial records
+  financial?: Financial; // Latest financial record for compatibility
 }
 
 export interface Product {
@@ -169,7 +170,10 @@ export class BusinessService {
   }
 
   // Update business basic info
-  static async updateBusiness(businessId: number, data: Partial<Business>): Promise<{ message: string; business: Business }> {
+  static async updateBusiness(
+    businessId: number,
+    data: Partial<Business>
+  ): Promise<{ message: string; business: Business }> {
     try {
       const response = await api.put<{ message: string; business: Business }>(`/business/${businessId}`, data);
       return response.data;
@@ -223,7 +227,11 @@ export class BusinessService {
     }
   }
 
-  static async updateBusinessProduct(businessId: number, productId: number, data: Partial<Product>): Promise<{ message: string }> {
+  static async updateBusinessProduct(
+    businessId: number,
+    productId: number,
+    data: Partial<Product>
+  ): Promise<{ message: string }> {
     try {
       const response = await api.put<{ message: string }>(`/business/${businessId}/products/${productId}`, data);
       return response.data;
@@ -286,7 +294,8 @@ export class BusinessService {
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        const errorMessage = (error.response?.data as ErrorResponse)?.error || "Failed to fetch product legal documents";
+        const errorMessage =
+          (error.response?.data as ErrorResponse)?.error || "Failed to fetch product legal documents";
         throw new Error(errorMessage);
       }
       throw new Error("Failed to fetch product legal documents");
@@ -334,6 +343,20 @@ export class BusinessService {
         throw new Error(errorMessage);
       }
       throw new Error("Failed to update financial data");
+    }
+  }
+
+  // Get business financial history
+  static async getBusinessFinancialHistory(businessId: number): Promise<Financial[]> {
+    try {
+      const response = await api.get<Financial[]>(`/business/${businessId}/financial/history`);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const errorMessage = (error.response?.data as ErrorResponse)?.error || "Failed to fetch financial history";
+        throw new Error(errorMessage);
+      }
+      throw new Error("Failed to fetch financial history");
     }
   }
 }

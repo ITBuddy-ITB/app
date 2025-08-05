@@ -488,6 +488,37 @@ func (bc *BusinessController) GetBusinessFinancial(c *gin.Context) {
 	c.JSON(http.StatusOK, financial)
 }
 
+// GET /business/:id/financial/history -> get financial history for business
+func (bc *BusinessController) GetBusinessFinancialHistory(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.Atoi(businessIDStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	_, err = utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	// Verify business exists
+	_, err = bc.businessService.GetBusinessByID(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	financials, err := bc.businessService.GetFinancialHistory(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch financial history"})
+		return
+	}
+
+	c.JSON(http.StatusOK, financials)
+}
+
 type UpdateFinancialRequest struct {
 	EBITDA      *float64 `json:"ebitda,omitempty"`
 	Assets      *float64 `json:"assets,omitempty"`
