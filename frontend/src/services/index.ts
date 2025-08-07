@@ -19,4 +19,4 @@ export type {
 } from "./businessService";
 
 export { InvestmentService } from "./investmentService";
-export type { Investment, PaginatedBusinessResponse, GetAllBusinessesParams } from "./investmentService";
+export type { PaginatedBusinessResponse, GetAllBusinessesParams } from "./investmentService";

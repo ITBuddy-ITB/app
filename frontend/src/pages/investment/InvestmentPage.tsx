@@ -1,23 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  TrendingUp,
-  DollarSign,
-  Building2,
-  Star,
-  ArrowUpRight,
-  Users,
-  Target,
-  FileText,
-  Briefcase,
-} from "lucide-react";
-import { useNavigate } from "react-router";
+import { TrendingUp, DollarSign, Building2, Star, ArrowUpRight, Users, Target, FileText } from "lucide-react";
 import { useInvestment } from "../../hooks/useInvestment";
 import type { Business } from "../../services/businessService";
 import BusinessDetailsModal from "./BusinessDetailsModal";
 import BusinessCard from "./BusinessCard";
 
 const InvestmentPage: React.FC = () => {
-  const navigate = useNavigate();
   const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } =
     useInvestment();
 
@@ -62,13 +50,6 @@ const InvestmentPage: React.FC = () => {
           <h1 className="text-4xl font-bold text-gray-900">
             Private <span className="text-blue-600">Investment</span> Opportunities
           </h1>
-          <button
-            onClick={() => navigate("/investments/portfolio")}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center"
-          >
-            <Briefcase className="w-5 h-5 mr-2" />
-            My Portfolio
-          </button>
         </div>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
           Invest in promising Indonesian businesses with complete financial and legal documentation. Support growth
