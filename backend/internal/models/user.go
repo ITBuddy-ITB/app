@@ -17,5 +17,4 @@ type User struct {
 
 	// Relation
 	Businesses []Business `gorm:"foreignKey:UserID" json:"businesses,omitempty"`
-	Investments []Investment `gorm:"foreignKey:InvestorID" json:"investments,omitempty"`
 }

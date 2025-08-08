@@ -10,7 +10,6 @@ import (
 func AutoMigrateAll(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&models.User{},
-		&models.Investment{},
 		&models.Business{},
 		&models.BusinessAdditionalInfo{},
 		&models.Product{},

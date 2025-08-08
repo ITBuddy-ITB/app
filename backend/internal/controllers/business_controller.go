@@ -12,6 +12,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// BusinessResponse represents the business data sent to frontend
+type BusinessResponse struct {
+	models.Business
+	MarketCap        float64 `json:"market_cap"`
+	EBITDAMultiplier float64 `json:"ebitda_multiplier"`
+}
+
+// convertToBusinessResponse converts a Business model to BusinessResponse
+func convertToBusinessResponse(business models.Business) BusinessResponse {
+	return BusinessResponse{
+		Business:         business,
+		MarketCap:        business.GetMarketCap(),
+		EBITDAMultiplier: business.GetEBITDAMultiplier(),
+	}
+}
+
 type BusinessController struct {
 	businessService *services.BusinessService
 }
@@ -34,17 +50,77 @@ func (bc *BusinessController) GetUserBusinesses(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, businesses)
+	// Convert to response format with calculated market cap
+	var businessResponses []BusinessResponse
+	for _, business := range businesses {
+		businessResponses = append(businessResponses, convertToBusinessResponse(business))
+	}
+
+	c.JSON(http.StatusOK, businessResponses)
+}
+
+// GET /investment/businesses -> get all businesses for investment with pagination
+func (bc *BusinessController) GetAllBusinessesForInvestment(c *gin.Context) {
+	// Parse query parameters
+	pageStr := c.DefaultQuery("page", "1")
+	limitStr := c.DefaultQuery("limit", "10")
+	industry := c.Query("industry")
+	search := c.Query("search")
+
+	page, err := strconv.Atoi(pageStr)
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	limit, err := strconv.Atoi(limitStr)
+	if err != nil || limit < 1 || limit > 100 {
+		limit = 10
+	}
+
+	businesses, total, err := bc.businessService.GetAllBusinessesWithPagination(page, limit, industry, search)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch businesses"})
+		return
+	}
+
+	totalPages := int((total + int64(limit) - 1) / int64(limit))
+
+	response := gin.H{
+		"businesses":  businesses,
+		"total":       total,
+		"page":        page,
+		"limit":       limit,
+		"totalPages":  totalPages,
+	}
+
+	c.JSON(http.StatusOK, response)
+}
+
+// GET /investment/businesses/:id -> get business details for investment
+func (bc *BusinessController) GetBusinessForInvestment(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	business, err := bc.businessService.GetBusinessByID(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, business)
 }
 
 // ===== Step 1: Create Business + Products + Additional Info =====
 type CreateBusinessRequestData struct {
-	Name        string   `json:"name" binding:"required"`
-	Type        string   `json:"type,omitempty"`
-	MarketCap   *float64 `json:"market_cap,omitempty"`
-	Description string   `json:"description,omitempty"`
-	Industry    string   `json:"industry,omitempty"`
-	FoundedAt   string   `json:"founded_at,omitempty"` // Accept as string first
+	Name        string `json:"name" binding:"required"`
+	Type        string `json:"type,omitempty"`
+	Description string `json:"description,omitempty"`
+	Industry    string `json:"industry,omitempty"`
+	FoundedAt   string `json:"founded_at,omitempty"` // Accept as string first
 }
 
 type CreateBusinessRequest struct {
@@ -66,7 +142,6 @@ func (bc *BusinessController) CreateBusiness(c *gin.Context) {
 		UserID:      req.UserID,
 		Name:        req.Business.Name,
 		Type:        req.Business.Type,
-		MarketCap:   req.Business.MarketCap,
 		Description: req.Business.Description,
 		Industry:    req.Business.Industry,
 	}
@@ -105,7 +180,9 @@ func (bc *BusinessController) GetBusiness(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, business)
+	// Convert to response format with calculated market cap
+	businessResponse := convertToBusinessResponse(*business)
+	c.JSON(http.StatusOK, businessResponse)
 }
 
 // ===== Update Business Basic Info =====
@@ -127,7 +204,6 @@ func (bc *BusinessController) UpdateBusiness(c *gin.Context) {
 	business := models.Business{
 		Name:        req.Name,
 		Type:        req.Type,
-		MarketCap:   req.MarketCap,
 		Description: req.Description,
 		Industry:    req.Industry,
 	}
@@ -423,6 +499,37 @@ func (bc *BusinessController) GetBusinessFinancial(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, financial)
+}
+
+// GET /business/:id/financial/history -> get financial history for business
+func (bc *BusinessController) GetBusinessFinancialHistory(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.Atoi(businessIDStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	_, err = utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	// Verify business exists
+	_, err = bc.businessService.GetBusinessByID(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	financials, err := bc.businessService.GetFinancialHistory(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch financial history"})
+		return
+	}
+
+	c.JSON(http.StatusOK, financials)
 }
 
 type UpdateFinancialRequest struct {

@@ -13,15 +13,31 @@ type Business struct {
 
 	Name        string     `gorm:"not null" json:"name"`
 	Type        string     `json:"type,omitempty"`
-	MarketCap   *float64   `json:"market_cap,omitempty"`
 	Description string     `json:"description,omitempty"`
 	Industry    string     `json:"industry,omitempty"`
 	FoundedAt   *time.Time `json:"founded_at,omitempty"`
 
 	// Relations
-	Legals    []Legal    `gorm:"foreignKey:BusinessID" json:"legals,omitempty"`
-	Products  []Product  `gorm:"foreignKey:BusinessID" json:"products,omitempty"`
-	Financial *Financial `gorm:"foreignKey:BusinessID" json:"financial,omitempty"`
+	Legals     []Legal     `gorm:"foreignKey:BusinessID" json:"legals,omitempty"`
+	Products   []Product   `gorm:"foreignKey:BusinessID" json:"products,omitempty"`
+	Financials []Financial `gorm:"foreignKey:BusinessID" json:"financials,omitempty"`
+	Financial  *Financial  `gorm:"foreignKey:BusinessID" json:"financial,omitempty"` // Latest financial record for compatibility
+}
+
+// GetMarketCap returns the calculated market cap based on financial data
+func (b *Business) GetMarketCap() float64 {
+	if b.Financial == nil {
+		return 0
+	}
+	return b.Financial.CalculateMarketCap()
+}
+
+// GetEBITDAMultiplier returns the EBITDA multiplier for this business
+func (b *Business) GetEBITDAMultiplier() float64 {
+	if b.Financial == nil {
+		return 0
+	}
+	return b.Financial.GetEBITDAMultiplier()
 }
 
 // BusinessCompleteness represents the completeness status of a business profile
