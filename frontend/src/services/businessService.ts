@@ -346,6 +346,20 @@ export class BusinessService {
     }
   }
 
+  // Create new business financial record
+  static async createBusinessFinancial(businessId: number, data: Partial<Financial>): Promise<Financial> {
+    try {
+      const response = await api.post<Financial>(`/business/${businessId}/financial`, data);
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        const errorMessage = (error.response?.data as ErrorResponse)?.error || "Failed to create financial data";
+        throw new Error(errorMessage);
+      }
+      throw new Error("Failed to create financial data");
+    }
+  }
+
   // Get business financial history
   static async getBusinessFinancialHistory(businessId: number): Promise<Financial[]> {
     try {

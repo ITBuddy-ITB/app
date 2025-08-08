@@ -527,6 +527,15 @@ type UpdateFinancialRequest struct {
 	Notes       *string  `json:"notes,omitempty"`
 }
 
+type CreateFinancialRequest struct {
+	Revenue     *float64 `json:"revenue,omitempty"`
+	EBITDA      *float64 `json:"ebitda,omitempty"`
+	Assets      *float64 `json:"assets,omitempty"`
+	Liabilities *float64 `json:"liabilities,omitempty"`
+	Equity      *float64 `json:"equity,omitempty"`
+	Notes       *string  `json:"notes,omitempty"`
+}
+
 // PUT /business/:id/financial -> update financial data for business
 func (bc *BusinessController) UpdateBusinessFinancial(c *gin.Context) {
 	businessIDStr := c.Param("id")
@@ -562,4 +571,41 @@ func (bc *BusinessController) UpdateBusinessFinancial(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, financial)
+}
+
+// POST /business/:id/financial -> create new financial data for business
+func (bc *BusinessController) CreateBusinessFinancial(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.Atoi(businessIDStr)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	_, err = utils.GetUserIDFromContext(c)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	// Verify business exists
+	_, err = bc.businessService.GetBusinessByID(uint(businessID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Business not found"})
+		return
+	}
+
+	var req CreateFinancialRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	financial, err := bc.businessService.CreateFinancialData(uint(businessID), req.Revenue, req.EBITDA, req.Assets, req.Liabilities, req.Equity, req.Notes)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create financial data"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, financial)
 }

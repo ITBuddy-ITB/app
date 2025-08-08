@@ -335,6 +335,38 @@ func (s *BusinessService) UpdateFinancialData(businessID uint, ebitda, assets, l
 	return &financial, nil
 }
 
+// Create new financial data for a business
+func (s *BusinessService) CreateFinancialData(businessID uint, revenue, ebitda, assets, liabilities, equity *float64, notes *string) (*models.Financial, error) {
+	financial := models.Financial{BusinessID: businessID}
+
+	// Set fields if provided
+	if revenue != nil {
+		financial.Revenue = *revenue
+	}
+	if ebitda != nil {
+		financial.EBITDA = *ebitda
+	}
+	if assets != nil {
+		financial.Assets = *assets
+	}
+	if liabilities != nil {
+		financial.Liabilities = *liabilities
+	}
+	if equity != nil {
+		financial.Equity = *equity
+	}
+	if notes != nil {
+		financial.Notes = *notes
+	}
+
+	// Create the new record
+	if err := s.DB.Create(&financial).Error; err != nil {
+		return nil, err
+	}
+
+	return &financial, nil
+}
+
 // ===== Investment-related methods =====
 
 // GetAllBusinessesWithPagination gets all businesses with pagination and filters for investment purposes

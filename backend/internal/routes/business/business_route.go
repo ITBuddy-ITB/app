@@ -39,6 +39,7 @@ func SetupBusinessRoutes(router *gin.Engine) {
 		// Financial data routes
 		businessGroup.GET("/:id/financial", businessController.GetBusinessFinancial)
 		businessGroup.GET("/:id/financial/history", businessController.GetBusinessFinancialHistory)
+		businessGroup.POST("/:id/financial", businessController.CreateBusinessFinancial)
 		businessGroup.PUT("/:id/financial", businessController.UpdateBusinessFinancial)
 	}
 }

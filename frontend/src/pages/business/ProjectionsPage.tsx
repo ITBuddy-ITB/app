@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
-import Navbar from "../../components/Navbar";
 import { BusinessService, type Business } from "../../services/businessService";
 
 interface ProjectionData {
@@ -105,7 +104,6 @@ const ProjectionsPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-        <Navbar />
         <div className="max-w-6xl mx-auto py-12 px-4">
           <div className="text-center">Loading projections...</div>
         </div>
@@ -116,7 +114,6 @@ const ProjectionsPage: React.FC = () => {
   if (error || !business) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-        <Navbar />
         <div className="max-w-6xl mx-auto py-12 px-4">
           <div className="text-center text-red-600">{error || "Business not found"}</div>
         </div>
@@ -126,8 +123,6 @@ const ProjectionsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <Navbar />
-
       <div className="max-w-6xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -135,7 +130,10 @@ const ProjectionsPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Investment Projections</h1>
             <p className="text-gray-600">5-year financial projections for {business.name}</p>
           </div>
-          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+          <Link
+            to={`/business/${businessId}/details`}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
+          >
             Back to Business
           </Link>
         </div>
@@ -164,7 +162,12 @@ const ProjectionsPage: React.FC = () => {
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Average Growth Rate</h3>
@@ -186,7 +189,9 @@ const ProjectionsPage: React.FC = () => {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Break-even Year</h3>
-              <p className="text-2xl font-bold text-purple-600">{projections.find((p) => p.netIncome > 0)?.year || "N/A"}</p>
+              <p className="text-2xl font-bold text-purple-600">
+                {projections.find((p) => p.netIncome > 0)?.year || "N/A"}
+              </p>
               <p className="text-sm text-gray-500">First profitable year</p>
             </div>
           </div>
@@ -203,12 +208,24 @@ const ProjectionsPage: React.FC = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue ($)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Expenses ($)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Net Income ($)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cash Flow ($)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Growth Rate</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Year
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Revenue ($)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Expenses ($)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Net Income ($)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Cash Flow ($)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Growth Rate
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -236,16 +253,26 @@ const ProjectionsPage: React.FC = () => {
                       />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className={`px-3 py-2 rounded-md text-sm font-medium ${projection.netIncome >= 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                      <div
+                        className={`px-3 py-2 rounded-md text-sm font-medium ${
+                          projection.netIncome >= 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                        }`}
+                      >
                         ${projection.netIncome.toLocaleString()}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className={`px-3 py-2 rounded-md text-sm font-medium ${projection.cashFlow >= 0 ? "bg-blue-100 text-blue-800" : "bg-red-100 text-red-800"}`}>
+                      <div
+                        className={`px-3 py-2 rounded-md text-sm font-medium ${
+                          projection.cashFlow >= 0 ? "bg-blue-100 text-blue-800" : "bg-red-100 text-red-800"
+                        }`}
+                      >
                         ${projection.cashFlow.toLocaleString()}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{index > 0 ? calculateGrowthRate(projection.revenue, projections[index - 1].revenue) : "—"}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {index > 0 ? calculateGrowthRate(projection.revenue, projections[index - 1].revenue) : "—"}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -258,15 +285,21 @@ const ProjectionsPage: React.FC = () => {
           <h2 className="text-xl font-semibold text-gray-900 mb-4">Investment Metrics</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-lg font-bold text-gray-900">${projections.reduce((sum, p) => sum + p.netIncome, 0).toLocaleString()}</div>
+              <div className="text-lg font-bold text-gray-900">
+                ${projections.reduce((sum, p) => sum + p.netIncome, 0).toLocaleString()}
+              </div>
               <div className="text-sm text-gray-600">Total Net Income (5Y)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-lg font-bold text-gray-900">${projections.reduce((sum, p) => sum + p.cashFlow, 0).toLocaleString()}</div>
+              <div className="text-lg font-bold text-gray-900">
+                ${projections.reduce((sum, p) => sum + p.cashFlow, 0).toLocaleString()}
+              </div>
               <div className="text-sm text-gray-600">Total Cash Flow (5Y)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-lg font-bold text-gray-900">{projections.filter((p) => p.netIncome > 0).length}/5</div>
+              <div className="text-lg font-bold text-gray-900">
+                {projections.filter((p) => p.netIncome > 0).length}/5
+              </div>
               <div className="text-sm text-gray-600">Profitable Years</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">

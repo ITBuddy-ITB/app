@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Navbar from "../../components/Navbar";
 import StepIndicator from "../../components/StepIndicator";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -95,8 +94,6 @@ const Step2Page: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <Navbar />
-
       <div className="max-w-4xl mx-auto py-10 px-4">
         <StepIndicator />
 
@@ -112,7 +109,8 @@ const Step2Page: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => removeBusinessLegal(index)}
-                  className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full">
+                  className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full"
+                >
                   <X size={16} />
                 </button>
 
@@ -189,7 +187,8 @@ const Step2Page: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => removeProductLegal(product.id, index)}
-                      className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full">
+                      className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full"
+                    >
                       <X size={16} />
                     </button>
 
@@ -252,7 +251,8 @@ const Step2Page: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => addProductLegal(product.id)}
-                  className="text-blue-600 hover:underline text-sm">
+                  className="text-blue-600 hover:underline text-sm"
+                >
                   + Add More Legal for {product.name}
                 </button>
               </div>
@@ -264,13 +264,15 @@ const Step2Page: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate("/business/suggestions")}
-              className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+              className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+            >
               View AI Suggestions
             </button>
 
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+            >
               Save & Continue to Step 3
             </button>
           </div>

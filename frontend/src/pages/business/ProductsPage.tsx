@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
-import Navbar from "../../components/Navbar";
 import { X } from "lucide-react";
 import { BusinessService, type Product } from "../../services/businessService";
 
@@ -91,13 +90,14 @@ const ProductsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <Navbar />
-
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Products Management</h1>
-          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+          <Link
+            to={`/business/${businessId}/details`}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
+          >
             Back to Business
           </Link>
         </div>
@@ -120,7 +120,8 @@ const ProductsPage: React.FC = () => {
           <button
             onClick={handleAddProducts}
             disabled={loading || !newProductsText.trim()}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50"
+          >
             {loading ? "Adding..." : "Add Products"}
           </button>
         </div>
@@ -135,14 +136,22 @@ const ProductsPage: React.FC = () => {
             <div className="space-y-4">
               {products.map((product, index) => (
                 <div key={product.ID || index} className="border border-gray-200 rounded-lg p-4 relative">
-                  <button onClick={() => product.ID && handleDeleteProduct(product.ID)} className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full">
+                  <button
+                    onClick={() => product.ID && handleDeleteProduct(product.ID)}
+                    className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full"
+                  >
                     <X size={16} />
                   </button>
 
                   <div className="grid grid-cols-1 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                      <input type="text" className="w-full border rounded-lg px-3 py-2" value={product.name} onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)} />
+                      <input
+                        type="text"
+                        className="w-full border rounded-lg px-3 py-2"
+                        value={product.name}
+                        onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)}
+                      />
                     </div>
                   </div>
                 </div>
