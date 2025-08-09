@@ -48,8 +48,8 @@ const ProjectionsPage: React.FC = () => {
           );
         }
       } catch (err: unknown) {
-        console.error("Failed to load projections or business:", err);
-        setError(err instanceof Error ? err.message : "Failed to load projections");
+        console.error("Gagal memuat proyeksi atau bisnis:", err);
+        setError(err instanceof Error ? err.message : "Gagal memuat proyeksi");
       } finally {
         setLoading(false);
       }
@@ -83,7 +83,7 @@ const ProjectionsPage: React.FC = () => {
   };
 
   const calculateGrowthRate = (current: number, previous: number): string => {
-    if (previous === 0) return "N/A";
+    if (previous === 0) return "T/A";
     const growth = ((current - previous) / previous) * 100;
     return `${growth >= 0 ? "+" : ""}${growth.toFixed(1)}%`;
   };
@@ -94,7 +94,7 @@ const ProjectionsPage: React.FC = () => {
 
   const getAverageGrowthRate = (): string => {
     const revenues = projections.map((p) => p.revenue).filter((r) => r > 0);
-    if (revenues.length < 2) return "N/A";
+    if (revenues.length < 2) return "T/A";
 
     let totalGrowth = 0;
     let validGrowths = 0;
@@ -106,7 +106,7 @@ const ProjectionsPage: React.FC = () => {
       }
     }
 
-    if (validGrowths === 0) return "N/A";
+    if (validGrowths === 0) return "T/A";
     return `${(totalGrowth / validGrowths).toFixed(1)}%`;
   };
 
@@ -122,7 +122,7 @@ const ProjectionsPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-6xl mx-auto py-12 px-4">
-          <div className="text-center">Loading projections...</div>
+          <div className="text-center">Memuat proyeksi...</div>
         </div>
       </div>
     );
@@ -132,7 +132,7 @@ const ProjectionsPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
         <div className="max-w-6xl mx-auto py-12 px-4">
-          <div className="text-center text-red-600">{error || "Business not found"}</div>
+          <div className="text-center text-red-600">{error || "Bisnis tidak ditemukan"}</div>
         </div>
       </div>
     );
@@ -144,8 +144,8 @@ const ProjectionsPage: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Investment Projections</h1>
-            <p className="text-gray-600">5-year financial projections for {business.name}</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Proyeksi Investasi</h1>
+            <p className="text-gray-600">Proyeksi keuangan 5 tahun untuk {business.name}</p>
           </div>
           <div className="flex space-x-4">
             <button onClick={() => fetchAll(true)} className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-2 rounded-lg">
@@ -154,7 +154,7 @@ const ProjectionsPage: React.FC = () => {
             <Link
               to={`/business/${businessId}/details`}
               className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
-              Back to Business
+              Kembali ke Bisnis
             </Link>
           </div>
         </div>
@@ -173,9 +173,9 @@ const ProjectionsPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Projected Revenue</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Pendapatan Diproyeksikan</h3>
               <p className="text-2xl font-bold text-green-600">Rp{getTotalProjectedRevenue().toLocaleString()}</p>
-              <p className="text-sm text-gray-500">5-year total</p>
+              <p className="text-sm text-gray-500">Total 5 tahun</p>
             </div>
           </div>
 
@@ -186,9 +186,9 @@ const ProjectionsPage: React.FC = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Average Growth Rate</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Rata-rata Tingkat Pertumbuhan</h3>
               <p className="text-2xl font-bold text-blue-600">{getAverageGrowthRate()}</p>
-              <p className="text-sm text-gray-500">Year over year</p>
+              <p className="text-sm text-gray-500">Tahun ke tahun</p>
             </div>
           </div>
 
@@ -204,9 +204,9 @@ const ProjectionsPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Break-even Year</h3>
-              <p className="text-2xl font-bold text-purple-600">{projections.find((p) => p.netIncome > 0)?.year || "N/A"}</p>
-              <p className="text-sm text-gray-500">First profitable year</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Tahun Break-Even</h3>
+              <p className="text-2xl font-bold text-purple-600">{projections.find((p) => p.netIncome > 0)?.year || "T/A"}</p>
+              <p className="text-sm text-gray-500">Tahun pertama profit</p>
             </div>
           </div>
         </div>
@@ -214,26 +214,30 @@ const ProjectionsPage: React.FC = () => {
         {/* Projections Table */}
         <div className="bg-white shadow rounded-lg overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">5-Year Financial Projections</h2>
-            <p className="text-sm text-gray-600 mt-1">Enter your projected financial data for the next 5 years</p>
+            <h2 className="text-xl font-semibold text-gray-900">Proyeksi Keuangan 5 Tahun</h2>
+            <p className="text-sm text-gray-600 mt-1">Masukkan data keuangan proyeksi Anda untuk 5 tahun ke depan</p>
           </div>
 
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Year</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue (Rp)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Expenses (Rp)
+                    Pendapatan (Rp)
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Net Income (Rp)
+                    Pengeluaran (Rp)
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Cash Flow (Rp)
+                    Pendapatan Bersih (Rp)
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Growth Rate</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Arus Kas (Rp)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tingkat Pertumbuhan
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -288,27 +292,27 @@ const ProjectionsPage: React.FC = () => {
 
         {/* Investment Metrics */}
         <div className="bg-white shadow rounded-lg p-6 mt-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Investment Metrics</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Metrik Investasi</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-lg font-bold text-gray-900">
                 Rp{projections.reduce((sum, p) => sum + p.netIncome, 0).toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600">Total Net Income (5Y)</div>
+              <div className="text-sm text-gray-600">Total Pendapatan Bersih (5 Tahun)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-lg font-bold text-gray-900">
                 Rp{projections.reduce((sum, p) => sum + p.cashFlow, 0).toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600">Total Cash Flow (5Y)</div>
+              <div className="text-sm text-gray-600">Total Arus Kas (5 Tahun)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-lg font-bold text-gray-900">{projections.filter((p) => p.netIncome > 0).length}/5</div>
-              <div className="text-sm text-gray-600">Profitable Years</div>
+              <div className="text-sm text-gray-600">Tahun Profit</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-lg font-bold text-gray-900">{getTotalGrowthRate()}</div>
-              <div className="text-sm text-gray-600">Total Growth (5Y)</div>
+              <div className="text-sm text-gray-600">Total Pertumbuhan (5 Tahun)</div>
             </div>
           </div>
         </div>
