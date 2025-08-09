@@ -122,12 +122,12 @@ const ProductsPage: React.FC = () => {
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Products Management</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Manajemen Produk</h1>
           <Link
             to={`/business/${businessId}/details`}
             className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
           >
-            Back to Business
+            Kembali ke Bisnis
           </Link>
         </div>
 
@@ -135,12 +135,12 @@ const ProductsPage: React.FC = () => {
 
         {/* Add Products Section */}
         <div className="bg-white shadow rounded-lg p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Add New Products</h3>
-          <p className="text-gray-600 mb-4">Enter product names, one per line:</p>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Tambah Produk Baru</h3>
+          <p className="text-gray-600 mb-4">Masukkan nama produk, satu per baris:</p>
 
           <div className="mb-4">
             <label htmlFor="productsFile" className="block text-sm font-medium text-gray-700 mb-2">
-              Upload Products File (PDF)
+              Unggah File Produk (PDF)
             </label>
             <input
               id="productsFile"
@@ -156,7 +156,7 @@ const ProductsPage: React.FC = () => {
           <textarea
             className="w-full border rounded-lg px-4 py-2 mb-4"
             rows={5}
-            placeholder="Product Name 1&#10;Product Name 2&#10;Product Name 3"
+            placeholder="Nama Produk 1&#10;Nama Produk 2&#10;Nama Produk 3"
             value={newProductsText}
             onChange={(e) => setNewProductsText(e.target.value)}
           />
@@ -166,16 +166,16 @@ const ProductsPage: React.FC = () => {
             disabled={loading || !newProductsText.trim()}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50"
           >
-            {loading ? "Adding..." : "Add Products"}
+            {loading ? "Menambahkan..." : "Tambah Produk"}
           </button>
         </div>
 
         {/* Existing Products */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Existing Products</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Produk yang Ada</h3>
 
           {products.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No products added yet.</p>
+            <p className="text-gray-500 text-center py-8">Belum ada produk yang ditambahkan.</p>
           ) : (
             <div className="space-y-4">
               {products.map((product, index) => (
@@ -189,7 +189,7 @@ const ProductsPage: React.FC = () => {
 
                   <div className="grid grid-cols-1 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
                       <input
                         type="text"
                         className="w-full border rounded-lg px-3 py-2"

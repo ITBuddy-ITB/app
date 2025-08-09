@@ -18,15 +18,15 @@ const Step1Page: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <div className="max-w-4xl mx-auto py-10 px-4">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Create New Business</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Buat Bisnis Baru</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Business Profile */}
           <div className="bg-white shadow rounded-lg p-6 space-y-4 border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800">Business Profile</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Profil Bisnis</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Business Name *</label>
+                <label className="block text-sm font-medium text-gray-700">Nama Bisnis *</label>
                 <input
                   type="text"
                   className="w-full border rounded-lg px-4 py-2"
@@ -36,7 +36,7 @@ const Step1Page: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Business Type</label>
+                <label className="block text-sm font-medium text-gray-700">Jenis Bisnis</label>
                 <input
                   type="text"
                   className="w-full border rounded-lg px-4 py-2"
@@ -45,7 +45,7 @@ const Step1Page: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Market Cap</label>
+                <label className="block text-sm font-medium text-gray-700">Kapitalisasi Pasar</label>
                 <input
                   type="number"
                   className="w-full border rounded-lg px-4 py-2"
@@ -54,7 +54,7 @@ const Step1Page: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Industry</label>
+                <label className="block text-sm font-medium text-gray-700">Industri</label>
                 <input
                   type="text"
                   className="w-full border rounded-lg px-4 py-2"
@@ -63,7 +63,7 @@ const Step1Page: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Founded At</label>
+                <label className="block text-sm font-medium text-gray-700">Tanggal Didirikan</label>
                 <input
                   type="date"
                   className="w-full border rounded-lg px-4 py-2"
@@ -73,7 +73,7 @@ const Step1Page: React.FC = () => {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Description</label>
+              <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
               <textarea
                 className="w-full border rounded-lg px-4 py-2"
                 rows={3}
@@ -91,7 +91,7 @@ const Step1Page: React.FC = () => {
               disabled={loading}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50"
             >
-              {loading ? "Creating..." : "Create Business"}
+              {loading ? "Membuat..." : "Buat Bisnis"}
             </button>
           </div>
         </form>

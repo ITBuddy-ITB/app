@@ -148,12 +148,16 @@ const ProjectionsPage: React.FC = () => {
             <p className="text-gray-600">Proyeksi keuangan 5 tahun untuk {business.name}</p>
           </div>
           <div className="flex space-x-4">
-            <button onClick={() => fetchAll(true)} className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-2 rounded-lg">
-              Refresh
+            <button
+              onClick={() => fetchAll(true)}
+              className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-2 rounded-lg"
+            >
+              Segarkan
             </button>
             <Link
               to={`/business/${businessId}/details`}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
+            >
               Kembali ke Bisnis
             </Link>
           </div>
@@ -183,7 +187,12 @@ const ProjectionsPage: React.FC = () => {
             <div className="text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  />
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Rata-rata Tingkat Pertumbuhan</h3>
@@ -205,7 +214,9 @@ const ProjectionsPage: React.FC = () => {
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Tahun Break-Even</h3>
-              <p className="text-2xl font-bold text-purple-600">{projections.find((p) => p.netIncome > 0)?.year || "T/A"}</p>
+              <p className="text-2xl font-bold text-purple-600">
+                {projections.find((p) => p.netIncome > 0)?.year || "T/A"}
+              </p>
               <p className="text-sm text-gray-500">Tahun pertama profit</p>
             </div>
           </div>
@@ -222,7 +233,9 @@ const ProjectionsPage: React.FC = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tahun
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Pendapatan (Rp)
                   </th>
@@ -268,7 +281,8 @@ const ProjectionsPage: React.FC = () => {
                       <div
                         className={`px-3 py-2 rounded-md text-sm font-medium ${
                           projection.netIncome >= 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                        }`}>
+                        }`}
+                      >
                         Rp{projection.netIncome.toLocaleString()}
                       </div>
                     </td>
@@ -276,7 +290,8 @@ const ProjectionsPage: React.FC = () => {
                       <div
                         className={`px-3 py-2 rounded-md text-sm font-medium ${
                           projection.cashFlow >= 0 ? "bg-blue-100 text-blue-800" : "bg-red-100 text-red-800"
-                        }`}>
+                        }`}
+                      >
                         Rp{projection.cashFlow.toLocaleString()}
                       </div>
                     </td>
@@ -307,7 +322,9 @@ const ProjectionsPage: React.FC = () => {
               <div className="text-sm text-gray-600">Total Arus Kas (5 Tahun)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-lg font-bold text-gray-900">{projections.filter((p) => p.netIncome > 0).length}/5</div>
+              <div className="text-lg font-bold text-gray-900">
+                {projections.filter((p) => p.netIncome > 0).length}/5
+              </div>
               <div className="text-sm text-gray-600">Tahun Profit</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">

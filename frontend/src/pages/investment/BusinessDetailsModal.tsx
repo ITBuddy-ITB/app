@@ -243,7 +243,7 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
                 {/* Current Business Value */}
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-xl font-bold text-gray-900">Current Business Value</h4>
+                    <h4 className="text-xl font-bold text-gray-900">Nilai Bisnis Saat Ini</h4>
                     <span className="text-sm text-gray-600">
                       EBITDA Multiplier: {calculateEBITDAMultiplier(business.financial?.revenue || 0)}x
                     </span>

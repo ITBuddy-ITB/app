@@ -60,14 +60,15 @@ const BusinessDetailPage: React.FC = () => {
   const getBusinessStage = (score: number) => {
     if (score >= 80)
       return {
-        stage: "Investment Ready",
+        stage: "Siap Investasi",
         color: "text-emerald-600",
         bg: "bg-emerald-100",
         border: "border-emerald-200",
       };
-    if (score >= 60) return { stage: "Growth", color: "text-blue-600", bg: "bg-blue-100", border: "border-blue-200" };
+    if (score >= 60)
+      return { stage: "Berkembang", color: "text-blue-600", bg: "bg-blue-100", border: "border-blue-200" };
     if (score >= 40)
-      return { stage: "Scale-up", color: "text-yellow-600", bg: "bg-yellow-100", border: "border-yellow-200" };
+      return { stage: "Skalabilitas", color: "text-yellow-600", bg: "bg-yellow-100", border: "border-yellow-200" };
     return { stage: "UMKM", color: "text-red-600", bg: "bg-red-100", border: "border-red-200" };
   };
 
@@ -77,7 +78,7 @@ const BusinessDetailPage: React.FC = () => {
         <div className="max-w-7xl mx-auto py-12 px-4">
           <div className="text-center py-20">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mb-4"></div>
-            <p className="text-lg text-gray-600">Loading business details...</p>
+            <p className="text-lg text-gray-600">Memuat detail bisnis...</p>
           </div>
         </div>
       </div>
@@ -92,14 +93,14 @@ const BusinessDetailPage: React.FC = () => {
             <div className="bg-red-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
               <AlertCircle className="w-10 h-10 text-red-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h2>
-            <p className="text-lg text-gray-600 mb-6">{error || "Business not found"}</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Terjadi Kesalahan</h2>
+            <p className="text-lg text-gray-600 mb-6">{error || "Bisnis tidak ditemukan"}</p>
             <Link
               to="/business"
               className="inline-flex items-center px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Businesses
+              Kembali ke Bisnis
             </Link>
           </div>
         </div>
@@ -121,7 +122,7 @@ const BusinessDetailPage: React.FC = () => {
               className="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-colors duration-200 mb-4"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              <span className="font-medium">Back to Business Portfolio</span>
+              <span className="font-medium">Kembali ke Portofolio Bisnis</span>
             </Link>
             {/* Create New Business Button */}
             <Link
@@ -129,7 +130,7 @@ const BusinessDetailPage: React.FC = () => {
               className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm font-medium"
             >
               <Plus className="w-4 h-4 mr-2" />
-              <span>Create New Business</span>
+              <span>Buat Bisnis Baru</span>
             </Link>
           </div>
         </div>
@@ -170,7 +171,7 @@ const BusinessDetailPage: React.FC = () => {
                   <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2 border border-white/20 shadow-lg">
                     <div className="flex items-center mb-1">
                       <Target className="w-3 h-3 mr-1 text-white" />
-                      <span className="font-medium text-white">Type</span>
+                      <span className="font-medium text-white">Jenis</span>
                     </div>
                     <span className="text-white/90 font-medium text-xs">{business.type}</span>
                   </div>
@@ -179,7 +180,7 @@ const BusinessDetailPage: React.FC = () => {
                   <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2 border border-white/20 shadow-lg">
                     <div className="flex items-center mb-1">
                       <Building2 className="w-3 h-3 mr-1 text-white" />
-                      <span className="font-medium text-white">Industry</span>
+                      <span className="font-medium text-white">Industri</span>
                     </div>
                     <span className="text-white/90 font-medium text-xs">{business.industry}</span>
                   </div>
@@ -188,7 +189,7 @@ const BusinessDetailPage: React.FC = () => {
                   <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2 border border-white/20 shadow-lg">
                     <div className="flex items-center mb-1">
                       <DollarSign className="w-3 h-3 mr-1 text-white" />
-                      <span className="font-medium text-white">Market Cap</span>
+                      <span className="font-medium text-white">Kapitalisasi Pasar</span>
                     </div>
                     <span className="text-white/90 font-medium text-xs">
                       IDR {(business.market_cap / 1000000000).toFixed(1)}B
@@ -202,7 +203,7 @@ const BusinessDetailPage: React.FC = () => {
                   <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2 border border-white/20 shadow-lg">
                     <div className="flex items-center mb-1">
                       <Calendar className="w-3 h-3 mr-1 text-white" />
-                      <span className="font-medium text-white">Founded</span>
+                      <span className="font-medium text-white">Didirikan</span>
                     </div>
                     <span className="text-white/90 font-medium text-xs">
                       {new Date(business.founded_at).getFullYear()}
@@ -216,7 +217,7 @@ const BusinessDetailPage: React.FC = () => {
             <div className="lg:col-span-1">
               <div className="bg-white/25 backdrop-blur-sm rounded-xl p-6 text-center border border-white/30 shadow-xl">
                 <div className="text-3xl font-bold mb-2 text-white drop-shadow-lg">{investmentScore}%</div>
-                <div className="text-white font-semibold text-sm mb-3 drop-shadow-md">Investment Ready</div>
+                <div className="text-white font-semibold text-sm mb-3 drop-shadow-md">Siap Investasi</div>
                 <div className="w-full bg-white/30 rounded-full h-2 mb-3 shadow-inner">
                   <div
                     className="bg-white h-2 rounded-full transition-all duration-1000 shadow-sm"
@@ -225,10 +226,10 @@ const BusinessDetailPage: React.FC = () => {
                 </div>
                 <p className="text-white/90 text-xs font-medium drop-shadow-sm">
                   {investmentScore >= 80
-                    ? "Ready for investment!"
+                    ? "Siap untuk investasi!"
                     : investmentScore >= 60
-                    ? "Almost ready!"
-                    : "Keep building!"}
+                    ? "Hampir siap!"
+                    : "Terus berkembang!"}
                 </p>
               </div>
             </div>
@@ -248,20 +249,20 @@ const BusinessDetailPage: React.FC = () => {
                 <Package className="w-6 h-6 text-blue-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-700 transition-colors">
-                Products
+                Produk
               </h3>
-              <p className="text-gray-600 mb-3 leading-relaxed text-sm">Manage your business products and services</p>
+              <p className="text-gray-600 mb-3 leading-relaxed text-sm">Kelola produk dan layanan bisnis Anda</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   {business.products && business.products.length > 0 ? (
                     <>
                       <CheckCircle className="w-3 h-3 mr-1 text-emerald-600" />
-                      {business.products.length} products
+                      {business.products.length} produk
                     </>
                   ) : (
                     <>
                       <Clock className="w-3 h-3 mr-1 text-gray-400" />
-                      No products yet
+                      Belum ada produk
                     </>
                   )}
                 </span>
@@ -280,20 +281,20 @@ const BusinessDetailPage: React.FC = () => {
                 <Scale className="w-6 h-6 text-emerald-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-emerald-700 transition-colors">
-                Legal Documents
+                Dokumen Legal
               </h3>
-              <p className="text-gray-600 mb-3 leading-relaxed text-sm">Upload and manage legal certificates</p>
+              <p className="text-gray-600 mb-3 leading-relaxed text-sm">Unggah dan kelola sertifikat legal</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   {business.legals && business.legals.length > 0 ? (
                     <>
                       <CheckCircle className="w-3 h-3 mr-1 text-emerald-600" />
-                      {business.legals.length} documents
+                      {business.legals.length} dokumen
                     </>
                   ) : (
                     <>
                       <Clock className="w-3 h-3 mr-1 text-gray-400" />
-                      No documents yet
+                      Belum ada dokumen
                     </>
                   )}
                 </span>
@@ -312,20 +313,20 @@ const BusinessDetailPage: React.FC = () => {
                 <DollarSign className="w-6 h-6 text-yellow-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-yellow-700 transition-colors">
-                Financial Data
+                Data Keuangan
               </h3>
-              <p className="text-gray-600 mb-3 leading-relaxed text-sm">Add financial information and statements</p>
+              <p className="text-gray-600 mb-3 leading-relaxed text-sm">Tambahkan informasi dan laporan keuangan</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   {business.financial ? (
                     <>
                       <CheckCircle className="w-3 h-3 mr-1 text-emerald-600" />
-                      Complete
+                      Lengkap
                     </>
                   ) : (
                     <>
                       <Clock className="w-3 h-3 mr-1 text-gray-400" />
-                      Pending
+                      Tertunda
                     </>
                   )}
                 </span>
@@ -344,13 +345,13 @@ const BusinessDetailPage: React.FC = () => {
                 <BarChart3 className="w-6 h-6 text-purple-600" />
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors">
-                Projections
+                Proyeksi
               </h3>
-              <p className="text-gray-600 mb-3 leading-relaxed text-sm">Financial projections and growth forecasts</p>
+              <p className="text-gray-600 mb-3 leading-relaxed text-sm">Proyeksi keuangan dan perkiraan pertumbuhan</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   <Clock className="w-3 h-3 mr-1 text-gray-400" />
-                  View projections
+                  Lihat proyeksi
                 </span>
               </div>
             </div>
@@ -366,7 +367,7 @@ const BusinessDetailPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
           <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
             <Award className="w-5 h-5 mr-2 text-emerald-600" />
-            Investment Readiness Breakdown
+            Rincian Kesiapan Investasi
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -378,14 +379,14 @@ const BusinessDetailPage: React.FC = () => {
               >
                 <DollarSign className={`w-6 h-6 ${business.financial ? "text-emerald-600" : "text-gray-400"}`} />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Financial Data</h3>
-              <p className="text-xs text-gray-600 mb-2">30% of total score</p>
+              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Data Keuangan</h3>
+              <p className="text-xs text-gray-600 mb-2">30% dari total skor</p>
               <div
                 className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                   business.financial ? "bg-emerald-100 text-emerald-800" : "bg-gray-100 text-gray-600"
                 }`}
               >
-                {business.financial ? "Complete" : "Missing"}
+                {business.financial ? "Lengkap" : "Hilang"}
               </div>
             </div>
 
@@ -401,8 +402,8 @@ const BusinessDetailPage: React.FC = () => {
                   }`}
                 />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Legal Documents</h3>
-              <p className="text-xs text-gray-600 mb-2">25% of total score</p>
+              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Dokumen Legal</h3>
+              <p className="text-xs text-gray-600 mb-2">25% dari total skor</p>
               <div
                 className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                   business.legals && business.legals.length > 0
@@ -410,7 +411,7 @@ const BusinessDetailPage: React.FC = () => {
                     : "bg-gray-100 text-gray-600"
                 }`}
               >
-                {business.legals && business.legals.length > 0 ? `${business.legals.length} docs` : "Missing"}
+                {business.legals && business.legals.length > 0 ? `${business.legals.length} dokumen` : "Hilang"}
               </div>
             </div>
 
@@ -426,8 +427,8 @@ const BusinessDetailPage: React.FC = () => {
                   }`}
                 />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Products</h3>
-              <p className="text-xs text-gray-600 mb-2">20% of total score</p>
+              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Produk</h3>
+              <p className="text-xs text-gray-600 mb-2">20% dari total skor</p>
               <div
                 className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                   business.products && business.products.length > 0
@@ -435,7 +436,7 @@ const BusinessDetailPage: React.FC = () => {
                     : "bg-gray-100 text-gray-600"
                 }`}
               >
-                {business.products && business.products.length > 0 ? `${business.products.length} products` : "Missing"}
+                {business.products && business.products.length > 0 ? `${business.products.length} produk` : "Hilang"}
               </div>
             </div>
 
@@ -451,8 +452,8 @@ const BusinessDetailPage: React.FC = () => {
                   }`}
                 />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Market Cap</h3>
-              <p className="text-xs text-gray-600 mb-2">15% + 10% bonus</p>
+              <h3 className="font-semibold text-gray-900 mb-1 text-sm">Kapitalisasi Pasar</h3>
+              <p className="text-xs text-gray-600 mb-2">15% + bonus 10%</p>
               <div
                 className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                   business.market_cap && business.market_cap > 10000000000
@@ -460,7 +461,7 @@ const BusinessDetailPage: React.FC = () => {
                     : "bg-gray-100 text-gray-600"
                 }`}
               >
-                {business.market_cap && business.market_cap > 10000000000 ? "Qualified" : "Below threshold"}
+                {business.market_cap && business.market_cap > 10000000000 ? "Memenuhi syarat" : "Di bawah ambang batas"}
               </div>
             </div>
           </div>

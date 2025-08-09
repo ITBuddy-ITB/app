@@ -97,12 +97,12 @@ const Step2Page: React.FC = () => {
       <div className="max-w-4xl mx-auto py-10 px-4">
         <StepIndicator />
 
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Step 2: Business & Product Legals</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">Langkah 2: Legalitas Bisnis & Produk</h2>
 
         <form onSubmit={handleSubmit} className="space-y-10">
           {/* Business Legals */}
           <div className="bg-white shadow rounded-lg p-6 space-y-4 border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800">Business Legals</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Legalitas Bisnis</h3>
             {businessLegals.map((legal, index) => (
               <div key={index} className="border border-gray-200 rounded-lg p-4 space-y-3 relative">
                 {/* Cancel button even for predefined */}
@@ -114,7 +114,7 @@ const Step2Page: React.FC = () => {
                   <X size={16} />
                 </button>
 
-                <label className="block text-sm font-medium text-gray-700">Legal Type</label>
+                <label className="block text-sm font-medium text-gray-700">Jenis Legal</label>
                 <input
                   type="text"
                   className="w-full border rounded-lg px-4 py-2"
@@ -123,7 +123,7 @@ const Step2Page: React.FC = () => {
                 />
 
                 <div className="border border-dashed border-gray-300 rounded-lg p-3">
-                  <label className="block text-sm font-medium text-gray-700">Upload PDF</label>
+                  <label className="block text-sm font-medium text-gray-700">Unggah PDF</label>
                   <input
                     type="file"
                     accept="application/pdf"
@@ -132,7 +132,7 @@ const Step2Page: React.FC = () => {
                   />
                 </div>
 
-                <label className="block text-sm font-medium text-gray-700">Issued By</label>
+                <label className="block text-sm font-medium text-gray-700">Diterbitkan Oleh</label>
                 <input
                   type="text"
                   className="w-full border rounded-lg px-4 py-2"
@@ -142,7 +142,7 @@ const Step2Page: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Issued At</label>
+                    <label className="block text-sm font-medium text-gray-700">Tanggal Terbit</label>
                     <input
                       type="date"
                       className="w-full border rounded-lg px-4 py-2"
@@ -151,7 +151,7 @@ const Step2Page: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Valid Until</label>
+                    <label className="block text-sm font-medium text-gray-700">Berlaku Sampai</label>
                     <input
                       type="date"
                       className="w-full border rounded-lg px-4 py-2"
@@ -161,7 +161,7 @@ const Step2Page: React.FC = () => {
                   </div>
                 </div>
 
-                <label className="block text-sm font-medium text-gray-700">Notes</label>
+                <label className="block text-sm font-medium text-gray-700">Catatan</label>
                 <textarea
                   className="w-full border rounded-lg px-4 py-2"
                   rows={2}
@@ -171,13 +171,13 @@ const Step2Page: React.FC = () => {
               </div>
             ))}
             <button type="button" onClick={addBusinessLegal} className="text-blue-600 hover:underline text-sm">
-              + Add More Business Legal
+              + Tambah Legalitas Bisnis
             </button>
           </div>
 
           {/* Product Legals */}
           <div className="bg-white shadow rounded-lg p-6 space-y-6 border border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-800">Product Legals</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Legalitas Produk</h3>
             {products.map((product) => (
               <div key={product.id} className="space-y-4">
                 <h4 className="text-md font-semibold text-gray-700">{product.name}</h4>
@@ -192,7 +192,7 @@ const Step2Page: React.FC = () => {
                       <X size={16} />
                     </button>
 
-                    <label className="block text-sm font-medium text-gray-700">Legal Type</label>
+                    <label className="block text-sm font-medium text-gray-700">Jenis Legal</label>
                     <input
                       type="text"
                       className="w-full border rounded-lg px-4 py-2"
@@ -201,7 +201,7 @@ const Step2Page: React.FC = () => {
                     />
 
                     <div className="border border-dashed border-gray-300 rounded-lg p-3">
-                      <label className="block text-sm font-medium text-gray-700">Upload PDF</label>
+                      <label className="block text-sm font-medium text-gray-700">Unggah PDF</label>
                       <input
                         type="file"
                         accept="application/pdf"
@@ -210,7 +210,7 @@ const Step2Page: React.FC = () => {
                       />
                     </div>
 
-                    <label className="block text-sm font-medium text-gray-700">Issued By</label>
+                    <label className="block text-sm font-medium text-gray-700">Diterbitkan Oleh</label>
                     <input
                       type="text"
                       className="w-full border rounded-lg px-4 py-2"
@@ -220,7 +220,7 @@ const Step2Page: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Issued At</label>
+                        <label className="block text-sm font-medium text-gray-700">Tanggal Terbit</label>
                         <input
                           type="date"
                           className="w-full border rounded-lg px-4 py-2"
@@ -229,7 +229,7 @@ const Step2Page: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700">Valid Until</label>
+                        <label className="block text-sm font-medium text-gray-700">Berlaku Sampai</label>
                         <input
                           type="date"
                           className="w-full border rounded-lg px-4 py-2"
@@ -239,7 +239,7 @@ const Step2Page: React.FC = () => {
                       </div>
                     </div>
 
-                    <label className="block text-sm font-medium text-gray-700">Notes</label>
+                    <label className="block text-sm font-medium text-gray-700">Catatan</label>
                     <textarea
                       className="w-full border rounded-lg px-4 py-2"
                       rows={2}
@@ -253,7 +253,7 @@ const Step2Page: React.FC = () => {
                   onClick={() => addProductLegal(product.id)}
                   className="text-blue-600 hover:underline text-sm"
                 >
-                  + Add More Legal for {product.name}
+                  + Tambah Legalitas untuk {product.name}
                 </button>
               </div>
             ))}
@@ -266,14 +266,14 @@ const Step2Page: React.FC = () => {
               onClick={() => navigate("/business/suggestions")}
               className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
             >
-              View AI Suggestions
+              Lihat Saran AI
             </button>
 
             <button
               type="submit"
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
             >
-              Save & Continue to Step 3
+              Simpan & Lanjut ke Langkah 3
             </button>
           </div>
         </form>
