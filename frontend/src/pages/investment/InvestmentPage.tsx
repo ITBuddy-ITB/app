@@ -8,7 +8,8 @@ import ChatModal from "../../components/ChatModal";
 import { ChatService } from "../../services/aiChatService";
 
 const InvestmentPage: React.FC = () => {
-  const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } = useInvestment();
+  const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } =
+    useInvestment();
 
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -52,12 +53,16 @@ const InvestmentPage: React.FC = () => {
           <h1 className="text-4xl font-bold text-gray-900">
             Peluang <span className="text-blue-600">Investasi</span> Swasta
           </h1>
-          <button onClick={() => setShowChatModal(true)} className="py-2 px-4 hover:bg-blue-300 duration-200 cursor-pointer rounded-lg bg-blue-200 text-blue-600">
+          <button
+            onClick={() => setShowChatModal(true)}
+            className="py-2 px-4 hover:bg-blue-300 duration-200 cursor-pointer rounded-lg bg-blue-200 text-blue-600"
+          >
             Tanya AI
           </button>
         </div>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Temukan bisnis Indonesia yang menjanjikan melalui platform investasi komprehensif SINAR. Dukung pertumbuhan sambil meraih keuntungan yang menarik.
+          Temukan bisnis Indonesia yang menjanjikan melalui platform investasi komprehensif SINAR. Dukung pertumbuhan
+          sambil meraih keuntungan yang menarik.
         </p>
       </div>
 
@@ -66,11 +71,11 @@ const InvestmentPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-lg border border-blue-100 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Total Opportunities</p>
+              <p className="text-sm font-medium text-gray-600">Total Peluang</p>
               <p className="text-2xl font-bold text-gray-900">{pagination.total}</p>
               <p className="text-xs text-blue-600 flex items-center mt-1">
                 <ArrowUpRight className="w-3 h-3 mr-1" />
-                Available to invest
+                Tersedia untuk investasi
               </p>
             </div>
             <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -82,11 +87,11 @@ const InvestmentPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-lg border border-emerald-100 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">With Financial Data</p>
+              <p className="text-sm font-medium text-gray-600">Dengan Data Keuangan</p>
               <p className="text-2xl font-bold text-gray-900">{businesses.filter((b) => b.financial).length}</p>
               <p className="text-xs text-emerald-600 flex items-center mt-1">
                 <TrendingUp className="w-3 h-3 mr-1" />
-                Ready for analysis
+                Siap untuk analisis
               </p>
             </div>
             <div className="h-12 w-12 bg-emerald-100 rounded-lg flex items-center justify-center">
@@ -98,11 +103,13 @@ const InvestmentPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-lg border border-purple-100 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">With Legal Docs</p>
-              <p className="text-2xl font-bold text-gray-900">{businesses.filter((b) => b.legals && b.legals.length > 0).length}</p>
+              <p className="text-sm font-medium text-gray-600">Dengan Dokumen Legal</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {businesses.filter((b) => b.legals && b.legals.length > 0).length}
+              </p>
               <p className="text-xs text-purple-600 flex items-center mt-1">
                 <Star className="w-3 h-3 mr-1" />
-                Legally compliant
+                Patuh secara hukum
               </p>
             </div>
             <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -114,11 +121,11 @@ const InvestmentPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-lg border border-orange-100 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600">Industries</p>
+              <p className="text-sm font-medium text-gray-600">Industri</p>
               <p className="text-2xl font-bold text-gray-900">{industries.length}</p>
               <p className="text-xs text-orange-600 flex items-center mt-1">
                 <Users className="w-3 h-3 mr-1" />
-                Diverse sectors
+                Sektor yang beragam
               </p>
             </div>
             <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -134,14 +141,14 @@ const InvestmentPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
-                Search Businesses
+                Cari Bisnis
               </label>
               <input
                 type="text"
                 id="search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search by name or description..."
+                placeholder="Cari berdasarkan nama atau deskripsi..."
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -153,7 +160,8 @@ const InvestmentPage: React.FC = () => {
                 id="industry"
                 value={selectedIndustry}
                 onChange={(e) => setSelectedIndustry(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
                 <option value="">All Industries</option>
                 {industries.map((industry) => (
                   <option key={industry} value={industry}>
@@ -163,7 +171,10 @@ const InvestmentPage: React.FC = () => {
               </select>
             </div>
             <div className="flex items-end">
-              <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+              >
                 Search
               </button>
             </div>
@@ -189,7 +200,8 @@ const InvestmentPage: React.FC = () => {
                 industry: selectedIndustry || undefined,
               })
             }
-            className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -236,7 +248,8 @@ const InvestmentPage: React.FC = () => {
               <button
                 onClick={() => handlePageChange(pagination.page - 1)}
                 disabled={pagination.page <= 1}
-                className="px-3 py-2 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50">
+                className="px-3 py-2 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
                 Previous
               </button>
 
@@ -244,10 +257,17 @@ const InvestmentPage: React.FC = () => {
                 .filter((page) => page === 1 || page === pagination.totalPages || Math.abs(page - pagination.page) <= 2)
                 .map((page, index, array) => (
                   <React.Fragment key={page}>
-                    {index > 0 && array[index - 1] !== page - 1 && <span className="px-2 py-2 text-sm text-gray-500">...</span>}
+                    {index > 0 && array[index - 1] !== page - 1 && (
+                      <span className="px-2 py-2 text-sm text-gray-500">...</span>
+                    )}
                     <button
                       onClick={() => handlePageChange(page)}
-                      className={`px-3 py-2 text-sm border rounded-md ${page === pagination.page ? "bg-blue-600 text-white border-blue-600" : "border-gray-300 hover:bg-gray-50"}`}>
+                      className={`px-3 py-2 text-sm border rounded-md ${
+                        page === pagination.page
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
                       {page}
                     </button>
                   </React.Fragment>
@@ -256,7 +276,8 @@ const InvestmentPage: React.FC = () => {
               <button
                 onClick={() => handlePageChange(pagination.page + 1)}
                 disabled={pagination.page >= pagination.totalPages}
-                className="px-3 py-2 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50">
+                className="px-3 py-2 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+              >
                 Next
               </button>
             </div>

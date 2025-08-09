@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import type { Business, Financial } from "../../services/businessService";
 import { BusinessService } from "../../services/businessService";
+import { UserService } from "../../services/userService";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 
 const API_BASE_URL = "http://localhost:8080";
@@ -13,6 +15,7 @@ interface BusinessDetailsModalProps {
 
 const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, isOpen, onClose }) => {
   const [financialHistory, setFinancialHistory] = useState<Financial[]>([]);
+  const [contactLoading, setContactLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen && business) {
@@ -29,6 +32,37 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
       fetchFinancialHistory();
     }
   }, [isOpen, business]);
+
+  const handleContactOwner = async () => {
+    if (!business) return;
+
+    setContactLoading(true);
+    try {
+      const owner = await UserService.getUserById(business.user_id);
+
+      if (owner.phone_number) {
+        // Copy phone number to clipboard
+        await navigator.clipboard.writeText(owner.phone_number);
+        toast.success(`Nomor telepon disalin ke clipboard: ${owner.phone_number}`, {
+          duration: 4000,
+          position: "top-center",
+        });
+      } else {
+        toast.error("Nomor telepon tidak tersedia untuk pemilik bisnis ini", {
+          duration: 3000,
+          position: "top-center",
+        });
+      }
+    } catch (error) {
+      console.error("Failed to get owner information:", error);
+      toast.error("Gagal mendapatkan informasi kontak pemilik", {
+        duration: 3000,
+        position: "top-center",
+      });
+    } finally {
+      setContactLoading(false);
+    }
+  };
 
   if (!isOpen || !business) return null;
 
@@ -141,7 +175,7 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
         <div className="p-6">
           {/* Basic Information */}
           <div className="mb-8">
-            <h3 className="text-lg font-semibold mb-4">Business Information</h3>
+            <h3 className="text-lg font-semibold mb-4">Informasi Bisnis</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-gray-500">Industry</p>
@@ -173,7 +207,7 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
           {/* Financial Information */}
           {business.financial && (
             <div className="mb-8">
-              <h3 className="text-lg font-semibold mb-4">Financial Data</h3>
+              <h3 className="text-lg font-semibold mb-4">Data Keuangan</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-green-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500">EBITDA</p>
@@ -302,8 +336,26 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
               </div>
             </div>
           )}
+
+          <button
+            onClick={handleContactOwner}
+            disabled={contactLoading}
+            className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center w-full"
+          >
+            {contactLoading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Mendapatkan Kontak...
+              </>
+            ) : (
+              "Hubungi Pemilik Bisnis"
+            )}
+          </button>
         </div>
       </div>
+
+      {/* Toast notifications */}
+      <Toaster />
     </div>
   );
 };

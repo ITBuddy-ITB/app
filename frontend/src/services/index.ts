@@ -20,3 +20,5 @@ export type {
 
 export { InvestmentService } from "./investmentService";
 export type { PaginatedBusinessResponse, GetAllBusinessesParams } from "./investmentService";
+
+export { UserService } from "./userService";

@@ -9,11 +9,11 @@ interface BusinessCardProps {
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) => {
   const formatCurrency = (amount?: number) => {
-    if (!amount) return "Not specified";
+    if (!amount) return "Tidak ditentukan";
     if (amount >= 1000000000) {
-      return `IDR ${(amount / 1000000000).toFixed(1)}B`;
+      return `IDR ${(amount / 1000000000).toFixed(1)}M`;
     } else if (amount >= 1000000) {
-      return `IDR ${(amount / 1000000).toFixed(0)}M`;
+      return `IDR ${(amount / 1000000).toFixed(0)}Jt`;
     }
     return `IDR ${amount.toLocaleString()}`;
   };
@@ -26,7 +26,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) 
           <div className="flex items-start justify-between mb-4">
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">{business.name}</h3>
-              <p className="text-gray-600 mb-4">{business.description || "No description available"}</p>
+              <p className="text-gray-600 mb-4">{business.description || "Tidak ada deskripsi"}</p>
               <div className="flex items-center space-x-4">
                 {business.industry && (
                   <span className="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -43,7 +43,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) 
             {business.market_cap && (
               <div className="text-right">
                 <div className="text-2xl font-bold text-blue-600 mb-1">{formatCurrency(business.market_cap)}</div>
-                <div className="text-sm text-gray-500">Market Cap</div>
+                <div className="text-sm text-gray-500">Kapitalisasi Pasar</div>
               </div>
             )}
           </div>
@@ -51,27 +51,27 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) 
           {/* Business Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div>
-              <p className="text-xs text-gray-500 mb-1">Founded</p>
+              <p className="text-xs text-gray-500 mb-1">Didirikan</p>
               <p className="font-semibold text-gray-900">
                 {business.founded_at ? new Date(business.founded_at).getFullYear() : "N/A"}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 mb-1">Legal Docs</p>
+              <p className="text-xs text-gray-500 mb-1">Dokumen Legal</p>
               <p className="font-semibold text-gray-900 flex items-center">
                 <FileText className="w-4 h-4 mr-1" />
                 {business.legals?.length || 0}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 mb-1">Financial Data</p>
+              <p className="text-xs text-gray-500 mb-1">Data Keuangan</p>
               <p className="font-semibold text-gray-900 flex items-center">
                 <BarChart3 className="w-4 h-4 mr-1" />
-                {business.financial ? "Available" : "N/A"}
+                {business.financial ? "Tersedia" : "N/A"}
               </p>
             </div>
             <div>
-              <p className="text-xs text-gray-500 mb-1">Products</p>
+              <p className="text-xs text-gray-500 mb-1">Produk</p>
               <p className="font-semibold text-gray-900">{business.products?.length || 0}</p>
             </div>
           </div>
@@ -79,7 +79,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) 
           {/* Financial Highlights */}
           {business.financial && (
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Financial Highlights</h4>
+              <h4 className="text-sm font-medium text-gray-700 mb-2">Sorotan Keuangan</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                 {business.financial.ebitda && (
                   <div>
@@ -89,19 +89,19 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) 
                 )}
                 {business.financial.assets && (
                   <div>
-                    <p className="text-gray-500">Assets</p>
+                    <p className="text-gray-500">Aset</p>
                     <p className="font-semibold text-blue-600">{formatCurrency(business.financial.assets)}</p>
                   </div>
                 )}
                 {business.financial.equity && (
                   <div>
-                    <p className="text-gray-500">Equity</p>
+                    <p className="text-gray-500">Ekuitas</p>
                     <p className="font-semibold text-purple-600">{formatCurrency(business.financial.equity)}</p>
                   </div>
                 )}
                 {business.financial.liabilities && (
                   <div>
-                    <p className="text-gray-500">Liabilities</p>
+                    <p className="text-gray-500">Kewajiban</p>
                     <p className="font-semibold text-red-600">{formatCurrency(business.financial.liabilities)}</p>
                   </div>
                 )}
@@ -116,7 +116,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) 
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center"
           >
             <Building2 className="w-4 h-4 mr-2" />
-            View Details
+            Lihat Detail
           </button>
         </div>
       </div>
