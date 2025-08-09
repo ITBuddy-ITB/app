@@ -156,13 +156,6 @@ const LegalPage: React.FC = () => {
               className="w-full"
               required
             />
-            <input
-              type="file"
-              accept=".pdf"
-              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-              className="w-full"
-              required
-            />
             {selectedFile && <p className="text-sm text-gray-600 mt-2">Selected: {selectedFile.name}</p>}
           </div>
         </div>
@@ -194,12 +187,6 @@ const LegalPage: React.FC = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Valid Until (Optional)</label>
-          <input
-            type="date"
-            className="w-full border rounded-lg px-3 py-2"
-            value={formData.valid_until}
-            onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
-          />
           <input
             type="date"
             className="w-full border rounded-lg px-3 py-2"
@@ -292,13 +279,6 @@ const LegalPage: React.FC = () => {
               className="w-full"
               required
             />
-            <input
-              type="file"
-              accept=".pdf"
-              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-              className="w-full"
-              required
-            />
             {selectedFile && <p className="text-sm text-gray-600 mt-2">Selected: {selectedFile.name}</p>}
           </div>
         </div>
@@ -330,12 +310,6 @@ const LegalPage: React.FC = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Valid Until (Optional)</label>
-          <input
-            type="date"
-            className="w-full border rounded-lg px-3 py-2"
-            value={formData.valid_until}
-            onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
-          />
           <input
             type="date"
             className="w-full border rounded-lg px-3 py-2"
@@ -444,18 +418,12 @@ const LegalPage: React.FC = () => {
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             {activeTab === "business" ? "Add Business Legal Document" : "Add Product Legal Document"}
           </h3>
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            {activeTab === "business" ? "Add Business Legal Document" : "Add Product Legal Document"}
-          </h3>
 
           {activeTab === "business" ? <BusinessLegalForm /> : <ProductLegalForm />}
         </div>
 
         {/* Existing Documents */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            Existing {activeTab === "business" ? "Business" : "Product"} Documents
-          </h3>
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Existing {activeTab === "business" ? "Business" : "Product"} Documents
           </h3>

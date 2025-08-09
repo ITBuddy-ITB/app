@@ -276,9 +276,6 @@ const FinancialPage: React.FC = () => {
                   <div className="text-2xl font-bold text-purple-600">
                     {((financial.equity / financial.assets) * 100).toFixed(1)}%
                   </div>
-                  <div className="text-2xl font-bold text-purple-600">
-                    {((financial.equity / financial.assets) * 100).toFixed(1)}%
-                  </div>
                   <div className="text-sm text-gray-600">Equity Ratio</div>
                 </div>
               )}

@@ -273,9 +273,6 @@ const ProjectionsPage: React.FC = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {index > 0 ? calculateGrowthRate(projection.revenue, projections[index - 1].revenue) : "—"}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {index > 0 ? calculateGrowthRate(projection.revenue, projections[index - 1].revenue) : "—"}
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -291,15 +288,9 @@ const ProjectionsPage: React.FC = () => {
               <div className="text-lg font-bold text-gray-900">
                 ${projections.reduce((sum, p) => sum + p.netIncome, 0).toLocaleString()}
               </div>
-              <div className="text-lg font-bold text-gray-900">
-                ${projections.reduce((sum, p) => sum + p.netIncome, 0).toLocaleString()}
-              </div>
               <div className="text-sm text-gray-600">Total Net Income (5Y)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-lg font-bold text-gray-900">
-                ${projections.reduce((sum, p) => sum + p.cashFlow, 0).toLocaleString()}
-              </div>
               <div className="text-lg font-bold text-gray-900">
                 ${projections.reduce((sum, p) => sum + p.cashFlow, 0).toLocaleString()}
               </div>

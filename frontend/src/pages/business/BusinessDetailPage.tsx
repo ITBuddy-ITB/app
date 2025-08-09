@@ -282,9 +282,6 @@ const BusinessDetailPage: React.FC = () => {
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-emerald-700 transition-colors">
                 Legal Documents
               </h3>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-emerald-700 transition-colors">
-                Legal Documents
-              </h3>
               <p className="text-gray-600 mb-3 leading-relaxed text-sm">Upload and manage legal certificates</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
@@ -314,9 +311,6 @@ const BusinessDetailPage: React.FC = () => {
               <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <DollarSign className="w-6 h-6 text-yellow-600" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-yellow-700 transition-colors">
-                Financial Data
-              </h3>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-yellow-700 transition-colors">
                 Financial Data
               </h3>
@@ -365,7 +359,7 @@ const BusinessDetailPage: React.FC = () => {
 
         {/* AI Suggestions */}
         <div className="pb-8">
-        <AISuggestions businessId={business.ID} businessName={business.name} />
+          <AISuggestions businessId={business.ID} businessName={business.name} />
         </div>
 
         {/* Investment Readiness Breakdown */}
