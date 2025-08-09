@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
-import Navbar from "../../components/Navbar";
 import { X } from "lucide-react";
 import { BusinessService, type Product } from "../../services/businessService";
-import api from "../../lib/api"; // Import the Axios API instance
+import api from "../../lib/api";
 
 const ProductsPage: React.FC = () => {
   const { businessId } = useParams<{ businessId: string }>();
@@ -120,8 +119,6 @@ const ProductsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <Navbar />
-
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">

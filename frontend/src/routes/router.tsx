@@ -115,6 +115,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "legal/steps/:legalType",
+        element: (
+          <ProtectedRoute>
+            <LegalStepsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "investments",
         element: (
           <ProtectedRoute>

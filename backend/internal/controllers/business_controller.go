@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"go-gin-backend/internal/models"
 	"go-gin-backend/internal/services"
 	"go-gin-backend/internal/utils"
@@ -86,11 +85,11 @@ func (bc *BusinessController) GetAllBusinessesForInvestment(c *gin.Context) {
 	totalPages := int((total + int64(limit) - 1) / int64(limit))
 
 	response := gin.H{
-		"businesses":  businesses,
-		"total":       total,
-		"page":        page,
-		"limit":       limit,
-		"totalPages":  totalPages,
+		"businesses": businesses,
+		"total":      total,
+		"page":       page,
+		"limit":      limit,
+		"totalPages": totalPages,
 	}
 
 	c.JSON(http.StatusOK, response)
@@ -456,17 +455,17 @@ func (bc *BusinessController) AddProductLegal(c *gin.Context) {
 	c.JSON(http.StatusCreated, legal)
 }
 
-func (bc *BusinessController) GetLegalComparison(c *gin.Context) {
-	businessID := c.GetUint("businessId")
+// func (bc *BusinessController) GetLegalComparison(c *gin.Context) {
+// 	businessID := c.GetUint("businessId")
 
-	comparison, err := bc.businessService.GetLegalComparison(businessID)
-	if err != nil {
-		c.JSON(500, gin.H{"error": fmt.Sprintf("Failed to get legal comparison: %v", err)})
-		return
-	}
+// 	comparison, err := bc.businessService.GetLegalComparison(businessID)
+// 	if err != nil {
+// 		c.JSON(500, gin.H{"error": fmt.Sprintf("Failed to get legal comparison: %v", err)})
+// 		return
+// 	}
 
-	c.JSON(200, comparison)
-}
+// 	c.JSON(200, comparison)
+// }
 
 // ===== Financial Data Management =====
 

@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"fmt"
+	"go-gin-backend/internal/models"
 	"go-gin-backend/internal/services"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,6 +13,7 @@ type GenAIController struct {
 	genAIService    *services.GenAIService
 	businessService *services.BusinessService
 }
+
 func NewGenAIController(genAIService *services.GenAIService, businessService *services.BusinessService) *GenAIController {
 	return &GenAIController{genAIService: genAIService, businessService: businessService}
 }
@@ -38,23 +41,52 @@ func (gc *GenAIController) GetProductsFromFile(c *gin.Context) {
 }
 
 func (gc *GenAIController) AnalyzeBusinessLegals(c *gin.Context) {
-	businessID := c.GetUint("businessId")
-	file, err := c.FormFile("file")
-	if err != nil {
-		c.JSON(400, gin.H{"error": "File is required"})
+	var requestBody struct {
+		BusinessID uint `json:"business_id"`
+		IsRefresh  bool `json:"is_refresh"`
+	}
+
+	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		c.JSON(400, gin.H{"error": "Business ID is required in request body"})
 		return
 	}
 
-	analysis, err := gc.genAIService.AnalyzeBusinessLegals(file)
+	if requestBody.BusinessID == 0 {
+		c.JSON(400, gin.H{"error": "Invalid business ID"})
+		return
+	}
+
+	var analysis *models.LegalComparison
+	var err error
+
+	if !requestBody.IsRefresh {
+		// Try to get existing analysis from database
+		existingAnalysis, dbErr := gc.businessService.GetStoredLegalAnalysis(requestBody.BusinessID)
+		if dbErr == nil && existingAnalysis != nil {
+			// Return cached analysis
+			c.JSON(200, existingAnalysis)
+			return
+		}
+		// If error or no data found, continue to generate new analysis
+	}
+
+	// Generate new analysis using AI
+	analysis, err = gc.genAIService.AnalyzeBusinessLegals(requestBody.BusinessID)
 	if err != nil {
-		c.JSON(500, gin.H{"error": fmt.Sprintf("Failed to analyze business: %v", err)})
+		c.JSON(500, gin.H{"error": fmt.Sprintf("Failed to analyze business legals: %v", err)})
 		return
 	}
 
 	// Store the analysis results
-	if err := gc.businessService.StoreLegalAnalysis(businessID, analysis); err != nil {
-		c.JSON(500, gin.H{"error": fmt.Sprintf("Failed to store analysis: %v", err)})
-		return
+	if requestBody.IsRefresh {
+		// Clear existing analysis first
+		if err := gc.businessService.ClearStoredLegalAnalysis(requestBody.BusinessID); err != nil {
+			log.Printf("Failed to clear existing analysis: %v", err)
+		}
+	}
+	
+	if err := gc.businessService.StoreLegalAnalysisComparison(requestBody.BusinessID, analysis); err != nil {
+		log.Printf("Failed to store analysis: %v", err)
 	}
 
 	c.JSON(200, analysis)

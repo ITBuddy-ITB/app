@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
-import Navbar from "../../components/Navbar";
 import { BusinessService, type Financial } from "../../services/businessService";
 
 const FinancialPage: React.FC = () => {
@@ -92,7 +91,6 @@ const FinancialPage: React.FC = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-        <Navbar />
         <div className="max-w-4xl mx-auto py-12 px-4">
           <div className="text-center">Loading financial data...</div>
         </div>
@@ -102,8 +100,6 @@ const FinancialPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <Navbar />
-
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -111,13 +107,17 @@ const FinancialPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Financial Data</h1>
             <p className="text-gray-600">Manage your business financial information</p>
           </div>
-          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+          <Link
+            to={`/business/${businessId}/details`}
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
             Back to Business
           </Link>
         </div>
 
         {/* Success Message */}
-        {successMessage && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">{successMessage}</div>}
+        {successMessage && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">{successMessage}</div>
+        )}
 
         {/* Error Message */}
         {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
@@ -213,7 +213,10 @@ const FinancialPage: React.FC = () => {
 
             {/* Submit Button */}
             <div className="flex justify-end">
-              <button type="submit" disabled={saving} className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+              <button
+                type="submit"
+                disabled={saving}
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-6 rounded-lg transition-colors">
                 {saving ? "Saving..." : "Save Financial Data"}
               </button>
             </div>
@@ -245,7 +248,9 @@ const FinancialPage: React.FC = () => {
               )}
               {financial.equity && financial.liabilities && financial.assets && (
                 <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">{((financial.equity / financial.assets) * 100).toFixed(1)}%</div>
+                  <div className="text-2xl font-bold text-purple-600">
+                    {((financial.equity / financial.assets) * 100).toFixed(1)}%
+                  </div>
                   <div className="text-sm text-gray-600">Equity Ratio</div>
                 </div>
               )}

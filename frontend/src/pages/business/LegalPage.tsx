@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
-import Navbar from "../../components/Navbar";
-import { BusinessService, type Legal, type ProductLegal, type Product, type RequiredLegal } from "../../services/businessService";
+import { BusinessService, type Legal, type ProductLegal, type Product, type LegalComparison } from "../../services/businessService";
 import LegalRequirements from "../../components/legal/LegalRequirements";
-import api from "../../lib/api";
 
 const API_BASE_URL = "http://localhost:8080";
-
-interface LegalComparison {
-  required: RequiredLegal[];
-  products: ProductLegal[];
-}
 
 const LegalPage: React.FC = () => {
   const { businessId } = useParams<{ businessId: string }>();
@@ -20,6 +13,7 @@ const LegalPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [comparison, setComparison] = useState<LegalComparison | null>(null);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
 
   // Form states
   const [activeTab, setActiveTab] = useState<"business" | "product">("business");
@@ -27,6 +21,7 @@ const LegalPage: React.FC = () => {
   useEffect(() => {
     if (businessId) {
       fetchData();
+      fetchLegalAnalysis(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [businessId]);
@@ -50,6 +45,23 @@ const LegalPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchLegalAnalysis = async (isRefresh: boolean = false) => {
+    try {
+      setAnalysisLoading(true);
+      const analysisResult = await BusinessService.analyzeLegalCompliance(parseInt(businessId!), isRefresh);
+      setComparison(analysisResult);
+    } catch (err: unknown) {
+      console.error("Failed to analyze legal compliance:", err);
+      // Don't set this as a blocking error, just log it
+    } finally {
+      setAnalysisLoading(false);
+    }
+  };
+
+  const handleRefreshAnalysis = async () => {
+    await fetchLegalAnalysis(true);
   };
 
   const handleFileUpload = async (
@@ -86,6 +98,10 @@ const LegalPage: React.FC = () => {
         result = await BusinessService.addProductLegal(parseInt(businessId!), data.product_id, formData);
         setProductLegals([...productLegals, result]);
       }
+
+      // Refresh analysis after adding new legal document
+      await fetchLegalAnalysis(true);
+
     } catch (err: unknown) {
       console.error("Failed to upload legal document:", err);
       const errorMessage = err instanceof Error ? err.message : "Failed to upload legal document";
@@ -316,57 +332,25 @@ const LegalPage: React.FC = () => {
     );
   };
 
-  const AnalyzeBusinessSection = () => {
-    const [analyzing, setAnalyzing] = useState(false);
-
-    const handleProfileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files && e.target.files[0]) {
-        try {
-          setAnalyzing(true);
-          const file = e.target.files[0];
-          const formData = new FormData();
-          formData.append("file", file);
-
-          // Analyze business profile
-          await api.post(`/genai/analyze-business-legals`, formData);
-
-          // Get comparison results
-          const response = await api.get(`/business/${businessId}/legal/comparison`);
-          setComparison(response.data);
-        } catch (err) {
-          console.error("Failed to analyze business profile:", err);
-          setError("Failed to analyze business profile");
-        } finally {
-          setAnalyzing(false);
-        }
-      }
-    };
-
-    return (
-      <div className="bg-white shadow rounded-lg p-6 mb-8">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Analyze Business Requirements</h3>
-        <p className="text-gray-600 mb-4">Upload your business profile to get recommendations for required legal documents.</p>
-        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-          <input type="file" accept=".pdf" onChange={handleProfileUpload} className="w-full" disabled={analyzing} />
-          {analyzing && <p className="text-sm text-blue-600 mt-2">Analyzing your business profile...</p>}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <Navbar />
-
       <div className="max-w-6xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Legal Documents</h1>
-          <Link
-            to={`/business/${businessId}/details`}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
-            Back to Business
-          </Link>
+          <div className="flex space-x-3">
+            <button
+              onClick={handleRefreshAnalysis}
+              disabled={analysisLoading}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg disabled:opacity-50">
+              {analysisLoading ? "Analyzing..." : "Refresh Analysis"}
+            </button>
+            <Link
+              to={`/business/${businessId}/details`}
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+              Back to Business
+            </Link>
+          </div>
         </div>
 
         {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
@@ -389,15 +373,32 @@ const LegalPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Add Analysis Section */}
-        <AnalyzeBusinessSection />
-
-        {/* Show Requirements Comparison if available */}
-        {comparison && (
-          <div className="mb-8">
-            <LegalRequirements comparison={comparison} />
-          </div>
-        )}
+        {/* Show Requirements Comparison */}
+        <div className="mb-8">
+          {analysisLoading ? (
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="flex items-center justify-center py-8">
+                <div className="flex items-center space-x-2">
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                  <span className="text-gray-600">Analyzing legal compliance...</span>
+                </div>
+              </div>
+            </div>
+          ) : comparison ? (
+            <LegalRequirements comparison={comparison} isProductLegalPage={activeTab === "product"} />
+          ) : (
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="text-center py-8">
+                <p className="text-gray-500 mb-4">Legal compliance analysis not available</p>
+                <button
+                  onClick={handleRefreshAnalysis}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                  Run Analysis
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Upload Form */}
         <div className="bg-white shadow rounded-lg p-6 mb-8">

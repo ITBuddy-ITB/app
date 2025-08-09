@@ -195,10 +195,7 @@ export class BusinessService {
   }
 
   // Update business basic info
-  static async updateBusiness(
-    businessId: number,
-    data: Partial<Business>
-  ): Promise<{ message: string; business: Business }> {
+  static async updateBusiness(businessId: number, data: Partial<Business>): Promise<{ message: string; business: Business }> {
     try {
       const response = await api.put<{ message: string; business: Business }>(`/business/${businessId}`, data);
       return response.data;
@@ -319,8 +316,7 @@ export class BusinessService {
       return response.data;
     } catch (error) {
       if (error instanceof AxiosError) {
-        const errorMessage =
-          (error.response?.data as ErrorResponse)?.error || "Failed to fetch product legal documents";
+        const errorMessage = (error.response?.data as ErrorResponse)?.error || "Failed to fetch product legal documents";
         throw new Error(errorMessage);
       }
       throw new Error("Failed to fetch product legal documents");
@@ -382,6 +378,20 @@ export class BusinessService {
         throw new Error(errorMessage);
       }
       throw new Error("Failed to fetch financial history");
+    }
+  }
+
+  // Analyze business legal compliance
+  static async analyzeLegalCompliance(businessId: number, isRefresh: boolean = false): Promise<LegalComparison | any> {
+    try {
+      const response = await api.post(`/genai/analyze-business-legals`, {
+        business_id: businessId,
+        is_refresh: isRefresh
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error analyzing legal compliance:", error);
+      throw new Error("Failed to analyze legal compliance");
     }
   }
 }

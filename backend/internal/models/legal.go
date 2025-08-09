@@ -29,9 +29,10 @@ type LegalAdditionalInfo struct {
 
 type MissingLegal struct {
 	gorm.Model
-	BusinessID uint   `json:"business_id"`
-	LegalType  string `json:"legal_type"` // e.g. License, Certificate, Permit
-	Notes      string `json:"notes,omitempty"`
+	BusinessID      uint              `json:"business_id"`
+	LegalType       string            `json:"legal_type"`
+	Notes           string            `json:"notes,omitempty"`
+	StepsToGetLegal []StepToGetLegal  `gorm:"foreignKey:MissingLegalID" json:"steps,omitempty"`
 }
 
 type StepToGetLegal struct {
@@ -43,10 +44,11 @@ type StepToGetLegal struct {
 }
 
 type MissingProductLegal struct {
-	gorm.Model				
-	ProductID uint   `json:"product_id"`
-	LegalType  string `json:"legal_type"`
-	Notes      string `json:"notes,omitempty"`
+	gorm.Model
+	ProductID               uint                      `json:"product_id"`
+	LegalType               string                    `json:"legal_type"`
+	Notes                   string                    `json:"notes,omitempty"`
+	StepsToGetProductLegal  []StepToGetProductLegal   `gorm:"foreignKey:MissingProductLegalID" json:"steps,omitempty"`
 }
 
 type StepToGetProductLegal struct {
