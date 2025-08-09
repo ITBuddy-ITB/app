@@ -23,7 +23,7 @@ func (ac *AuthController) Register(c *gin.Context) {
 		return
 	}
 
-	registeredUser, err := ac.authService.Register(user.Username, user.Password, user.Email)
+	registeredUser, err := ac.authService.Register(user.Username, user.Password, user.Email, user.PhoneNumber)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

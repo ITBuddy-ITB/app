@@ -6,6 +6,7 @@ const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
+    phone_number: "",
     password: "",
     confirmPassword: "",
   });
@@ -41,7 +42,7 @@ const RegisterPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await register(formData.username, formData.email, formData.password);
+      await register(formData.username, formData.email, formData.password, formData.phone_number);
       navigate("/login"); // Redirect to login after successful registration
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
@@ -57,7 +58,12 @@ const RegisterPage: React.FC = () => {
           <div className="text-center mb-8">
             <div className="mx-auto h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
               <svg className="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                />
               </svg>
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
@@ -98,6 +104,22 @@ const RegisterPage: React.FC = () => {
             </div>
 
             <div>
+              <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number
+              </label>
+              <input
+                id="phone_number"
+                name="phone_number"
+                type="tel"
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 focus:bg-white"
+                placeholder="Enter your phone number"
+                value={formData.phone_number}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
@@ -133,7 +155,12 @@ const RegisterPage: React.FC = () => {
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                 <div className="flex">
                   <svg className="h-5 w-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                   <span className="text-red-700 text-sm">{error}</span>
                 </div>
@@ -143,12 +170,24 @@ const RegisterPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center"
+            >
               {isLoading ? (
                 <>
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   Creating account...
                 </>
@@ -159,7 +198,10 @@ const RegisterPage: React.FC = () => {
 
             <div className="text-center">
               <span className="text-gray-600">Already have an account? </span>
-              <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-500 transition-colors duration-200">
+              <Link
+                to="/login"
+                className="font-semibold text-blue-600 hover:text-blue-500 transition-colors duration-200"
+              >
                 Sign in
               </Link>
             </div>
