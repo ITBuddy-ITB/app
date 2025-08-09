@@ -236,9 +236,9 @@ Panduan Penting:
 								Items: &genai.Schema{
 									Type: genai.TypeObject,
 									Properties: map[string]*genai.Schema{
-										"step_number":   {Type: genai.TypeNumber},
-										"description":   {Type: genai.TypeString},
-										"redirect_url":  {Type: genai.TypeString},
+										"step_number":  {Type: genai.TypeNumber},
+										"description":  {Type: genai.TypeString},
+										"redirect_url": {Type: genai.TypeString},
 									},
 								},
 							},
@@ -264,9 +264,9 @@ Panduan Penting:
 											Items: &genai.Schema{
 												Type: genai.TypeObject,
 												Properties: map[string]*genai.Schema{
-													"step_number":   {Type: genai.TypeNumber},
-													"description":   {Type: genai.TypeString},
-													"redirect_url":  {Type: genai.TypeString},
+													"step_number":  {Type: genai.TypeNumber},
+													"description":  {Type: genai.TypeString},
+													"redirect_url": {Type: genai.TypeString},
 												},
 											},
 										},
@@ -305,12 +305,12 @@ Panduan Penting:
 // Helper method to build business profile text
 func (s *GenAIService) buildBusinessProfileText(business models.Business) string {
 	var profile strings.Builder
-	
+
 	profile.WriteString(fmt.Sprintf("Business Name: %s\n", business.Name))
 	profile.WriteString(fmt.Sprintf("Business Type: %s\n", business.Type))
 	profile.WriteString(fmt.Sprintf("Industry: %s\n", business.Industry))
 	profile.WriteString(fmt.Sprintf("Description: %s\n", business.Description))
-	
+
 	if business.FoundedAt != nil {
 		profile.WriteString(fmt.Sprintf("Founded: %s\n", business.FoundedAt.Format("2006-01-02")))
 	}
@@ -337,7 +337,7 @@ func (s *GenAIService) buildBusinessProfileText(business models.Business) string
 	} else {
 		for _, product := range business.Products {
 			profile.WriteString(fmt.Sprintf("- Product: %s\n", product.Name))
-			
+
 			if len(product.ProductLegals) == 0 {
 				profile.WriteString("  Legal documents: None\n")
 			} else {
@@ -357,4 +357,151 @@ func (s *GenAIService) buildBusinessProfileText(business models.Business) string
 	}
 
 	return profile.String()
+}
+
+// AI Suggestions
+type AISuggestion struct {
+	Suggestion string `json:"suggestion"`
+	Category   string `json:"category"`
+	Priority   string `json:"priority"`
+}
+
+type AISuggestionsResponse struct {
+	BusinessName string         `json:"business_name"`
+	Suggestions  []AISuggestion `json:"suggestions"`
+	GeneratedAt  string         `json:"generated_at"`
+}
+
+func (s *GenAIService) GenerateBusinessSuggestions(businessID uint, isRefresh bool) (*AISuggestionsResponse, error) {
+	ctx := context.Background()
+
+	if !isRefresh {
+		var existing models.BusinessAISuggestion
+		if err := s.DB.Preload("Suggestions").
+			Where("business_id = ?", businessID).
+			Order("created_at DESC").
+			First(&existing).Error; err == nil {
+			// Return hasil cache
+			resp := AISuggestionsResponse{
+				BusinessName: existing.BusinessName,
+				GeneratedAt:  existing.GeneratedAt,
+			}
+			for _, item := range existing.Suggestions {
+				resp.Suggestions = append(resp.Suggestions, AISuggestion{
+					Suggestion: item.Suggestion,
+					Category:   item.Category,
+					Priority:   item.Priority,
+				})
+			}
+			return &resp, nil
+		}
+	}
+
+	// Fetch business data with all relations
+	var business models.Business
+	if err := s.DB.Preload("Products").Preload("Legals").Preload("Products.ProductLegals").
+		First(&business, businessID).Error; err != nil {
+		return nil, fmt.Errorf("failed to fetch business: %w", err)
+	}
+
+	// Build business profile text for AI analysis
+	businessProfile := s.buildBusinessProfileText(business)
+
+	prompt := fmt.Sprintf(`Anda adalah seorang konsultan bisnis berpengalaman di Indonesia. 
+Analisis profil bisnis berikut dan berikan 6-8 saran yang actionable.
+
+**Profil Bisnis:**
+%s
+
+**Instruksi Output:**
+- Format **hanya** dalam JSON yang valid (tanpa teks lain di luar JSON).
+- Gunakan struktur berikut:
+
+{
+  "business_name": "Nama Bisnis",
+  "suggestions": [
+    {
+      "suggestion": "Deskripsi saran detail dan actionable",
+      "category": "Marketing & Branding",
+      "priority": "High"
+    }
+  ],
+  "generated_at": "YYYY-MM-DDTHH:MM:SSZ"
+}
+
+**Aturan:**
+- Kategori harus salah satu dari: "Marketing & Branding", "Product Development", "Operations", "Partnership", "Digital Transformation", "Customer Experience".
+- Priority: "High", "Medium", "Low".
+- Bahasa: Indonesia yang mudah dipahami.
+- Semua field harus diisi.
+- Buat saran yang singkat, spesifik, terukur, dan relevan dengan bisnis.
+- Tidak boleh ada teks di luar JSON.
+`, businessProfile)
+
+	parts := []*genai.Part{
+		genai.NewPartFromText(prompt),
+	}
+
+	config := &genai.GenerateContentConfig{
+		ResponseMIMEType: "application/json",
+		ResponseSchema: &genai.Schema{
+			Type: genai.TypeObject,
+			Properties: map[string]*genai.Schema{
+				"business_name": {Type: genai.TypeString},
+				"suggestions": {
+					Type: genai.TypeArray,
+					Items: &genai.Schema{
+						Type: genai.TypeObject,
+						Properties: map[string]*genai.Schema{
+							"suggestion": {Type: genai.TypeString},
+							"category":   {Type: genai.TypeString},
+							"priority":   {Type: genai.TypeString},
+						},
+						Required: []string{"suggestion", "category", "priority"},
+					},
+				},
+				"generated_at": {Type: genai.TypeString},
+			},
+			Required: []string{"business_name", "suggestions", "generated_at"},
+		},
+	}
+
+	contents := []*genai.Content{
+		genai.NewContentFromParts(parts, genai.RoleUser),
+	}
+
+	result, err := s.Client.Models.GenerateContent(
+		ctx,
+		"gemini-2.5-flash",
+		contents,
+		config,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to generate content: %w", err)
+	}
+
+	raw := strings.TrimSpace(result.Text())
+	var suggestions AISuggestionsResponse
+	if err := json.Unmarshal([]byte(raw), &suggestions); err != nil {
+		return nil, fmt.Errorf("failed to parse AI response: %w. Raw: %s", err, raw)
+	}
+
+	// Simpan ke DB
+	newRecord := models.BusinessAISuggestion{
+		BusinessID:   businessID,
+		BusinessName: suggestions.BusinessName,
+		GeneratedAt:  suggestions.GeneratedAt,
+	}
+	for _, s := range suggestions.Suggestions {
+		newRecord.Suggestions = append(newRecord.Suggestions, models.BusinessAISuggestionItem{
+			Suggestion: s.Suggestion,
+			Category:   s.Category,
+			Priority:   s.Priority,
+		})
+	}
+	if err := s.DB.Create(&newRecord).Error; err != nil {
+		return nil, fmt.Errorf("failed to save AI suggestions: %w", err)
+	}
+
+	return &suggestions, nil
 }

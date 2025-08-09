@@ -5,6 +5,9 @@ import (
 	"go-gin-backend/internal/models"
 	"go-gin-backend/internal/services"
 	"log"
+	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -84,10 +87,50 @@ func (gc *GenAIController) AnalyzeBusinessLegals(c *gin.Context) {
 			log.Printf("Failed to clear existing analysis: %v", err)
 		}
 	}
-	
+
 	if err := gc.businessService.StoreLegalAnalysisComparison(requestBody.BusinessID, analysis); err != nil {
 		log.Printf("Failed to store analysis: %v", err)
 	}
 
 	c.JSON(200, analysis)
+}
+
+func (ctrl *GenAIController) GenerateBusinessSuggestions(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid business ID format",
+			"message": "Business ID must be a valid number",
+		})
+		return
+	}
+
+	isRefresh := false
+	if val := c.Query("isRefresh"); val == "true" {
+		isRefresh = true
+	}
+
+	suggestions, err := ctrl.genAIService.GenerateBusinessSuggestions(uint(businessID), isRefresh)
+	if err != nil {
+		if strings.Contains(err.Error(), "record not found") {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error":   "Business not found",
+				"message": "No business found with the specified ID",
+			})
+			return
+		}
+		log.Printf("Error generating business suggestions: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to generate suggestions",
+			"message": "An error occurred while generating AI suggestions for your business",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"data":    suggestions,
+		"message": "Business suggestions generated successfully",
+	})
 }
