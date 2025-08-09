@@ -328,7 +328,7 @@ const BusinessDetailPage: React.FC = () => {
 
         {/* AI Suggestions */}
         <div className="pb-8">
-        <AISuggestions businessName={business.name} />
+        <AISuggestions businessId={business.ID} businessName={business.name} />
         </div>
 
         {/* Investment Readiness Breakdown */}

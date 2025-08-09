@@ -24,5 +24,6 @@ func SetupGenAIRoutes(router *gin.Engine) {
 		genAIGroup.GET("/response", genAIController.GetAIResponse)
 		genAIGroup.POST("/infer-products", genAIController.GetProductsFromFile)
 		genAIGroup.POST("/analyze-business-legals", genAIController.AnalyzeBusinessLegals)
+		genAIGroup.GET("/business-suggestions/:id", genAIController.GenerateBusinessSuggestions)
 	}
 }
