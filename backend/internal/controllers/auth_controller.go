@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"go-gin-backend/internal/models"
 	"go-gin-backend/internal/services"
 	"net/http"
@@ -22,6 +23,8 @@ func (ac *AuthController) Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	fmt.Println(user.PhoneNumber)
 
 	registeredUser, err := ac.authService.Register(user.Username, user.Password, user.Email, user.PhoneNumber)
 	if err != nil {
