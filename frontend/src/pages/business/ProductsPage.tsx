@@ -196,12 +196,6 @@ const ProductsPage: React.FC = () => {
                         value={product.name}
                         onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)}
                       />
-                      <input
-                        type="text"
-                        className="w-full border rounded-lg px-3 py-2"
-                        value={product.name}
-                        onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)}
-                      />
                     </div>
                   </div>
                 </div>
