@@ -45,8 +45,8 @@ const LoginPage: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-            <p className="text-gray-600">Sign in to your account</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Selamat Datang di SINAR</h2>
+            <p className="text-gray-600">Masuk ke akun SINAR Anda</p>
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>

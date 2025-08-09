@@ -35,18 +35,12 @@ const BusinessPage: React.FC = () => {
         <div className="text-center mb-8">
           <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-emerald-100 to-blue-100 text-emerald-800 rounded-full mb-4">
             <Trophy className="w-3 h-3 mr-2" />
-            <span className="text-xs font-medium">Business Management Platform</span>
+            <span className="text-xs font-medium">SINAR Business Platform</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Your{" "}
-            <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-              Business
-            </span>{" "}
-            Portfolio
+            Your <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">Business</span> Portfolio
           </h1>
-          <p className="text-base text-gray-600 max-w-2xl mx-auto mb-6 leading-relaxed">
-            Manage your complete business profiles with our comprehensive platform.
-          </p>
+          <p className="text-base text-gray-600 max-w-2xl mx-auto mb-6 leading-relaxed">Manage your complete business profiles with SINAR's comprehensive platform.</p>
 
           {/* Stats Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto">
@@ -87,13 +81,11 @@ const BusinessPage: React.FC = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">No Businesses Ready Yet</h3>
               <p className="text-base text-gray-600 mb-6 max-w-lg mx-auto leading-relaxed">
-                You don't have any complete business profiles yet. Create a new business and complete all the required
-                steps to see it listed here.
+                You don't have any complete business profiles yet. Create a new business and complete all the required steps to see it listed here.
               </p>
               <Link
                 to="/business/step-1"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 <Plus className="w-4 h-4 mr-2" />
                 <span className="font-semibold">Create New Business</span>
               </Link>
@@ -114,8 +106,7 @@ const BusinessPage: React.FC = () => {
                   {/* Create New Business Button - Moved here */}
                   <Link
                     to="/business/step-1"
-                    className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm font-medium"
-                  >
+                    className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm font-medium">
                     <Plus className="w-4 h-4 mr-1" />
                     <span>New Business</span>
                   </Link>
@@ -123,9 +114,7 @@ const BusinessPage: React.FC = () => {
               </div>
 
               {/* Helper text */}
-              <p className="text-xs text-gray-500 mb-3">
-                Click on any business card to view details and manage your business information
-              </p>
+              <p className="text-xs text-gray-500 mb-3">Click on any business card to view details and manage your business information</p>
 
               <div className="grid gap-3">
                 {businesses.map((business) => {
@@ -133,17 +122,12 @@ const BusinessPage: React.FC = () => {
                     <Link
                       key={business.ID}
                       to={`/business/${business.ID}/details`}
-                      className="relative group block bg-white rounded-lg p-4 border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50/30 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer"
-                    >
+                      className="relative group block bg-white rounded-lg p-4 border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50/30 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer">
                       <div className="flex items-center justify-between">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center space-x-2 mb-2">
-                            <h4 className="text-lg font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors duration-200 truncate">
-                              {business.name}
-                            </h4>
-                            <span className="px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border flex-shrink-0">
-                              Active
-                            </span>
+                            <h4 className="text-lg font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors duration-200 truncate">{business.name}</h4>
+                            <span className="px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border flex-shrink-0">Active</span>
                           </div>
 
                           <div className="flex items-center space-x-4 mb-3">
@@ -161,9 +145,7 @@ const BusinessPage: React.FC = () => {
                             )}
                           </div>
 
-                          {business.description && (
-                            <p className="text-xs text-gray-600 line-clamp-1">{business.description}</p>
-                          )}
+                          {business.description && <p className="text-xs text-gray-600 line-clamp-1">{business.description}</p>}
                         </div>
 
                         <div className="flex items-center space-x-3 ml-4">
@@ -176,12 +158,7 @@ const BusinessPage: React.FC = () => {
 
                           {/* Click indicator */}
                           <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">
-                            <svg
-                              className="w-5 h-5 text-emerald-600"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
+                            <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
                           </div>

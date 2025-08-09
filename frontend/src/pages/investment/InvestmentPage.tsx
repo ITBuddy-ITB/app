@@ -8,8 +8,7 @@ import ChatModal from "../../components/ChatModal";
 import { ChatService } from "../../services/aiChatService";
 
 const InvestmentPage: React.FC = () => {
-  const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } =
-    useInvestment();
+  const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } = useInvestment();
 
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -51,18 +50,14 @@ const InvestmentPage: React.FC = () => {
       <div className="text-center mb-12">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-4xl font-bold text-gray-900">
-            Private <span className="text-blue-600">Investment</span> Opportunities
+            Peluang <span className="text-blue-600">Investasi</span> Swasta
           </h1>
-          <button
-            onClick={() => setShowChatModal(true)}
-            className="py-2 px-4 hover:bg-blue-300 duration-200 cursor-pointer rounded-lg bg-blue-200 text-blue-600"
-          >
-            Ask AI
+          <button onClick={() => setShowChatModal(true)} className="py-2 px-4 hover:bg-blue-300 duration-200 cursor-pointer rounded-lg bg-blue-200 text-blue-600">
+            Tanya AI
           </button>
         </div>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          Invest in promising Indonesian businesses with complete financial and legal documentation. Support growth
-          while earning attractive returns.
+          Temukan bisnis Indonesia yang menjanjikan melalui platform investasi komprehensif SINAR. Dukung pertumbuhan sambil meraih keuntungan yang menarik.
         </p>
       </div>
 
@@ -104,9 +99,7 @@ const InvestmentPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-gray-600">With Legal Docs</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {businesses.filter((b) => b.legals && b.legals.length > 0).length}
-              </p>
+              <p className="text-2xl font-bold text-gray-900">{businesses.filter((b) => b.legals && b.legals.length > 0).length}</p>
               <p className="text-xs text-purple-600 flex items-center mt-1">
                 <Star className="w-3 h-3 mr-1" />
                 Legally compliant
@@ -160,8 +153,7 @@ const InvestmentPage: React.FC = () => {
                 id="industry"
                 value={selectedIndustry}
                 onChange={(e) => setSelectedIndustry(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">All Industries</option>
                 {industries.map((industry) => (
                   <option key={industry} value={industry}>
@@ -171,10 +163,7 @@ const InvestmentPage: React.FC = () => {
               </select>
             </div>
             <div className="flex items-end">
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-              >
+              <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
                 Search
               </button>
             </div>
@@ -200,8 +189,7 @@ const InvestmentPage: React.FC = () => {
                 industry: selectedIndustry || undefined,
               })
             }
-            className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
+            className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -248,8 +236,7 @@ const InvestmentPage: React.FC = () => {
               <button
                 onClick={() => handlePageChange(pagination.page - 1)}
                 disabled={pagination.page <= 1}
-                className="px-3 py-2 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-              >
+                className="px-3 py-2 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50">
                 Previous
               </button>
 
@@ -257,17 +244,10 @@ const InvestmentPage: React.FC = () => {
                 .filter((page) => page === 1 || page === pagination.totalPages || Math.abs(page - pagination.page) <= 2)
                 .map((page, index, array) => (
                   <React.Fragment key={page}>
-                    {index > 0 && array[index - 1] !== page - 1 && (
-                      <span className="px-2 py-2 text-sm text-gray-500">...</span>
-                    )}
+                    {index > 0 && array[index - 1] !== page - 1 && <span className="px-2 py-2 text-sm text-gray-500">...</span>}
                     <button
                       onClick={() => handlePageChange(page)}
-                      className={`px-3 py-2 text-sm border rounded-md ${
-                        page === pagination.page
-                          ? "bg-blue-600 text-white border-blue-600"
-                          : "border-gray-300 hover:bg-gray-50"
-                      }`}
-                    >
+                      className={`px-3 py-2 text-sm border rounded-md ${page === pagination.page ? "bg-blue-600 text-white border-blue-600" : "border-gray-300 hover:bg-gray-50"}`}>
                       {page}
                     </button>
                   </React.Fragment>
@@ -276,8 +256,7 @@ const InvestmentPage: React.FC = () => {
               <button
                 onClick={() => handlePageChange(pagination.page + 1)}
                 disabled={pagination.page >= pagination.totalPages}
-                className="px-3 py-2 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
-              >
+                className="px-3 py-2 text-sm border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50">
                 Next
               </button>
             </div>
