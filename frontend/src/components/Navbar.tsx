@@ -30,10 +30,10 @@ const Navbar: React.FC = () => {
   };
 
   const navLinks = [
-    { to: "/", label: "Home", icon: Home },
-    { to: "/dashboard", label: "Dashboard", icon: BarChart3 },
-    { to: "/business", label: "Business", icon: Building2 },
-    { to: "/investments", label: "Investment", icon: TrendingUp },
+    { to: "/", label: "Beranda", icon: Home },
+    { to: "/dashboard", label: "Dasbor", icon: BarChart3 },
+    { to: "/business", label: "Bisnis", icon: Building2 },
+    { to: "/investments", label: "Investasi", icon: TrendingUp },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -51,8 +51,8 @@ const Navbar: React.FC = () => {
               <div className="absolute -inset-1 bg-gradient-to-r from-emerald-600 to-blue-600 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">Gelatik</h1>
-              <p className="text-xs text-gray-500 -mt-1">UMKM Growth Platform</p>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">SINAR</h1>
+              <p className="text-xs text-gray-500 -mt-1">Solusi Inklusif untuk Akselerasi Rintisan</p>
             </div>
           </Link>
 
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
                   <div className="h-8 w-8 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg flex items-center justify-center">
                     <User className="h-4 w-4 text-white" />
                   </div>
-                  <span className="text-sm font-medium text-gray-700">Account</span>
+                  <span className="text-sm font-medium text-gray-700">Akun</span>
                   <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform duration-300 ${userMenuOpen ? "rotate-180" : ""}`} />
                 </button>
 
@@ -93,12 +93,12 @@ const Navbar: React.FC = () => {
                 {userMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-50">
                     <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900">Welcome back!</p>
-                      <p className="text-xs text-gray-500">Manage your account</p>
+                      <p className="text-sm font-medium text-gray-900">Selamat datang kembali!</p>
+                      <p className="text-xs text-gray-500">Kelola akun Anda</p>
                     </div>
                     <button onClick={handleLogout} className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
                       <LogOut className="h-4 w-4" />
-                      <span>Logout</span>
+                      <span>Keluar</span>
                     </button>
                   </div>
                 )}
@@ -106,12 +106,12 @@ const Navbar: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-3">
                 <Link to="/login" className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors duration-200">
-                  Login
+                  Masuk
                 </Link>
                 <Link
                   to="/register"
                   className="relative px-6 py-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white text-sm font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
-                  <span className="relative z-10">Get Started</span>
+                  <span className="relative z-10">Mulai Sekarang</span>
                   <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
               </div>
@@ -157,8 +157,8 @@ const Navbar: React.FC = () => {
                     <User className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Account</p>
-                    <p className="text-xs text-gray-500">Welcome back!</p>
+                    <p className="text-sm font-medium text-gray-900">Akun</p>
+                    <p className="text-xs text-gray-500">Selamat datang kembali!</p>
                   </div>
                 </div>
                 <button
@@ -168,7 +168,7 @@ const Navbar: React.FC = () => {
                   }}
                   className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-red-50 text-red-600 rounded-xl text-sm font-medium hover:bg-red-100 transition-colors duration-200">
                   <LogOut className="h-4 w-4" />
-                  <span>Logout</span>
+                  <span>Keluar</span>
                 </button>
               </div>
             ) : (
@@ -177,13 +177,13 @@ const Navbar: React.FC = () => {
                   to="/login"
                   onClick={() => setMenuOpen(false)}
                   className="w-full block text-center px-4 py-3 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors duration-200">
-                  Login
+                  Masuk
                 </Link>
                 <Link
                   to="/register"
                   onClick={() => setMenuOpen(false)}
                   className="w-full block text-center px-4 py-3 bg-gradient-to-r from-emerald-600 to-blue-600 text-white text-sm font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                  Get Started
+                  Mulai Sekarang
                 </Link>
               </div>
             )}

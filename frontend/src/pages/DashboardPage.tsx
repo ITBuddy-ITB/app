@@ -15,12 +15,12 @@ const DashboardPage: React.FC = () => {
       <div className="bg-gradient-to-r from-emerald-600 to-blue-600 rounded-2xl shadow-xl text-white p-8 mb-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Investment Readiness Dashboard</h1>
-            <p className="text-emerald-100">Track your journey from UMKM to investment-ready business</p>
+            <h1 className="text-3xl font-bold mb-2">Dasbor Kesiapan Investasi SINAR</h1>
+            <p className="text-emerald-100">Lacak perjalanan Anda dari UMKM ke bisnis siap investasi dengan SINAR</p>
           </div>
           <div className="text-center">
             <div className="text-4xl font-bold">{investmentReadinessScore}%</div>
-            <div className="text-sm text-emerald-100">Investment Ready</div>
+            <div className="text-sm text-emerald-100">Siap Investasi</div>
           </div>
         </div>
       </div>
@@ -106,11 +106,7 @@ const DashboardPage: React.FC = () => {
             ].map((req, index) => (
               <div key={index} className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div
-                    className={`w-5 h-5 rounded-full flex items-center justify-center ${
-                      req.completed ? "bg-emerald-100" : "bg-gray-100"
-                    }`}
-                  >
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center ${req.completed ? "bg-emerald-100" : "bg-gray-100"}`}>
                     {req.completed && <CheckCircle className="w-3 h-3 text-emerald-600" />}
                   </div>
                   <span className={`text-sm ${req.completed ? "text-gray-900" : "text-gray-600"}`}>{req.item}</span>
@@ -124,10 +120,7 @@ const DashboardPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
           <div className="grid grid-cols-2 gap-4">
-            <Link
-              to="/business"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-lg transition-colors duration-200 text-center block"
-            >
+            <Link to="/business" className="bg-emerald-600 hover:bg-emerald-700 text-white p-4 rounded-lg transition-colors duration-200 text-center block">
               <Building2 className="h-6 w-6 mx-auto mb-2" />
               <span className="text-sm font-medium">Manage Business</span>
             </Link>
@@ -142,10 +135,7 @@ const DashboardPage: React.FC = () => {
               <span className="text-sm font-medium">Set Goals</span>
             </button>
 
-            <Link
-              to="/investments"
-              className="bg-orange-600 hover:bg-orange-700 text-white p-4 rounded-lg transition-colors duration-200 text-center block"
-            >
+            <Link to="/investments" className="bg-orange-600 hover:bg-orange-700 text-white p-4 rounded-lg transition-colors duration-200 text-center block">
               <DollarSign className="h-6 w-6 mx-auto mb-2" />
               <span className="text-sm font-medium">Investments</span>
             </Link>
@@ -162,8 +152,7 @@ const DashboardPage: React.FC = () => {
             <div>
               <h4 className="font-medium text-gray-900">Improve Profit Margin</h4>
               <p className="text-sm text-gray-600 mt-1">
-                Your current profit margin of {profitMargin}% needs to reach 20% to attract private investors. Consider
-                optimizing operational costs and increasing revenue streams.
+                Your current profit margin of {profitMargin}% needs to reach 20% to attract private investors. Consider optimizing operational costs and increasing revenue streams.
               </p>
             </div>
           </div>
@@ -172,10 +161,7 @@ const DashboardPage: React.FC = () => {
             <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5" />
             <div>
               <h4 className="font-medium text-gray-900">Complete Corporate Governance</h4>
-              <p className="text-sm text-gray-600 mt-1">
-                Establish board of directors, audit committee, and implement proper internal controls to meet private
-                equity investment requirements.
-              </p>
+              <p className="text-sm text-gray-600 mt-1">Establish board of directors, audit committee, and implement proper internal controls to meet private equity investment requirements.</p>
             </div>
           </div>
         </div>

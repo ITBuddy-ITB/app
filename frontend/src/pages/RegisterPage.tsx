@@ -66,8 +66,8 @@ const RegisterPage: React.FC = () => {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
-            <p className="text-gray-600">Join us today</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Buat Akun SINAR</h2>
+            <p className="text-gray-600">Bergabunglah dengan SINAR hari ini dan percepat pertumbuhan bisnis Anda</p>
           </div>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
