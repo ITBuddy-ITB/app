@@ -134,3 +134,38 @@ func (ctrl *GenAIController) GenerateBusinessSuggestions(c *gin.Context) {
 		"message": "Business suggestions generated successfully",
 	})
 }
+
+// InvestmentChatRequest represents the request for investment chat
+type InvestmentChatRequest struct {
+	Message     string                 `json:"message" binding:"required"`
+	Preferences map[string]interface{} `json:"preferences,omitempty"`
+}
+
+// GetInvestmentAdvice handles investment chat with AI using database context
+func (ctrl *GenAIController) GetInvestmentAdvice(c *gin.Context) {
+	var req InvestmentChatRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid request format",
+			"message": "Message is required",
+		})
+		return
+	}
+
+	// Get AI advice with enhanced context
+	response, err := ctrl.genAIService.GetInvestmentAdviceWithContext(req.Message, req.Preferences)
+	if err != nil {
+		log.Printf("Error getting investment advice: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to get investment advice",
+			"message": "An error occurred while processing your request",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"data":    response,
+		"message": "Investment advice generated successfully",
+	})
+}

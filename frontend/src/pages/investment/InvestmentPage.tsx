@@ -4,6 +4,8 @@ import { useInvestment } from "../../hooks/useInvestment";
 import type { Business } from "../../services/businessService";
 import BusinessDetailsModal from "./BusinessDetailsModal";
 import BusinessCard from "./BusinessCard";
+import ChatModal from "../../components/ChatModal";
+import { ChatService } from "../../services/aiChatService";
 
 const InvestmentPage: React.FC = () => {
   const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } =
@@ -13,6 +15,7 @@ const InvestmentPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [showChatModal, setShowChatModal] = useState(false);
 
   // Get unique industries for filter
   const industries = Array.from(new Set(businesses.map((business) => business.industry).filter(Boolean)));
@@ -50,6 +53,12 @@ const InvestmentPage: React.FC = () => {
           <h1 className="text-4xl font-bold text-gray-900">
             Private <span className="text-blue-600">Investment</span> Opportunities
           </h1>
+          <button
+            onClick={() => setShowChatModal(true)}
+            className="py-2 px-4 hover:bg-blue-300 duration-200 cursor-pointer rounded-lg bg-blue-200 text-blue-600"
+          >
+            Ask AI
+          </button>
         </div>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
           Invest in promising Indonesian businesses with complete financial and legal documentation. Support growth
@@ -278,6 +287,16 @@ const InvestmentPage: React.FC = () => {
 
       {/* Business Details Modal */}
       <BusinessDetailsModal business={selectedBusiness} isOpen={showModal} onClose={() => setShowModal(false)} />
+
+      {/* AI Chat Modal */}
+      <ChatModal
+        isOpen={showChatModal}
+        onClose={() => setShowChatModal(false)}
+        initialPreferences={ChatService.createPreferences({
+          industry: selectedIndustry || undefined,
+          searchTerm: searchTerm || undefined,
+        })}
+      />
     </div>
   );
 };
