@@ -46,7 +46,7 @@ const BusinessDetailPage: React.FC = () => {
   const getBusinessStage = (score: number) => {
     if (score >= 80)
       return {
-        stage: "Investment Ready",
+        stage: "Siap Investasi",
         color: "text-brown-primary",
         bg: "bg-brown-bg",
         border: "border-brown-accent",
@@ -405,7 +405,7 @@ const BusinessDetailPage: React.FC = () => {
                   ) : (
                     <>
                       <Clock className="w-3 h-3 mr-1 text-gray-400" />
-                      No products yet
+                      Belum ada produk
                     </>
                   )}
                 </span>
@@ -434,7 +434,7 @@ const BusinessDetailPage: React.FC = () => {
                   ) : (
                     <>
                       <Clock className="w-3 h-3 mr-1 text-gray-400" />
-                      No documents yet
+                      Belum ada dokumen
                     </>
                   )}
                 </span>
@@ -463,7 +463,7 @@ const BusinessDetailPage: React.FC = () => {
                   ) : (
                     <>
                       <Clock className="w-3 h-3 mr-1 text-gray-400" />
-                      Pending
+                      Tertunda
                     </>
                   )}
                 </span>
@@ -485,7 +485,7 @@ const BusinessDetailPage: React.FC = () => {
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   <Clock className="w-3 h-3 mr-1 text-gray-400" />
-                  View projections
+                  Lihat proyeksi
                 </span>
               </div>
             </div>

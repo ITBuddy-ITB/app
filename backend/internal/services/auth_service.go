@@ -22,7 +22,7 @@ func NewAuthService(userService *UserService, jwtSecret string) *AuthService {
 	}
 }
 
-func (s *AuthService) Register(username, password, email string) (*models.User, error) {
+func (s *AuthService) Register(username, password, email string, phone_number string) (*models.User, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
@@ -32,6 +32,7 @@ func (s *AuthService) Register(username, password, email string) (*models.User, 
 		Username: username,
 		Password: string(hashedPassword),
 		Email:    email,
+		PhoneNumber:    phone_number,
 	}
 
 	err = s.UserService.CreateUser(user)

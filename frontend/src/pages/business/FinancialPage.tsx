@@ -86,7 +86,7 @@ const FinancialPage: React.FC = () => {
       // Create new financial record instead of updating
       const createdFinancial = await BusinessService.createBusinessFinancial(parseInt(businessId!), newFinancialData);
       setFinancial(createdFinancial);
-      setSuccessMessage("New financial record created successfully!");
+      setSuccessMessage("Catatan keuangan baru berhasil dibuat!");
 
       // Clear success message after 3 seconds
       setTimeout(() => setSuccessMessage(null), 3000);
@@ -103,7 +103,7 @@ const FinancialPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-brown-bg to-white">
         <div className="max-w-4xl mx-auto py-12 px-4">
-          <div className="text-center">Loading financial data...</div>
+          <div className="text-center">Memuat data keuangan...</div>
         </div>
       </div>
     );
@@ -115,8 +115,8 @@ const FinancialPage: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Add Financial Record</h1>
-            <p className="text-gray-600">Create a new financial record for your business</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Tambah Catatan Keuangan</h1>
+            <p className="text-gray-600">Buat catatan keuangan baru untuk bisnis Anda</p>
           </div>
           <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
             Back to Business
@@ -136,7 +136,7 @@ const FinancialPage: React.FC = () => {
               {/* Revenue */}
               <div>
                 <label htmlFor="revenue" className="block text-sm font-medium text-gray-700 mb-2">
-                  Revenue (Rp)
+                  Pendapatan (Rp)
                 </label>
                 <input
                   type="number"
@@ -174,7 +174,7 @@ const FinancialPage: React.FC = () => {
               {/* Assets */}
               <div>
                 <label htmlFor="assets" className="block text-sm font-medium text-gray-700 mb-2">
-                  Total Assets (Rp)
+                  Total Aset (Rp)
                 </label>
                 <input
                   type="number"
@@ -193,7 +193,7 @@ const FinancialPage: React.FC = () => {
               {/* Liabilities */}
               <div>
                 <label htmlFor="liabilities" className="block text-sm font-medium text-gray-700 mb-2">
-                  Total Liabilities (Rp)
+                  Total Kewajiban (Rp)
                 </label>
                 <input
                   type="number"
@@ -212,7 +212,7 @@ const FinancialPage: React.FC = () => {
               {/* Equity */}
               <div>
                 <label htmlFor="equity" className="block text-sm font-medium text-gray-700 mb-2">
-                  Total Equity (Rp)
+                  Total Ekuitas (Rp)
                 </label>
                 <input
                   type="number"
@@ -231,7 +231,7 @@ const FinancialPage: React.FC = () => {
             {/* Notes */}
             <div>
               <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
-                Additional Notes
+                Catatan Tambahan
               </label>
               <textarea
                 id="notes"
@@ -254,7 +254,7 @@ const FinancialPage: React.FC = () => {
         {/* Financial Summary */}
         {financial && (financial.ebitda || financial.assets || financial.liabilities || financial.equity) && (
           <div className="bg-white shadow rounded-lg p-6 mt-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Financial Summary</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Ringkasan Keuangan</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {financial.ebitda && (
                 <div className="text-center p-4 bg-brown-bg-light rounded-lg">
@@ -270,8 +270,8 @@ const FinancialPage: React.FC = () => {
               )}
               {financial.liabilities && (
                 <div className="text-center p-4 bg-red-50 rounded-lg">
-                  <div className="text-2xl font-bold text-red-600">${financial.liabilities.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">Total Liabilities</div>
+                  <div className="text-2xl font-bold text-red-600">Rp{financial.liabilities.toLocaleString()}</div>
+                  <div className="text-sm text-gray-600">Total Kewajiban</div>
                 </div>
               )}
               {financial.equity && financial.liabilities && financial.assets && (

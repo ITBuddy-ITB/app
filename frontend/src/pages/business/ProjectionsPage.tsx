@@ -149,7 +149,7 @@ const ProjectionsPage: React.FC = () => {
           </div>
           <div className="flex space-x-4">
             <button onClick={() => fetchAll(true)} className="bg-brown-bg hover:bg-brown-accent-light text-brown-primary px-2 py-2 rounded-lg">
-              Refresh
+              Segarkan
             </button>
             <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
               Kembali ke Bisnis

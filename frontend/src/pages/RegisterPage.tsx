@@ -6,6 +6,7 @@ const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
+    phone_number: "",
     password: "",
     confirmPassword: "",
   });
@@ -41,7 +42,7 @@ const RegisterPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      await register(formData.username, formData.email, formData.password);
+      await register(formData.username, formData.email, formData.password, formData.phone_number);
       navigate("/login"); // Redirect to login after successful registration
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
@@ -93,6 +94,22 @@ const RegisterPage: React.FC = () => {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brown-primary focus:border-brown-primary transition-colors duration-200 bg-brown-bg-light focus:bg-white"
                 placeholder="Enter your email"
                 value={formData.email}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-2">
+                Phone Number
+              </label>
+              <input
+                id="phone_number"
+                name="phone_number"
+                type="tel"
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 focus:bg-white"
+                placeholder="Enter your phone number"
+                value={formData.phone_number}
                 onChange={handleInputChange}
               />
             </div>

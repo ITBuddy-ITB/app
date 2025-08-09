@@ -5,6 +5,7 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  phone_number: string;
   created_at: string;
   updated_at: string;
 }
@@ -12,6 +13,7 @@ export interface User {
 export interface RegisterData {
   username: string;
   email: string;
+  phone_number: string;
   password: string;
 }
 

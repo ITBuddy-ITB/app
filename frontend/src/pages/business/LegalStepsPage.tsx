@@ -24,9 +24,7 @@ const LegalStepsPage: React.FC = () => {
       setSteps(state.steps);
       setLegalTypeName(state.type);
     } else if (legalType) {
-      // Fallback: decode dari URL parameter jika state tidak tersedia
       setLegalTypeName(decodeURIComponent(legalType));
-      // Redirect kembali jika tidak ada steps data
       navigate(-1);
     } else {
       navigate(-1);
@@ -45,11 +43,9 @@ const LegalStepsPage: React.FC = () => {
 
   const handleRedirect = (url: string) => {
     setLoading(true);
-    // Jika URL adalah eksternal
     if (url.startsWith("http")) {
       window.open(url, "_blank", "noopener,noreferrer");
     } else {
-      // Jika URL adalah internal route
       navigate(url);
     }
     setTimeout(() => setLoading(false), 1000);
@@ -60,9 +56,7 @@ const LegalStepsPage: React.FC = () => {
   };
 
   const isStepAccessible = (stepNumber: number) => {
-    // Step pertama selalu bisa diakses
     if (stepNumber === 1) return true;
-    // Step selanjutnya bisa diakses jika step sebelumnya sudah selesai
     return completedSteps.has(stepNumber - 1);
   };
 
@@ -72,7 +66,7 @@ const LegalStepsPage: React.FC = () => {
         <div className="flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brown-primary mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading steps...</p>
+            <p className="text-gray-600">Memuat Langkah...</p>
           </div>
         </div>
       </div>
@@ -89,20 +83,20 @@ const LegalStepsPage: React.FC = () => {
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to Legal Requirements
+              Kembali ke Persyaratan Legal
             </button>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">How to Get: {legalTypeName}</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Cara Mendapatkan: {legalTypeName}</h1>
 
-          <p className="text-gray-600 mb-6">Follow these step-by-step instructions to obtain your legal document.</p>
+          <p className="text-gray-600 mb-6">Ikuti langkah-langkah berikut untuk mendapatkan dokumen legal Anda.</p>
 
           {/* Progress Bar */}
           <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Progress</span>
+              <span className="text-sm font-medium text-gray-700">Progres</span>
               <span className="text-sm font-medium text-gray-700">
-                {completedSteps.size} of {steps.length} steps completed
+                {completedSteps.size} dari {steps.length} langkah selesai
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
@@ -114,7 +108,7 @@ const LegalStepsPage: React.FC = () => {
                   <svg className="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-green-800 font-medium">All steps completed! 🎉</span>
+                  <span className="text-green-800 font-medium">Semua langkah selesai! 🎉</span>
                 </div>
               </div>
             )}
@@ -167,17 +161,17 @@ const LegalStepsPage: React.FC = () => {
                           {loading ? (
                             <div className="flex items-center">
                               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                              Loading...
+                              Memuat...
                             </div>
                           ) : step.redirect_url.startsWith("http") ? (
                             <div className="flex items-center">
-                              <span>Open Link</span>
+                              <span>Buka Tautan</span>
                               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                               </svg>
                             </div>
                           ) : (
-                            "Go to Guide"
+                            "Ke Panduan"
                           )}
                         </button>
 
@@ -196,10 +190,10 @@ const LegalStepsPage: React.FC = () => {
                               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
-                              Completed
+                              Selesai
                             </div>
                           ) : (
-                            "Mark as Complete"
+                            "Tandai Selesai"
                           )}
                         </button>
                       </div>

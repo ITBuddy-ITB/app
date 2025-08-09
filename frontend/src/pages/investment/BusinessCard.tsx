@@ -9,11 +9,11 @@ interface BusinessCardProps {
 
 const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) => {
   const formatCurrency = (amount?: number) => {
-    if (!amount) return "Not specified";
+    if (!amount) return "Tidak ditentukan";
     if (amount >= 1000000000) {
-      return `IDR ${(amount / 1000000000).toFixed(1)}B`;
+      return `IDR ${(amount / 1000000000).toFixed(1)}M`;
     } else if (amount >= 1000000) {
-      return `IDR ${(amount / 1000000).toFixed(0)}M`;
+      return `IDR ${(amount / 1000000).toFixed(0)}Jt`;
     }
     return `IDR ${amount.toLocaleString()}`;
   };
@@ -107,7 +107,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) 
               </p>
               <p className="font-semibold flex items-center" style={{ color: "#602a1d" }}>
                 <BarChart3 className="w-4 h-4 mr-1" />
-                {business.financial ? "Available" : "N/A"}
+                {business.financial ? "Tersedia" : "N/A"}
               </p>
             </div>
             <div>
@@ -187,7 +187,7 @@ const BusinessCard: React.FC<BusinessCardProps> = ({ business, onViewDetails }) 
               e.currentTarget.style.boxShadow = "0 4px 16px rgba(96, 42, 29, 0.2)";
             }}>
             <Building2 className="w-4 h-4 mr-2" />
-            View Details
+            Lihat Detail
           </button>
         </div>
       </div>
