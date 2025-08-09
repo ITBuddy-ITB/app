@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
+import { motion } from "framer-motion";
 import { BusinessService, type Business } from "../../services/businessService";
 import { Building2, TrendingUp, Target, Trophy, Plus, AlertCircle } from "lucide-react";
 
@@ -29,150 +30,370 @@ const BusinessPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-blue-50 to-white">
-      <div className="max-w-6xl mx-auto py-6 px-4">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-emerald-100 to-blue-100 text-emerald-800 rounded-full mb-4">
-            <Trophy className="w-3 h-3 mr-2" />
-            <span className="text-xs font-medium">SINAR Business Platform</span>
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Your <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">Business</span> Portfolio
-          </h1>
-          <p className="text-base text-gray-600 max-w-2xl mx-auto mb-6 leading-relaxed">Manage your complete business profiles with SINAR's comprehensive platform.</p>
+    <div
+      className="min-h-screen relative overflow-hidden"
+      style={{
+        background: `
+          linear-gradient(135deg, #602a1d 0%, #dbd7d2 20%, #f1edea 40%, #dbd7d2 60%, #602a1d 100%),
+          radial-gradient(circle at 30% 20%, rgba(96, 42, 29, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 70% 80%, rgba(96, 42, 29, 0.2) 0%, transparent 50%),
+          conic-gradient(from 180deg at 50% 50%, rgba(96, 42, 29, 0.1) 0%, transparent 25%, rgba(96, 42, 29, 0.1) 50%, transparent 75%)
+        `,
+      }}>
+      {/* Animated Background Patterns */}
+      <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+        {/* Floating orbs */}
+        <motion.div
+          className="absolute top-24 left-20 w-44 h-44 rounded-full opacity-18 blur-3xl"
+          style={{ backgroundColor: "#602a1d" }}
+          animate={{
+            y: [0, -35, 0],
+            x: [0, 20, 0],
+            scale: [1, 1.15, 1],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute top-52 right-16 w-32 h-32 rounded-full opacity-22 blur-3xl"
+          style={{ backgroundColor: "#602a1d" }}
+          animate={{
+            y: [0, 30, 0],
+            x: [0, -25, 0],
+            scale: [1, 0.85, 1],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+        />
+        <motion.div
+          className="absolute bottom-32 left-1/4 w-38 h-38 rounded-full opacity-20 blur-3xl"
+          style={{ backgroundColor: "#602a1d" }}
+          animate={{
+            y: [0, -28, 0],
+            x: [0, 32, 0],
+            scale: [1, 1.25, 1],
+          }}
+          transition={{
+            duration: 14,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.5,
+          }}
+        />
+      </motion.div>
 
-          {/* Stats Overview */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl mx-auto">
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              <div className="text-xl font-bold text-emerald-600 mb-1">{businesses.length}</div>
-              <div className="text-xs text-gray-600">Active Businesses</div>
-            </div>
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-white/20">
-              <div className="text-xl font-bold text-blue-600 mb-1">{businesses.length}</div>
-              <div className="text-xs text-gray-600">Ready for Listing</div>
-            </div>
-          </div>
-        </div>
+      {/* Geometric patterns */}
+      <div
+        className="absolute inset-0 opacity-12"
+        style={{
+          background: `
+            radial-gradient(circle at 25% 35%, #602a1d 2px, transparent 2px),
+            radial-gradient(circle at 75% 65%, #602a1d 1.5px, transparent 1.5px)
+          `,
+          backgroundSize: "70px 70px, 45px 45px",
+        }}
+      />
 
-        {/* Business List */}
-        <div className="space-y-4">
-          {loading ? (
-            <div className="text-center py-8">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
-              <p className="mt-2 text-gray-600">Loading your businesses...</p>
-            </div>
-          ) : error ? (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
-              <div className="flex items-center space-x-2">
-                <AlertCircle className="w-4 h-4" />
-                <span>{error}</span>
-              </div>
-            </div>
-          ) : businesses.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="relative mb-6">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-20 h-20 bg-gradient-to-r from-emerald-200 to-blue-200 rounded-full opacity-20"></div>
+      {/* Content */}
+      <div className="relative z-10">
+        <div className="max-w-6xl mx-auto py-6 px-4">
+          {/* Header */}
+          <motion.div className="text-center mb-8" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <motion.div
+              className="inline-flex items-center px-4 py-2 rounded-full mb-6 backdrop-blur-sm border shadow-lg"
+              style={{
+                backgroundColor: "rgba(96, 42, 29, 0.1)",
+                borderColor: "rgba(96, 42, 29, 0.3)",
+                color: "#602a1d",
+              }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}>
+              <motion.div
+                animate={{
+                  rotate: [0, 360, 360, 0, 0, 0, 0, 0],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  repeatDelay: 4,
+                  ease: "easeInOut",
+                }}>
+                <Trophy className="w-4 h-4 mr-2" />
+              </motion.div>
+              <span className="text-sm font-medium">SINAR Business Platform</span>
+            </motion.div>
+
+            <motion.h1 className="text-4xl font-bold mb-4" style={{ color: "#602a1d" }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+              Your{" "}
+              <span className="relative inline-block">
+                Business
+                <div className="absolute bottom-1 left-0 w-full h-2 opacity-30 -z-10" style={{ backgroundColor: "#602a1d" }} />
+              </span>{" "}
+              Portfolio
+            </motion.h1>
+
+            <motion.p
+              className="text-lg max-w-2xl mx-auto mb-8 leading-relaxed"
+              style={{ color: "#602a1d" }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.3 }}>
+              Manage your complete business profiles with SINAR's comprehensive platform.
+            </motion.p>
+
+            {/* Stats Overview */}
+            <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-xl mx-auto" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
+              <motion.div
+                className="rounded-xl p-6 backdrop-blur-sm border shadow-lg"
+                style={{
+                  backgroundColor: "rgba(241, 237, 234, 0.8)",
+                  borderColor: "rgba(96, 42, 29, 0.2)",
+                  boxShadow: "0 8px 32px rgba(96, 42, 29, 0.1)",
+                }}
+                whileHover={{
+                  y: -5,
+                  boxShadow: "0 12px 40px rgba(96, 42, 29, 0.15)",
+                }}>
+                <div className="text-3xl font-bold mb-2" style={{ color: "#602a1d" }}>
+                  {businesses.length}
                 </div>
-                <div className="relative text-gray-400 mb-4">
-                  <Building2 className="w-16 h-16 mx-auto" />
+                <div className="text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                  Active Businesses
                 </div>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">No Businesses Ready Yet</h3>
-              <p className="text-base text-gray-600 mb-6 max-w-lg mx-auto leading-relaxed">
-                You don't have any complete business profiles yet. Create a new business and complete all the required steps to see it listed here.
-              </p>
-              <Link
-                to="/business/step-1"
-                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                <Plus className="w-4 h-4 mr-2" />
-                <span className="font-semibold">Create New Business</span>
-              </Link>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-bold text-gray-900 flex items-center">
-                  <div className="h-6 w-6 bg-gradient-to-r from-emerald-600 to-blue-600 rounded-lg flex items-center justify-center mr-2">
-                    <TrendingUp className="w-3 h-3 text-white" />
+              </motion.div>
+
+              <motion.div
+                className="rounded-xl p-6 backdrop-blur-sm border shadow-lg"
+                style={{
+                  backgroundColor: "rgba(241, 237, 234, 0.8)",
+                  borderColor: "rgba(96, 42, 29, 0.2)",
+                  boxShadow: "0 8px 32px rgba(96, 42, 29, 0.1)",
+                }}
+                whileHover={{
+                  y: -5,
+                  boxShadow: "0 12px 40px rgba(96, 42, 29, 0.15)",
+                }}>
+                <div className="text-3xl font-bold mb-2" style={{ color: "#602a1d" }}>
+                  {businesses.length}
+                </div>
+                <div className="text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                  Ready for Listing
+                </div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+
+          {/* Business List */}
+          <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.5 }}>
+            {loading ? (
+              <motion.div className="text-center py-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 mb-4" style={{ borderColor: "#602a1d" }} />
+                <p style={{ color: "#602a1d" }}>Loading your businesses...</p>
+              </motion.div>
+            ) : error ? (
+              <motion.div
+                className="border px-6 py-4 rounded-xl backdrop-blur-sm"
+                style={{
+                  backgroundColor: "rgba(239, 68, 68, 0.1)",
+                  borderColor: "rgba(239, 68, 68, 0.3)",
+                  color: "#dc2626",
+                }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}>
+                <div className="flex items-center space-x-2">
+                  <AlertCircle className="w-5 h-5" />
+                  <span>{error}</span>
+                </div>
+              </motion.div>
+            ) : businesses.length === 0 ? (
+              <motion.div className="text-center py-16" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.6 }}>
+                <motion.div className="relative mb-8" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.7 }}>
+                  <div
+                    className="absolute inset-0 flex items-center justify-center"
+                    style={{
+                      background: "radial-gradient(circle, rgba(96, 42, 29, 0.2) 0%, transparent 70%)",
+                    }}>
+                    <div className="w-24 h-24 rounded-full opacity-30"></div>
                   </div>
-                  Your Business Portfolio
-                </h3>
-                <div className="flex items-center space-x-3">
-                  <div className="text-sm text-gray-500">
-                    {businesses.length} {businesses.length === 1 ? "business" : "businesses"}
+                  <div className="relative mb-6" style={{ color: "rgba(96, 42, 29, 0.4)" }}>
+                    <Building2 className="w-20 h-20 mx-auto" />
                   </div>
-                  {/* Create New Business Button - Moved here */}
+                </motion.div>
+
+                <motion.h3 className="text-3xl font-bold mb-4" style={{ color: "#602a1d" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
+                  No Businesses Ready Yet
+                </motion.h3>
+
+                <motion.p
+                  className="text-lg mb-8 max-w-lg mx-auto leading-relaxed"
+                  style={{ color: "rgba(96, 42, 29, 0.7)" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.9 }}>
+                  You don't have any complete business profiles yet. Create a new business and complete all the required steps to see it listed here.
+                </motion.p>
+
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     to="/business/step-1"
-                    className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm font-medium">
-                    <Plus className="w-4 h-4 mr-1" />
-                    <span>New Business</span>
+                    className="inline-flex items-center px-8 py-4 text-white rounded-xl font-semibold transition-all duration-300 shadow-xl"
+                    style={{
+                      backgroundColor: "#602a1d",
+                      boxShadow: "0 10px 40px rgba(96, 42, 29, 0.3)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = "0 15px 50px rgba(96, 42, 29, 0.4)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = "0 10px 40px rgba(96, 42, 29, 0.3)";
+                    }}>
+                    <Plus className="w-5 h-5 mr-2" />
+                    <span>Create New Business</span>
                   </Link>
+                </motion.div>
+              </motion.div>
+            ) : (
+              <div className="space-y-6">
+                <motion.div className="flex items-center justify-between" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: 0.6 }}>
+                  <h3 className="text-2xl font-bold flex items-center" style={{ color: "#602a1d" }}>
+                    <div className="h-8 w-8 rounded-lg flex items-center justify-center mr-3 shadow-lg" style={{ backgroundColor: "#602a1d" }}>
+                      <TrendingUp className="w-4 h-4 text-white" />
+                    </div>
+                    Your Business Portfolio
+                  </h3>
+
+                  <div className="flex items-center space-x-4">
+                    <div className="text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                      {businesses.length} {businesses.length === 1 ? "business" : "businesses"}
+                    </div>
+
+                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                      <Link
+                        to="/business/step-1"
+                        className="inline-flex items-center px-4 py-2 text-white rounded-lg font-medium transition-all duration-300 shadow-lg text-sm"
+                        style={{
+                          backgroundColor: "#602a1d",
+                          boxShadow: "0 4px 16px rgba(96, 42, 29, 0.3)",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.boxShadow = "0 8px 24px rgba(96, 42, 29, 0.4)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.boxShadow = "0 4px 16px rgba(96, 42, 29, 0.3)";
+                        }}>
+                        <Plus className="w-4 h-4 mr-2" />
+                        <span>New Business</span>
+                      </Link>
+                    </motion.div>
+                  </div>
+                </motion.div>
+
+                {/* Helper text */}
+                <motion.p className="text-sm mb-4" style={{ color: "rgba(96, 42, 29, 0.6)" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
+                  Click on any business card to view details and manage your business information
+                </motion.p>
+
+                <div className="grid gap-4">
+                  {businesses.map((business, index) => {
+                    return (
+                      <motion.div key={business.ID} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.8 + index * 0.05 }} whileHover={{ y: -2 }}>
+                        <Link
+                          to={`/business/${business.ID}/details`}
+                          className="relative group block rounded-xl p-6 border transition-all duration-300 overflow-hidden cursor-pointer backdrop-blur-sm shadow-lg"
+                          style={{
+                            backgroundColor: "rgba(241, 237, 234, 0.8)",
+                            borderColor: "rgba(96, 42, 29, 0.2)",
+                            boxShadow: "0 8px 32px rgba(96, 42, 29, 0.1)",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.borderColor = "rgba(96, 42, 29, 0.4)";
+                            e.currentTarget.style.backgroundColor = "rgba(241, 237, 234, 0.9)";
+                            e.currentTarget.style.boxShadow = "0 12px 40px rgba(96, 42, 29, 0.2)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.borderColor = "rgba(96, 42, 29, 0.2)";
+                            e.currentTarget.style.backgroundColor = "rgba(241, 237, 234, 0.8)";
+                            e.currentTarget.style.boxShadow = "0 8px 32px rgba(96, 42, 29, 0.1)";
+                          }}>
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center space-x-3 mb-3">
+                                <h4 className="text-xl font-semibold transition-colors duration-200 truncate" style={{ color: "#602a1d" }}>
+                                  {business.name}
+                                </h4>
+                                <span
+                                  className="px-3 py-1 rounded-full text-sm font-medium border flex-shrink-0"
+                                  style={{
+                                    backgroundColor: "rgba(96, 42, 29, 0.1)",
+                                    borderColor: "rgba(96, 42, 29, 0.3)",
+                                    color: "#602a1d",
+                                  }}>
+                                  Active
+                                </span>
+                              </div>
+
+                              <div className="flex items-center space-x-6 mb-3">
+                                {business.type && (
+                                  <span className="flex items-center text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                                    <Target className="w-4 h-4 mr-2" style={{ color: "#602a1d" }} />
+                                    {business.type}
+                                  </span>
+                                )}
+                                {business.industry && (
+                                  <span className="flex items-center text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                                    <Building2 className="w-4 h-4 mr-2" style={{ color: "#602a1d" }} />
+                                    {business.industry}
+                                  </span>
+                                )}
+                              </div>
+
+                              {business.description && (
+                                <p className="text-sm line-clamp-2" style={{ color: "rgba(96, 42, 29, 0.6)" }}>
+                                  {business.description}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="flex items-center space-x-4 ml-6">
+                              {/* Status Indicators */}
+                              <div className="flex space-x-2">
+                                <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: "#602a1d" }} title="Complete" />
+                                <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: "#602a1d" }} title="Verified" />
+                                <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: "#602a1d" }} title="Ready" />
+                              </div>
+
+                              {/* Click indicator */}
+                              <div className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">
+                                <svg className="w-6 h-6" style={{ color: "#602a1d" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Hover effect overlay */}
+                          <div
+                            className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300"
+                            style={{
+                              background: "linear-gradient(135deg, rgba(96, 42, 29, 0.05) 0%, rgba(96, 42, 29, 0.02) 100%)",
+                            }}
+                          />
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
-
-              {/* Helper text */}
-              <p className="text-xs text-gray-500 mb-3">Click on any business card to view details and manage your business information</p>
-
-              <div className="grid gap-3">
-                {businesses.map((business) => {
-                  return (
-                    <Link
-                      key={business.ID}
-                      to={`/business/${business.ID}/details`}
-                      className="relative group block bg-white rounded-lg p-4 border border-gray-200 hover:border-emerald-400 hover:bg-emerald-50/30 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden cursor-pointer">
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <h4 className="text-lg font-semibold text-gray-900 group-hover:text-emerald-700 transition-colors duration-200 truncate">{business.name}</h4>
-                            <span className="px-2 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border flex-shrink-0">Active</span>
-                          </div>
-
-                          <div className="flex items-center space-x-4 mb-3">
-                            {business.type && (
-                              <span className="flex items-center text-xs text-gray-600">
-                                <Target className="w-3 h-3 mr-1 text-emerald-600" />
-                                {business.type}
-                              </span>
-                            )}
-                            {business.industry && (
-                              <span className="flex items-center text-xs text-gray-600">
-                                <Building2 className="w-3 h-3 mr-1 text-blue-600" />
-                                {business.industry}
-                              </span>
-                            )}
-                          </div>
-
-                          {business.description && <p className="text-xs text-gray-600 line-clamp-1">{business.description}</p>}
-                        </div>
-
-                        <div className="flex items-center space-x-3 ml-4">
-                          {/* Status Indicators */}
-                          <div className="flex space-x-1">
-                            <div className="w-2 h-2 rounded-full bg-emerald-500" title="Complete"></div>
-                            <div className="w-2 h-2 rounded-full bg-emerald-500" title="Verified"></div>
-                            <div className="w-2 h-2 rounded-full bg-emerald-500" title="Ready"></div>
-                          </div>
-
-                          {/* Click indicator */}
-                          <div className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">
-                            <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Hover effect overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 to-blue-500/0 group-hover:from-emerald-500/5 group-hover:to-blue-500/5 transition-all duration-200 rounded-lg"></div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+            )}
+          </motion.div>
         </div>
       </div>
     </div>

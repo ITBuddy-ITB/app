@@ -68,10 +68,10 @@ const LegalStepsPage: React.FC = () => {
 
   if (steps.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-brown-bg to-white">
         <div className="flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brown-primary mx-auto mb-4"></div>
             <p className="text-gray-600">Loading steps...</p>
           </div>
         </div>
@@ -80,14 +80,12 @@ const LegalStepsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-brown-bg to-white">
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center text-gray-600 hover:text-gray-800 transition-colors">
+            <button onClick={() => navigate(-1)} className="flex items-center text-gray-600 hover:text-gray-800 transition-colors">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
@@ -108,19 +106,13 @@ const LegalStepsPage: React.FC = () => {
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-3">
-              <div
-                className="bg-blue-600 h-3 rounded-full transition-all duration-300 ease-out"
-                style={{ width: `${getProgressPercentage()}%` }}></div>
+              <div className="bg-blue-600 h-3 rounded-full transition-all duration-300 ease-out" style={{ width: `${getProgressPercentage()}%` }}></div>
             </div>
             {getProgressPercentage() === 100 && (
               <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
                 <div className="flex items-center">
                   <svg className="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   <span className="text-green-800 font-medium">All steps completed! 🎉</span>
                 </div>
@@ -140,32 +132,18 @@ const LegalStepsPage: React.FC = () => {
               <div
                 key={step.step_number}
                 className={`bg-white rounded-lg shadow-sm border-2 transition-all duration-200 ${
-                  isCurrent
-                    ? "border-blue-500 shadow-lg"
-                    : isCompleted
-                    ? "border-green-200"
-                    : isAccessible
-                    ? "border-gray-200 hover:border-gray-300"
-                    : "border-gray-100 opacity-60"
+                  isCurrent ? "border-blue-500 shadow-lg" : isCompleted ? "border-green-200" : isAccessible ? "border-gray-200 hover:border-gray-300" : "border-gray-100 opacity-60"
                 }`}>
                 <div className="p-6">
                   <div className="flex items-start space-x-4">
                     {/* Step Number/Icon */}
                     <div
                       className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
-                        isCompleted
-                          ? "bg-green-100 text-green-800"
-                          : isAccessible
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-gray-100 text-gray-400"
+                        isCompleted ? "bg-green-100 text-green-800" : isAccessible ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-400"
                       }`}>
                       {isCompleted ? (
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                       ) : (
                         step.step_number
@@ -174,13 +152,9 @@ const LegalStepsPage: React.FC = () => {
 
                     {/* Step Content */}
                     <div className="flex-1">
-                      <h3 className={`text-lg font-semibold mb-3 ${isAccessible ? "text-gray-900" : "text-gray-400"}`}>
-                        Step {step.step_number}
-                      </h3>
+                      <h3 className={`text-lg font-semibold mb-3 ${isAccessible ? "text-gray-900" : "text-gray-400"}`}>Step {step.step_number}</h3>
 
-                      <p className={`mb-4 leading-relaxed ${isAccessible ? "text-gray-700" : "text-gray-400"}`}>
-                        {step.description}
-                      </p>
+                      <p className={`mb-4 leading-relaxed ${isAccessible ? "text-gray-700" : "text-gray-400"}`}>{step.description}</p>
 
                       {/* Action Buttons */}
                       <div className="flex items-center space-x-3">
@@ -188,9 +162,7 @@ const LegalStepsPage: React.FC = () => {
                           onClick={() => handleRedirect(step.redirect_url)}
                           disabled={!isAccessible || loading}
                           className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                            isAccessible
-                              ? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow"
-                              : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            isAccessible ? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow" : "bg-gray-200 text-gray-400 cursor-not-allowed"
                           }`}>
                           {loading ? (
                             <div className="flex items-center">
@@ -201,12 +173,7 @@ const LegalStepsPage: React.FC = () => {
                             <div className="flex items-center">
                               <span>Open Link</span>
                               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                               </svg>
                             </div>
                           ) : (
@@ -227,11 +194,7 @@ const LegalStepsPage: React.FC = () => {
                           {isCompleted ? (
                             <div className="flex items-center">
                               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                  fillRule="evenodd"
-                                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                  clipRule="evenodd"
-                                />
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                               </svg>
                               Completed
                             </div>
@@ -245,9 +208,7 @@ const LegalStepsPage: React.FC = () => {
                       <div className="mt-4 flex items-center space-x-2">
                         <button
                           onClick={() => setCurrentStep(step.step_number)}
-                          className={`text-sm px-3 py-1 rounded-full transition-colors ${
-                            isCurrent ? "bg-blue-100 text-blue-800" : "text-gray-500 hover:text-gray-700"
-                          }`}>
+                          className={`text-sm px-3 py-1 rounded-full transition-colors ${isCurrent ? "bg-blue-100 text-blue-800" : "text-gray-500 hover:text-gray-700"}`}>
                           {isCurrent ? "Current Step" : "Focus on this step"}
                         </button>
                       </div>
@@ -262,16 +223,10 @@ const LegalStepsPage: React.FC = () => {
         {/* Help Section */}
         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-blue-900 mb-2">Need Help?</h3>
-          <p className="text-blue-800 mb-4">
-            If you're having trouble with any of these steps, don't hesitate to reach out for assistance.
-          </p>
+          <p className="text-blue-800 mb-4">If you're having trouble with any of these steps, don't hesitate to reach out for assistance.</p>
           <div className="flex flex-wrap gap-3">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-              Contact Support
-            </button>
-            <button className="bg-white border border-blue-300 text-blue-700 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">
-              View FAQ
-            </button>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">Contact Support</button>
+            <button className="bg-white border border-blue-300 text-blue-700 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors">View FAQ</button>
           </div>
         </div>
       </div>

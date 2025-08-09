@@ -36,12 +36,12 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-brown-bg-light to-brown-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-blue-100">
+        <div className="bg-white rounded-2xl shadow-xl p-8 border border-brown-accent-light">
           <div className="text-center mb-8">
-            <div className="mx-auto h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-              <svg className="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="mx-auto h-16 w-16 bg-brown-accent-light rounded-full flex items-center justify-center mb-4">
+              <svg className="h-8 w-8 text-brown-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
                 name="username"
                 type="text"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 focus:bg-white"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brown-primary focus:border-brown-primary transition-colors duration-200 bg-brown-bg-light focus:bg-white"
                 placeholder="Enter your username"
                 value={formData.username}
                 onChange={handleInputChange}
@@ -75,7 +75,7 @@ const LoginPage: React.FC = () => {
                 name="password"
                 type="password"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200 bg-gray-50 focus:bg-white"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brown-primary focus:border-brown-primary transition-colors duration-200 bg-brown-bg-light focus:bg-white"
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleInputChange}
@@ -96,7 +96,7 @@ const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
+              className="w-full bg-brown-primary hover:bg-brown-primary-hover disabled:bg-brown-accent text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center">
               {isLoading ? (
                 <>
                   <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
@@ -112,7 +112,7 @@ const LoginPage: React.FC = () => {
 
             <div className="text-center">
               <span className="text-gray-600">Don't have an account? </span>
-              <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-500 transition-colors duration-200">
+              <Link to="/register" className="font-semibold text-brown-primary hover:text-brown-primary-light transition-colors duration-200">
                 Sign up
               </Link>
             </div>

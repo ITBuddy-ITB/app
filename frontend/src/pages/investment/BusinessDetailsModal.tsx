@@ -83,9 +83,7 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
     const data = [];
 
     // Use actual financial history to create value timeline
-    const sortedHistory = [...financialHistory].sort(
-      (a, b) => new Date(a.CreatedAt).getTime() - new Date(b.CreatedAt).getTime()
-    );
+    const sortedHistory = [...financialHistory].sort((a, b) => new Date(a.CreatedAt).getTime() - new Date(b.CreatedAt).getTime());
 
     // If we have multiple financial records, create data points for each
     if (sortedHistory.length > 1) {
@@ -157,9 +155,7 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
               </div>
               <div>
                 <p className="text-sm text-gray-500">Founded</p>
-                <p className="font-medium">
-                  {business.founded_at ? new Date(business.founded_at).getFullYear() : "Not specified"}
-                </p>
+                <p className="font-medium">{business.founded_at ? new Date(business.founded_at).getFullYear() : "Not specified"}</p>
               </div>
             </div>
             {business.description && (
@@ -177,19 +173,19 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-green-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500">EBITDA</p>
-                  <p className="text-lg font-semibold text-green-600">{formatCurrency(business.financial.ebitda)}</p>
+                  <p className="text-lg font-semibold text-brown-accent">{formatCurrency(business.financial.ebitda)}</p>
                 </div>
-                <div className="bg-blue-50 p-4 rounded-lg">
+                <div className="bg-brown-bg-light p-4 rounded-lg">
                   <p className="text-sm text-gray-500">Assets</p>
-                  <p className="text-lg font-semibold text-blue-600">{formatCurrency(business.financial.assets)}</p>
+                  <p className="text-lg font-semibold text-brown-primary">{formatCurrency(business.financial.assets)}</p>
                 </div>
                 <div className="bg-red-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500">Liabilities</p>
                   <p className="text-lg font-semibold text-red-600">{formatCurrency(business.financial.liabilities)}</p>
                 </div>
-                <div className="bg-purple-50 p-4 rounded-lg">
+                <div className="bg-brown-accent-light p-4 rounded-lg">
                   <p className="text-sm text-gray-500">Equity</p>
-                  <p className="text-lg font-semibold text-purple-600">{formatCurrency(business.financial.equity)}</p>
+                  <p className="text-lg font-semibold text-brown-accent">{formatCurrency(business.financial.equity)}</p>
                 </div>
               </div>
               {business.financial.notes && (
@@ -205,19 +201,15 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
           {business.financial?.ebitda && currentBusinessValue > 0 && (
             <div className="mb-8">
               <h3 className="text-lg font-semibold mb-4">Business Value Over Time</h3>
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg">
+              <div className="bg-gradient-to-br from-brown-bg to-brown-bg-light p-6 rounded-lg">
                 {/* Current Business Value */}
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="text-xl font-bold text-gray-900">Current Business Value</h4>
-                    <span className="text-sm text-gray-600">
-                      EBITDA Multiplier: {calculateEBITDAMultiplier(business.financial?.revenue || 0)}x
-                    </span>
+                    <span className="text-sm text-gray-600">EBITDA Multiplier: {calculateEBITDAMultiplier(business.financial?.revenue || 0)}x</span>
                   </div>
-                  <div className="text-3xl font-bold text-blue-600 mb-2">{formatCurrency(currentBusinessValue)}</div>
-                  <p className="text-sm text-gray-600">
-                    Based on EBITDA of {formatCurrency(business.financial.ebitda)} × Revenue-based multiplier
-                  </p>
+                  <div className="text-3xl font-bold text-brown-primary mb-2">{formatCurrency(currentBusinessValue)}</div>
+                  <p className="text-sm text-gray-600">Based on EBITDA of {formatCurrency(business.financial.ebitda)} × Revenue-based multiplier</p>
                 </div>
               </div>
             </div>
@@ -226,26 +218,16 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
           {businessValueHistory.length > 0 && (
             <div className="mb-8">
               <h3 className="text-lg font-semibold mb-4">Business Value Over Time</h3>
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg relative z-0">
+              <div className="bg-gradient-to-br from-brown-bg to-brown-bg-light p-6 rounded-lg relative z-0">
                 <div className="w-full overflow-hidden">
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={businessValueHistory}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="month" />
                       <YAxis tickFormatter={(value) => formatCurrency(value)} />
-                      <Tooltip
-                        formatter={(value: number) => formatCurrency(value)}
-                        labelFormatter={(label) => `Month: ${label}`}
-                      />
+                      <Tooltip formatter={(value: number) => formatCurrency(value)} labelFormatter={(label) => `Month: ${label}`} />
                       <Legend />
-                      <Line
-                        type="monotone"
-                        dataKey="value"
-                        name="Business Value"
-                        stroke="#3182CE"
-                        strokeWidth={2}
-                        dot={{ r: 3 }}
-                      />
+                      <Line type="monotone" dataKey="value" name="Business Value" stroke="#3182CE" strokeWidth={2} dot={{ r: 3 }} />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
@@ -266,9 +248,7 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
                         <div className="flex gap-4 mt-2 text-sm text-gray-500">
                           {legal.legal_type && <span>Type: {legal.legal_type}</span>}
                           {legal.issued_by && <span>Issued by: {legal.issued_by}</span>}
-                          {legal.valid_until && (
-                            <span>Valid until: {new Date(legal.valid_until).toLocaleDateString()}</span>
-                          )}
+                          {legal.valid_until && <span>Valid until: {new Date(legal.valid_until).toLocaleDateString()}</span>}
                         </div>
                         {legal.notes && <p className="mt-2 text-sm">{legal.notes}</p>}
                       </div>
@@ -277,8 +257,7 @@ const BusinessDetailsModal: React.FC<BusinessDetailsModalProps> = ({ business, i
                           href={`${API_BASE_URL}${legal.file_url}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700"
-                        >
+                          className="bg-brown-primary text-white px-3 py-1 rounded text-sm hover:bg-brown-primary-hover">
                           View
                         </a>
                       )}

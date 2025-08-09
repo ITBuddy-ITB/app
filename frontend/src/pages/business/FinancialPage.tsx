@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
+import { useForm } from "react-hook-form";
 import { BusinessService, type Financial } from "../../services/businessService";
+
+interface FinancialFormData {
+  revenue: string;
+  ebitda: string;
+  assets: string;
+  liabilities: string;
+  equity: string;
+  notes: string;
+}
 
 const FinancialPage: React.FC = () => {
   const { businessId } = useParams<{ businessId: string }>();
@@ -10,14 +20,21 @@ const FinancialPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Form state
-  const [formData, setFormData] = useState({
-    revenue: "",
-    ebitda: "",
-    assets: "",
-    liabilities: "",
-    equity: "",
-    notes: "",
+  // React Hook Form setup
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FinancialFormData>({
+    defaultValues: {
+      revenue: "",
+      ebitda: "",
+      assets: "",
+      liabilities: "",
+      equity: "",
+      notes: "",
+    },
   });
 
   useEffect(() => {
@@ -28,8 +45,8 @@ const FinancialPage: React.FC = () => {
         const data = await BusinessService.getBusinessFinancial(parseInt(businessId!));
         setFinancial(data);
 
-        // Populate form with existing data
-        setFormData({
+        // Populate form with existing data using React Hook Form reset
+        reset({
           revenue: data.revenue?.toString() || "",
           ebitda: data.ebitda?.toString() || "",
           assets: data.assets?.toString() || "",
@@ -49,31 +66,21 @@ const FinancialPage: React.FC = () => {
     if (businessId) {
       fetchFinancial();
     }
-  }, [businessId]);
+  }, [businessId, reset]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: FinancialFormData) => {
     try {
       setSaving(true);
       setError(null);
       setSuccessMessage(null);
 
       const newFinancialData: Partial<Financial> = {
-        revenue: formData.revenue ? parseFloat(formData.revenue) : undefined,
-        ebitda: formData.ebitda ? parseFloat(formData.ebitda) : undefined,
-        assets: formData.assets ? parseFloat(formData.assets) : undefined,
-        liabilities: formData.liabilities ? parseFloat(formData.liabilities) : undefined,
-        equity: formData.equity ? parseFloat(formData.equity) : undefined,
-        notes: formData.notes || undefined,
+        revenue: data.revenue ? parseFloat(data.revenue) : undefined,
+        ebitda: data.ebitda ? parseFloat(data.ebitda) : undefined,
+        assets: data.assets ? parseFloat(data.assets) : undefined,
+        liabilities: data.liabilities ? parseFloat(data.liabilities) : undefined,
+        equity: data.equity ? parseFloat(data.equity) : undefined,
+        notes: data.notes || undefined,
       };
 
       // Create new financial record instead of updating
@@ -94,7 +101,7 @@ const FinancialPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-brown-bg to-white">
         <div className="max-w-4xl mx-auto py-12 px-4">
           <div className="text-center">Loading financial data...</div>
         </div>
@@ -103,7 +110,7 @@ const FinancialPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-brown-bg to-white">
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
@@ -111,27 +118,20 @@ const FinancialPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Add Financial Record</h1>
             <p className="text-gray-600">Create a new financial record for your business</p>
           </div>
-          <Link
-            to={`/business/${businessId}/details`}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
-          >
+          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
             Back to Business
           </Link>
         </div>
 
         {/* Success Message */}
-        {successMessage && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-            {successMessage}
-          </div>
-        )}
+        {successMessage && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">{successMessage}</div>}
 
         {/* Error Message */}
         {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
 
         {/* Financial Form */}
         <div className="bg-white shadow rounded-lg p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Revenue */}
               <div>
@@ -142,12 +142,14 @@ const FinancialPage: React.FC = () => {
                   type="number"
                   step="0.01"
                   id="revenue"
-                  name="revenue"
-                  value={formData.revenue}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  {...register("revenue", {
+                    required: "Revenue is required",
+                    min: { value: 0, message: "Revenue must be positive" },
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
                   placeholder="Enter revenue amount"
                 />
+                {errors.revenue && <p className="text-red-500 text-sm mt-1">{errors.revenue.message}</p>}
               </div>
 
               {/* EBITDA */}
@@ -159,12 +161,14 @@ const FinancialPage: React.FC = () => {
                   type="number"
                   step="0.01"
                   id="ebitda"
-                  name="ebitda"
-                  value={formData.ebitda}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  {...register("ebitda", {
+                    required: "EBITDA is required",
+                    min: { value: 0, message: "EBITDA must be positive" },
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
                   placeholder="Enter EBITDA amount"
                 />
+                {errors.ebitda && <p className="text-red-500 text-sm mt-1">{errors.ebitda.message}</p>}
               </div>
 
               {/* Assets */}
@@ -176,12 +180,14 @@ const FinancialPage: React.FC = () => {
                   type="number"
                   step="0.01"
                   id="assets"
-                  name="assets"
-                  value={formData.assets}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  {...register("assets", {
+                    required: "Total assets is required",
+                    min: { value: 0, message: "Assets must be positive" },
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
                   placeholder="Enter total assets"
                 />
+                {errors.assets && <p className="text-red-500 text-sm mt-1">{errors.assets.message}</p>}
               </div>
 
               {/* Liabilities */}
@@ -193,12 +199,14 @@ const FinancialPage: React.FC = () => {
                   type="number"
                   step="0.01"
                   id="liabilities"
-                  name="liabilities"
-                  value={formData.liabilities}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  {...register("liabilities", {
+                    required: "Total liabilities is required",
+                    min: { value: 0, message: "Liabilities must be positive" },
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
                   placeholder="Enter total liabilities"
                 />
+                {errors.liabilities && <p className="text-red-500 text-sm mt-1">{errors.liabilities.message}</p>}
               </div>
 
               {/* Equity */}
@@ -210,12 +218,13 @@ const FinancialPage: React.FC = () => {
                   type="number"
                   step="0.01"
                   id="equity"
-                  name="equity"
-                  value={formData.equity}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  {...register("equity", {
+                    required: "Total equity is required",
+                  })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
                   placeholder="Enter total equity"
                 />
+                {errors.equity && <p className="text-red-500 text-sm mt-1">{errors.equity.message}</p>}
               </div>
             </div>
 
@@ -226,22 +235,16 @@ const FinancialPage: React.FC = () => {
               </label>
               <textarea
                 id="notes"
-                name="notes"
                 rows={4}
-                value={formData.notes}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                {...register("notes")}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
                 placeholder="Enter any additional financial notes or details..."
               />
             </div>
 
             {/* Submit Button */}
             <div className="flex justify-end">
-              <button
-                type="submit"
-                disabled={saving}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-              >
+              <button type="submit" disabled={saving} className="bg-brown-primary hover:bg-brown-primary-hover disabled:bg-brown-accent text-white font-medium py-2 px-6 rounded-lg transition-colors">
                 {saving ? "Saving..." : "Save Financial Data"}
               </button>
             </div>
@@ -254,14 +257,14 @@ const FinancialPage: React.FC = () => {
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Financial Summary</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {financial.ebitda && (
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">${financial.ebitda.toLocaleString()}</div>
+                <div className="text-center p-4 bg-brown-bg-light rounded-lg">
+                  <div className="text-2xl font-bold text-brown-primary">${financial.ebitda.toLocaleString()}</div>
                   <div className="text-sm text-gray-600">EBITDA</div>
                 </div>
               )}
               {financial.assets && (
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">${financial.assets.toLocaleString()}</div>
+                <div className="text-center p-4 bg-brown-bg rounded-lg">
+                  <div className="text-2xl font-bold text-brown-primary">${financial.assets.toLocaleString()}</div>
                   <div className="text-sm text-gray-600">Total Assets</div>
                 </div>
               )}
@@ -272,10 +275,8 @@ const FinancialPage: React.FC = () => {
                 </div>
               )}
               {financial.equity && financial.liabilities && financial.assets && (
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">
-                    {((financial.equity / financial.assets) * 100).toFixed(1)}%
-                  </div>
+                <div className="text-center p-4 bg-brown-accent-light rounded-lg">
+                  <div className="text-2xl font-bold text-brown-accent">{((financial.equity / financial.assets) * 100).toFixed(1)}%</div>
                   <div className="text-sm text-gray-600">Equity Ratio</div>
                 </div>
               )}

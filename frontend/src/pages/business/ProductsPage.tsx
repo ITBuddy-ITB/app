@@ -118,15 +118,12 @@ const ProductsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-brown-bg to-white">
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Products Management</h1>
-          <Link
-            to={`/business/${businessId}/details`}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
-          >
+          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
             Back to Business
           </Link>
         </div>
@@ -148,7 +145,7 @@ const ProductsPage: React.FC = () => {
               accept="application/pdf"
               className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 
                  file:rounded-md file:border-0 file:text-sm file:font-semibold 
-                 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                 file:bg-brown-bg file:text-brown-primary hover:file:bg-brown-bg-light"
               onChange={handleProductsFileOnChange}
             />
           </div>
@@ -164,8 +161,7 @@ const ProductsPage: React.FC = () => {
           <button
             onClick={handleAddProducts}
             disabled={loading || !newProductsText.trim()}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50"
-          >
+            className="bg-brown-primary hover:bg-brown-primary-hover text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
             {loading ? "Adding..." : "Add Products"}
           </button>
         </div>
@@ -180,22 +176,14 @@ const ProductsPage: React.FC = () => {
             <div className="space-y-4">
               {products.map((product, index) => (
                 <div key={product.ID || index} className="border border-gray-200 rounded-lg p-4 relative">
-                  <button
-                    onClick={() => product.ID && handleDeleteProduct(product.ID)}
-                    className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full"
-                  >
+                  <button onClick={() => product.ID && handleDeleteProduct(product.ID)} className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full">
                     <X size={16} />
                   </button>
 
                   <div className="grid grid-cols-1 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                      <input
-                        type="text"
-                        className="w-full border rounded-lg px-3 py-2"
-                        value={product.name}
-                        onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)}
-                      />
+                      <input type="text" className="w-full border rounded-lg px-3 py-2" value={product.name} onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)} />
                     </div>
                   </div>
                 </div>

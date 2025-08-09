@@ -1,1 +1,75 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brown-primary: #602a1d;
+  --color-brown-primary-hover: #4a2117;
+  --color-brown-primary-light: #7d3521;
+  --color-brown-bg: #dbd7d2;
+  --color-brown-bg-light: #f1edea;
+  --color-brown-accent: #a0826d;
+  --color-brown-accent-light: #c4a48a;
+  --color-brown-text: #3c1810;
+
+  /* Background gradients */
+  --gradient-brown: linear-gradient(135deg, #f1edea 0%, #dbd7d2 50%, #f1edea 100%);
+  --radial-brown-1: radial-gradient(circle at 25% 25%, #602a1d 0%, transparent 50%);
+  --radial-brown-2: radial-gradient(circle at 75% 75%, #602a1d 0%, transparent 50%);
+  --gradient-brown-overlay: linear-gradient(135deg, transparent 0%, rgba(96, 42, 29, 0.05) 50%, transparent 100%);
+
+  /* Animations */
+  --animate-float-slow: floatSlow 6s ease-in-out infinite;
+  --animate-float-medium: floatMedium 8s ease-in-out infinite;
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-pulse-slower: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes floatSlow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes floatMedium {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f1edea;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1edea;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a0826d;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #602a1d;
+}
