@@ -151,6 +151,24 @@ interface ErrorResponse {
   error: string;
 }
 
+// Projections
+export interface ProjectionData {
+    year: number;
+    revenue: number;
+    expenses: number;
+    netIncome: number;
+    cashFlow: number;
+  }
+  
+  export interface ProjectionsResponse {
+    business_name: string;
+    projections: ProjectionData[];
+    total_projected_revenue: number;
+    average_growth_rate: string;
+    break_even_year: string;
+    generated_at: string;
+  }
+
 export class BusinessService {
   // Get all businesses for the current user
   static async getUserBusinesses(): Promise<Business[]> {
@@ -407,5 +425,14 @@ export class BusinessService {
       console.error("Error analyzing legal compliance:", error);
       throw new Error("Failed to analyze legal compliance");
     }
+  }
+
+  // Projections
+  static async getBusinessProjections(businessId: number, isRefresh = false): Promise<ProjectionsResponse> {
+    const res = await api.get(`/genai/projections/${businessId}?isRefresh=${isRefresh}`);
+    if (!res.data || !res.data.success) {
+      throw new Error(res.data?.message || "Failed to fetch projections");
+    }
+    return res.data.data as ProjectionsResponse;
   }
 }

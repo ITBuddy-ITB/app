@@ -136,7 +136,7 @@ const FinancialPage: React.FC = () => {
               {/* Revenue */}
               <div>
                 <label htmlFor="revenue" className="block text-sm font-medium text-gray-700 mb-2">
-                  Revenue ($)
+                  Revenue (Rp)
                 </label>
                 <input
                   type="number"
@@ -153,7 +153,7 @@ const FinancialPage: React.FC = () => {
               {/* EBITDA */}
               <div>
                 <label htmlFor="ebitda" className="block text-sm font-medium text-gray-700 mb-2">
-                  EBITDA ($)
+                  EBITDA (Rp)
                 </label>
                 <input
                   type="number"
@@ -170,7 +170,7 @@ const FinancialPage: React.FC = () => {
               {/* Assets */}
               <div>
                 <label htmlFor="assets" className="block text-sm font-medium text-gray-700 mb-2">
-                  Total Assets ($)
+                  Total Assets (Rp)
                 </label>
                 <input
                   type="number"
@@ -187,7 +187,7 @@ const FinancialPage: React.FC = () => {
               {/* Liabilities */}
               <div>
                 <label htmlFor="liabilities" className="block text-sm font-medium text-gray-700 mb-2">
-                  Total Liabilities ($)
+                  Total Liabilities (Rp)
                 </label>
                 <input
                   type="number"
@@ -204,7 +204,7 @@ const FinancialPage: React.FC = () => {
               {/* Equity */}
               <div>
                 <label htmlFor="equity" className="block text-sm font-medium text-gray-700 mb-2">
-                  Total Equity ($)
+                  Total Equity (Rp)
                 </label>
                 <input
                   type="number"
