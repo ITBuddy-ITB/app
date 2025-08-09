@@ -12,6 +12,7 @@ const FinancialPage: React.FC = () => {
 
   // Form state
   const [formData, setFormData] = useState({
+    revenue: "",
     ebitda: "",
     assets: "",
     liabilities: "",
@@ -29,6 +30,7 @@ const FinancialPage: React.FC = () => {
 
         // Populate form with existing data
         setFormData({
+          revenue: data.revenue?.toString() || "",
           ebitda: data.ebitda?.toString() || "",
           assets: data.assets?.toString() || "",
           liabilities: data.liabilities?.toString() || "",
@@ -65,7 +67,8 @@ const FinancialPage: React.FC = () => {
       setError(null);
       setSuccessMessage(null);
 
-      const updateData: Partial<Financial> = {
+      const newFinancialData: Partial<Financial> = {
+        revenue: formData.revenue ? parseFloat(formData.revenue) : undefined,
         ebitda: formData.ebitda ? parseFloat(formData.ebitda) : undefined,
         assets: formData.assets ? parseFloat(formData.assets) : undefined,
         liabilities: formData.liabilities ? parseFloat(formData.liabilities) : undefined,
@@ -73,15 +76,16 @@ const FinancialPage: React.FC = () => {
         notes: formData.notes || undefined,
       };
 
-      const updatedFinancial = await BusinessService.updateBusinessFinancial(parseInt(businessId!), updateData);
-      setFinancial(updatedFinancial);
-      setSuccessMessage("Financial data updated successfully!");
+      // Create new financial record instead of updating
+      const createdFinancial = await BusinessService.createBusinessFinancial(parseInt(businessId!), newFinancialData);
+      setFinancial(createdFinancial);
+      setSuccessMessage("New financial record created successfully!");
 
       // Clear success message after 3 seconds
       setTimeout(() => setSuccessMessage(null), 3000);
     } catch (err: unknown) {
-      console.error("Failed to update financial data:", err);
-      const errorMessage = err instanceof Error ? err.message : "Failed to update financial data";
+      console.error("Failed to create financial data:", err);
+      const errorMessage = err instanceof Error ? err.message : "Failed to create financial data";
       setError(errorMessage);
     } finally {
       setSaving(false);
@@ -104,19 +108,22 @@ const FinancialPage: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Financial Data</h1>
-            <p className="text-gray-600">Manage your business financial information</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Add Financial Record</h1>
+            <p className="text-gray-600">Create a new financial record for your business</p>
           </div>
           <Link
             to={`/business/${businessId}/details`}
-            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
+          >
             Back to Business
           </Link>
         </div>
 
         {/* Success Message */}
         {successMessage && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">{successMessage}</div>
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+            {successMessage}
+          </div>
         )}
 
         {/* Error Message */}
@@ -126,6 +133,23 @@ const FinancialPage: React.FC = () => {
         <div className="bg-white shadow rounded-lg p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Revenue */}
+              <div>
+                <label htmlFor="revenue" className="block text-sm font-medium text-gray-700 mb-2">
+                  Revenue ($)
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  id="revenue"
+                  name="revenue"
+                  value={formData.revenue}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter revenue amount"
+                />
+              </div>
+
               {/* EBITDA */}
               <div>
                 <label htmlFor="ebitda" className="block text-sm font-medium text-gray-700 mb-2">
@@ -216,7 +240,8 @@ const FinancialPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+              >
                 {saving ? "Saving..." : "Save Financial Data"}
               </button>
             </div>
@@ -248,6 +273,9 @@ const FinancialPage: React.FC = () => {
               )}
               {financial.equity && financial.liabilities && financial.assets && (
                 <div className="text-center p-4 bg-purple-50 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {((financial.equity / financial.assets) * 100).toFixed(1)}%
+                  </div>
                   <div className="text-2xl font-bold text-purple-600">
                     {((financial.equity / financial.assets) * 100).toFixed(1)}%
                   </div>

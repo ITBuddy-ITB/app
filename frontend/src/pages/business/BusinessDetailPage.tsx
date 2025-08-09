@@ -59,9 +59,15 @@ const BusinessDetailPage: React.FC = () => {
 
   const getBusinessStage = (score: number) => {
     if (score >= 80)
-      return { stage: "Investment Ready", color: "text-emerald-600", bg: "bg-emerald-100", border: "border-emerald-200" };
+      return {
+        stage: "Investment Ready",
+        color: "text-emerald-600",
+        bg: "bg-emerald-100",
+        border: "border-emerald-200",
+      };
     if (score >= 60) return { stage: "Growth", color: "text-blue-600", bg: "bg-blue-100", border: "border-blue-200" };
-    if (score >= 40) return { stage: "Scale-up", color: "text-yellow-600", bg: "bg-yellow-100", border: "border-yellow-200" };
+    if (score >= 40)
+      return { stage: "Scale-up", color: "text-yellow-600", bg: "bg-yellow-100", border: "border-yellow-200" };
     return { stage: "UMKM", color: "text-red-600", bg: "bg-red-100", border: "border-red-200" };
   };
 
@@ -90,7 +96,8 @@ const BusinessDetailPage: React.FC = () => {
             <p className="text-lg text-gray-600 mb-6">{error || "Business not found"}</p>
             <Link
               to="/business"
-              className="inline-flex items-center px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors">
+              className="inline-flex items-center px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Businesses
             </Link>
@@ -111,14 +118,16 @@ const BusinessDetailPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <Link
               to="/business"
-              className="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-colors duration-200 mb-4">
+              className="inline-flex items-center text-gray-600 hover:text-emerald-600 transition-colors duration-200 mb-4"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               <span className="font-medium">Back to Business Portfolio</span>
             </Link>
             {/* Create New Business Button */}
             <Link
               to="/business/step-1"
-              className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm font-medium">
+              className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm font-medium"
+            >
               <Plus className="w-4 h-4 mr-2" />
               <span>Create New Business</span>
             </Link>
@@ -135,7 +144,8 @@ const BusinessDetailPage: React.FC = () => {
                 backgroundImage: `radial-gradient(circle at 25% 25%, white 2px, transparent 2px)`,
                 backgroundSize: "24px 24px",
                 opacity: 0.1,
-              }}></div>
+              }}
+            ></div>
           </div>
 
           <div className="relative grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
@@ -143,13 +153,16 @@ const BusinessDetailPage: React.FC = () => {
               <div className="flex items-center space-x-3 mb-3">
                 <h1 className="text-2xl font-bold text-white drop-shadow-lg">{business.name}</h1>
                 <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold ${stage.bg} ${stage.color} border ${stage.border} shadow-lg`}>
+                  className={`px-3 py-1 rounded-full text-xs font-semibold ${stage.bg} ${stage.color} border ${stage.border} shadow-lg`}
+                >
                   {stage.stage}
                 </span>
               </div>
 
               {business.description && (
-                <p className="text-white/90 text-sm mb-4 leading-relaxed max-w-2xl drop-shadow-md">{business.description}</p>
+                <p className="text-white/90 text-sm mb-4 leading-relaxed max-w-2xl drop-shadow-md">
+                  {business.description}
+                </p>
               )}
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
@@ -180,6 +193,9 @@ const BusinessDetailPage: React.FC = () => {
                     <span className="text-white/90 font-medium text-xs">
                       IDR {(business.market_cap / 1000000000).toFixed(1)}B
                     </span>
+                    <span className="text-white/90 font-medium text-xs">
+                      IDR {(business.market_cap / 1000000000).toFixed(1)}B
+                    </span>
                   </div>
                 )}
                 {business.founded_at && (
@@ -188,7 +204,9 @@ const BusinessDetailPage: React.FC = () => {
                       <Calendar className="w-3 h-3 mr-1 text-white" />
                       <span className="font-medium text-white">Founded</span>
                     </div>
-                    <span className="text-white/90 font-medium text-xs">{new Date(business.founded_at).getFullYear()}</span>
+                    <span className="text-white/90 font-medium text-xs">
+                      {new Date(business.founded_at).getFullYear()}
+                    </span>
                   </div>
                 )}
               </div>
@@ -202,10 +220,15 @@ const BusinessDetailPage: React.FC = () => {
                 <div className="w-full bg-white/30 rounded-full h-2 mb-3 shadow-inner">
                   <div
                     className="bg-white h-2 rounded-full transition-all duration-1000 shadow-sm"
-                    style={{ width: `${investmentScore}%` }}></div>
+                    style={{ width: `${investmentScore}%` }}
+                  ></div>
                 </div>
                 <p className="text-white/90 text-xs font-medium drop-shadow-sm">
-                  {investmentScore >= 80 ? "Ready for investment!" : investmentScore >= 60 ? "Almost ready!" : "Keep building!"}
+                  {investmentScore >= 80
+                    ? "Ready for investment!"
+                    : investmentScore >= 60
+                    ? "Almost ready!"
+                    : "Keep building!"}
                 </p>
               </div>
             </div>
@@ -217,13 +240,16 @@ const BusinessDetailPage: React.FC = () => {
           {/* Products Management */}
           <Link
             to={`/business/${businessId}/products`}
-            className="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-blue-200 overflow-hidden">
+            className="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-blue-200 overflow-hidden"
+          >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-blue-50/0 group-hover:from-blue-50/50 group-hover:to-blue-100/30 transition-all duration-300"></div>
             <div className="relative text-center">
               <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Package className="w-6 h-6 text-blue-600" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-700 transition-colors">Products</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-700 transition-colors">
+                Products
+              </h3>
               <p className="text-gray-600 mb-3 leading-relaxed text-sm">Manage your business products and services</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
@@ -246,12 +272,16 @@ const BusinessDetailPage: React.FC = () => {
           {/* Legal Documents */}
           <Link
             to={`/business/${businessId}/legal`}
-            className="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-emerald-200 overflow-hidden">
+            className="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-emerald-200 overflow-hidden"
+          >
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/0 to-emerald-50/0 group-hover:from-emerald-50/50 group-hover:to-emerald-100/30 transition-all duration-300"></div>
             <div className="relative text-center">
               <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Scale className="w-6 h-6 text-emerald-600" />
               </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-emerald-700 transition-colors">
+                Legal Documents
+              </h3>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-emerald-700 transition-colors">
                 Legal Documents
               </h3>
@@ -277,12 +307,16 @@ const BusinessDetailPage: React.FC = () => {
           {/* Financial Data */}
           <Link
             to={`/business/${businessId}/finance`}
-            className="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-yellow-200 overflow-hidden">
+            className="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-yellow-200 overflow-hidden"
+          >
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-50/0 to-yellow-50/0 group-hover:from-yellow-50/50 group-hover:to-yellow-100/30 transition-all duration-300"></div>
             <div className="relative text-center">
               <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <DollarSign className="w-6 h-6 text-yellow-600" />
               </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-yellow-700 transition-colors">
+                Financial Data
+              </h3>
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-yellow-700 transition-colors">
                 Financial Data
               </h3>
@@ -308,13 +342,16 @@ const BusinessDetailPage: React.FC = () => {
           {/* Investment Projections */}
           <Link
             to={`/business/${businessId}/projections`}
-            className="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-purple-200 overflow-hidden">
+            className="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-purple-200 overflow-hidden"
+          >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-50/0 to-purple-50/0 group-hover:from-purple-50/50 group-hover:to-purple-100/30 transition-all duration-300"></div>
             <div className="relative text-center">
               <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                 <BarChart3 className="w-6 h-6 text-purple-600" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors">Projections</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors">
+                Projections
+              </h3>
               <p className="text-gray-600 mb-3 leading-relaxed text-sm">Financial projections and growth forecasts</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
@@ -328,7 +365,7 @@ const BusinessDetailPage: React.FC = () => {
 
         {/* AI Suggestions */}
         <div className="pb-8">
-        <AISuggestions businessName={business.name} />
+          <AISuggestions businessName={business.name} />
         </div>
 
         {/* Investment Readiness Breakdown */}
@@ -343,7 +380,8 @@ const BusinessDetailPage: React.FC = () => {
               <div
                 className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${
                   business.financial ? "bg-emerald-100" : "bg-gray-100"
-                }`}>
+                }`}
+              >
                 <DollarSign className={`w-6 h-6 ${business.financial ? "text-emerald-600" : "text-gray-400"}`} />
               </div>
               <h3 className="font-semibold text-gray-900 mb-1 text-sm">Financial Data</h3>
@@ -351,7 +389,8 @@ const BusinessDetailPage: React.FC = () => {
               <div
                 className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                   business.financial ? "bg-emerald-100 text-emerald-800" : "bg-gray-100 text-gray-600"
-                }`}>
+                }`}
+              >
                 {business.financial ? "Complete" : "Missing"}
               </div>
             </div>
@@ -360,17 +399,23 @@ const BusinessDetailPage: React.FC = () => {
               <div
                 className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${
                   business.legals && business.legals.length > 0 ? "bg-emerald-100" : "bg-gray-100"
-                }`}>
+                }`}
+              >
                 <Scale
-                  className={`w-6 h-6 ${business.legals && business.legals.length > 0 ? "text-emerald-600" : "text-gray-400"}`}
+                  className={`w-6 h-6 ${
+                    business.legals && business.legals.length > 0 ? "text-emerald-600" : "text-gray-400"
+                  }`}
                 />
               </div>
               <h3 className="font-semibold text-gray-900 mb-1 text-sm">Legal Documents</h3>
               <p className="text-xs text-gray-600 mb-2">25% of total score</p>
               <div
                 className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                  business.legals && business.legals.length > 0 ? "bg-emerald-100 text-emerald-800" : "bg-gray-100 text-gray-600"
-                }`}>
+                  business.legals && business.legals.length > 0
+                    ? "bg-emerald-100 text-emerald-800"
+                    : "bg-gray-100 text-gray-600"
+                }`}
+              >
                 {business.legals && business.legals.length > 0 ? `${business.legals.length} docs` : "Missing"}
               </div>
             </div>
@@ -379,7 +424,8 @@ const BusinessDetailPage: React.FC = () => {
               <div
                 className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${
                   business.products && business.products.length > 0 ? "bg-emerald-100" : "bg-gray-100"
-                }`}>
+                }`}
+              >
                 <Package
                   className={`w-6 h-6 ${
                     business.products && business.products.length > 0 ? "text-emerald-600" : "text-gray-400"
@@ -393,7 +439,8 @@ const BusinessDetailPage: React.FC = () => {
                   business.products && business.products.length > 0
                     ? "bg-emerald-100 text-emerald-800"
                     : "bg-gray-100 text-gray-600"
-                }`}>
+                }`}
+              >
                 {business.products && business.products.length > 0 ? `${business.products.length} products` : "Missing"}
               </div>
             </div>
@@ -402,7 +449,8 @@ const BusinessDetailPage: React.FC = () => {
               <div
                 className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${
                   business.market_cap && business.market_cap > 10000000000 ? "bg-emerald-100" : "bg-gray-100"
-                }`}>
+                }`}
+              >
                 <TrendingUp
                   className={`w-6 h-6 ${
                     business.market_cap && business.market_cap > 10000000000 ? "text-emerald-600" : "text-gray-400"
@@ -416,7 +464,8 @@ const BusinessDetailPage: React.FC = () => {
                   business.market_cap && business.market_cap > 10000000000
                     ? "bg-emerald-100 text-emerald-800"
                     : "bg-gray-100 text-gray-600"
-                }`}>
+                }`}
+              >
                 {business.market_cap && business.market_cap > 10000000000 ? "Qualified" : "Below threshold"}
               </div>
             </div>
