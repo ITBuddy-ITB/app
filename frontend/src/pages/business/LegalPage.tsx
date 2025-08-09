@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
-import { BusinessService, type Legal, type ProductLegal, type Product, type LegalComparison } from "../../services/businessService";
+import {
+  BusinessService,
+  type Legal,
+  type ProductLegal,
+  type Product,
+  type LegalComparison,
+} from "../../services/businessService";
 import LegalRequirements from "../../components/legal/LegalRequirements";
 
 const API_BASE_URL = "http://localhost:8080";
@@ -101,7 +107,6 @@ const LegalPage: React.FC = () => {
 
       // Refresh analysis after adding new legal document
       await fetchLegalAnalysis(true);
-
     } catch (err: unknown) {
       console.error("Failed to upload legal document:", err);
       const errorMessage = err instanceof Error ? err.message : "Failed to upload legal document";
@@ -151,6 +156,13 @@ const LegalPage: React.FC = () => {
               className="w-full"
               required
             />
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+              className="w-full"
+              required
+            />
             {selectedFile && <p className="text-sm text-gray-600 mt-2">Selected: {selectedFile.name}</p>}
           </div>
         </div>
@@ -188,6 +200,12 @@ const LegalPage: React.FC = () => {
             value={formData.valid_until}
             onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
           />
+          <input
+            type="date"
+            className="w-full border rounded-lg px-3 py-2"
+            value={formData.valid_until}
+            onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
+          />
         </div>
 
         <div>
@@ -204,7 +222,8 @@ const LegalPage: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50"
+        >
           {loading ? "Uploading..." : "Upload Document"}
         </button>
       </form>
@@ -252,7 +271,8 @@ const LegalPage: React.FC = () => {
             className="w-full border rounded-lg px-3 py-2"
             value={formData.product_id}
             onChange={(e) => setFormData({ ...formData, product_id: e.target.value })}
-            required>
+            required
+          >
             <option value="">Choose a product...</option>
             {products.map((product) => (
               <option key={product.ID} value={product.ID}>
@@ -265,6 +285,13 @@ const LegalPage: React.FC = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Upload Legal Document (PDF)</label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+              className="w-full"
+              required
+            />
             <input
               type="file"
               accept=".pdf"
@@ -309,6 +336,12 @@ const LegalPage: React.FC = () => {
             value={formData.valid_until}
             onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
           />
+          <input
+            type="date"
+            className="w-full border rounded-lg px-3 py-2"
+            value={formData.valid_until}
+            onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
+          />
         </div>
 
         <div>
@@ -325,7 +358,8 @@ const LegalPage: React.FC = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50"
+        >
           {loading ? "Uploading..." : "Upload Document"}
         </button>
       </form>
@@ -342,12 +376,14 @@ const LegalPage: React.FC = () => {
             <button
               onClick={handleRefreshAnalysis}
               disabled={analysisLoading}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg disabled:opacity-50">
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg disabled:opacity-50"
+            >
               {analysisLoading ? "Analyzing..." : "Refresh Analysis"}
             </button>
             <Link
               to={`/business/${businessId}/details`}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
+            >
               Back to Business
             </Link>
           </div>
@@ -361,14 +397,16 @@ const LegalPage: React.FC = () => {
             onClick={() => setActiveTab("business")}
             className={`px-4 py-2 rounded-lg font-medium ${
               activeTab === "business" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"
-            }`}>
+            }`}
+          >
             Business Legal Documents
           </button>
           <button
             onClick={() => setActiveTab("product")}
             className={`px-4 py-2 rounded-lg font-medium ${
               activeTab === "product" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"
-            }`}>
+            }`}
+          >
             Product Legal Documents
           </button>
         </div>
@@ -392,7 +430,8 @@ const LegalPage: React.FC = () => {
                 <p className="text-gray-500 mb-4">Legal compliance analysis not available</p>
                 <button
                   onClick={handleRefreshAnalysis}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
+                >
                   Run Analysis
                 </button>
               </div>
@@ -405,12 +444,18 @@ const LegalPage: React.FC = () => {
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             {activeTab === "business" ? "Add Business Legal Document" : "Add Product Legal Document"}
           </h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            {activeTab === "business" ? "Add Business Legal Document" : "Add Product Legal Document"}
+          </h3>
 
           {activeTab === "business" ? <BusinessLegalForm /> : <ProductLegalForm />}
         </div>
 
         {/* Existing Documents */}
         <div className="bg-white shadow rounded-lg p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+            Existing {activeTab === "business" ? "Business" : "Product"} Documents
+          </h3>
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Existing {activeTab === "business" ? "Business" : "Product"} Documents
           </h3>
@@ -427,7 +472,9 @@ const LegalPage: React.FC = () => {
                         <h4 className="font-medium text-gray-900">{legal.legal_type}</h4>
                         <p className="text-sm text-gray-600">Issued by: {legal.issued_by}</p>
                         {legal.valid_until && (
-                          <p className="text-sm text-gray-600">Valid until: {new Date(legal.valid_until).toLocaleDateString()}</p>
+                          <p className="text-sm text-gray-600">
+                            Valid until: {new Date(legal.valid_until).toLocaleDateString()}
+                          </p>
                         )}
                         {legal.notes && <p className="text-sm text-gray-600 mt-2">{legal.notes}</p>}
                       </div>
@@ -437,7 +484,8 @@ const LegalPage: React.FC = () => {
                             href={`${API_BASE_URL}${legal.file_url}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 font-medium">
+                            className="text-blue-600 hover:text-blue-800 font-medium"
+                          >
                             View Document
                           </a>
                         )}
@@ -461,7 +509,9 @@ const LegalPage: React.FC = () => {
                         <p className="text-sm text-gray-600">Product: {product?.name || "Unknown Product"}</p>
                         <p className="text-sm text-gray-600">Issued by: {legal.issued_by}</p>
                         {legal.valid_until && (
-                          <p className="text-sm text-gray-600">Valid until: {new Date(legal.valid_until).toLocaleDateString()}</p>
+                          <p className="text-sm text-gray-600">
+                            Valid until: {new Date(legal.valid_until).toLocaleDateString()}
+                          </p>
                         )}
                         {legal.notes && <p className="text-sm text-gray-600 mt-2">{legal.notes}</p>}
                       </div>
@@ -471,7 +521,8 @@ const LegalPage: React.FC = () => {
                             href={`${API_BASE_URL}${legal.file_url}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 font-medium">
+                            className="text-blue-600 hover:text-blue-800 font-medium"
+                          >
                             View Document
                           </a>
                         )}
