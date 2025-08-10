@@ -37,12 +37,11 @@ const LegalRequirements: React.FC<Props> = ({ comparison, isProductLegalPage }) 
   };
 
   // Function to count missing legals
-  const getMissingCount = (legals: RequiredLegal[]) => {
-    return legals.filter((legal) => !legal.has_legal).length;
+  const getMissingCount = (legals?: RequiredLegal[] | null) => {
+    return Array.isArray(legals) ? legals.filter((legal) => !legal.has_legal).length : 0;
   };
-
-  const getCompletedCount = (legals: RequiredLegal[]) => {
-    return legals.filter((legal) => legal.has_legal).length;
+  const getCompletedCount = (legals?: RequiredLegal[] | null) => {
+    return Array.isArray(legals) ? legals.filter((legal) => legal.has_legal).length : 0;
   };
 
   return (
@@ -76,7 +75,7 @@ const LegalRequirements: React.FC<Props> = ({ comparison, isProductLegalPage }) 
             </div>
           </div>
 
-          {isBusinessLegalExpanded && (
+          {isBusinessLegalExpanded && Array.isArray(comparison?.required) && (
             <div className="mt-4 space-y-4">
               {comparison.required.map((legal) => (
                 <div
@@ -125,6 +124,7 @@ const LegalRequirements: React.FC<Props> = ({ comparison, isProductLegalPage }) 
       )}
 
       {isProductLegalPage &&
+        Array.isArray(comparison?.products) &&
         comparison?.products.map((product) => (
           <div key={product.product_name} className="bg-white shadow rounded-lg p-6">
             <div className="flex items-center justify-between cursor-pointer" onClick={() => toggleProduct(product.product_name)}>
@@ -154,7 +154,7 @@ const LegalRequirements: React.FC<Props> = ({ comparison, isProductLegalPage }) 
               </div>
             </div>
 
-            {expandedProducts[product.product_name] && (
+            {expandedProducts[product.product_name] && Array.isArray(product.required) && (
               <div className="mt-4 space-y-4">
                 {product.required.map((legal) => (
                   <div
