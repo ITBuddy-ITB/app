@@ -621,3 +621,79 @@ func (bc *BusinessController) CreateBusinessFinancial(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, financial)
 }
+
+// ===== Historical Projections Management =====
+
+// GET /business/:id/projections - get historical projections
+func (bc *BusinessController) GetBusinessProjections(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid business ID format",
+			"message": "Business ID must be a valid number",
+		})
+		return
+	}
+
+	projections, err := bc.businessService.GetBusinessHistoricalProjections(uint(businessID))
+	if err != nil {
+		if err.Error() == "record not found" {
+			c.JSON(http.StatusNotFound, gin.H{
+				"error":   "Business not found",
+				"message": "No business found with the specified ID",
+			})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to fetch historical projections",
+			"message": "An error occurred while fetching historical financial data",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"data":    projections,
+		"message": "Historical projections retrieved successfully",
+	})
+}
+
+// POST /business/:id/projections - save historical projections
+func (bc *BusinessController) SaveBusinessProjections(c *gin.Context) {
+	businessIDStr := c.Param("id")
+	businessID, err := strconv.ParseUint(businessIDStr, 10, 32)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid business ID format",
+			"message": "Business ID must be a valid number",
+		})
+		return
+	}
+
+	var request struct {
+		Projections []services.ProjectionData `json:"projections"`
+	}
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid request data",
+			"message": "Please provide valid historical projection data",
+		})
+		return
+	}
+
+	err = bc.businessService.SaveBusinessHistoricalProjections(uint(businessID), request.Projections)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Validation failed",
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "Historical projections saved successfully",
+	})
+}

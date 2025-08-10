@@ -153,21 +153,21 @@ interface ErrorResponse {
 
 // Projections
 export interface ProjectionData {
-    year: number;
-    revenue: number;
-    expenses: number;
-    netIncome: number;
-    cashFlow: number;
-  }
-  
-  export interface ProjectionsResponse {
-    business_name: string;
-    projections: ProjectionData[];
-    total_projected_revenue: number;
-    average_growth_rate: string;
-    break_even_year: string;
-    generated_at: string;
-  }
+  year: number;
+  revenue: number;
+  expenses: number;
+  netIncome: number;
+  cashFlow: number;
+}
+
+export interface ProjectionsResponse {
+  business_name: string;
+  projections: ProjectionData[];
+  total_historical_revenue: number;
+  average_growth_rate: string;
+  first_profit_year: string;
+  generated_at: string;
+}
 
 export class BusinessService {
   // Get all businesses for the current user
@@ -267,11 +267,7 @@ export class BusinessService {
     }
   }
 
-  static async updateBusinessProduct(
-    businessId: number,
-    productId: number,
-    data: Partial<Product>
-  ): Promise<{ message: string }> {
+  static async updateBusinessProduct(businessId: number, productId: number, data: Partial<Product>): Promise<{ message: string }> {
     try {
       const response = await api.put<{ message: string }>(`/business/${businessId}/products/${productId}`, data);
       return response.data;
@@ -418,7 +414,7 @@ export class BusinessService {
     try {
       const response = await api.post(`/genai/analyze-business-legals`, {
         business_id: businessId,
-        is_refresh: isRefresh
+        is_refresh: isRefresh,
       });
       return response.data;
     } catch (error) {
@@ -427,12 +423,19 @@ export class BusinessService {
     }
   }
 
-  // Projections
-  static async getBusinessProjections(businessId: number, isRefresh = false): Promise<ProjectionsResponse> {
-    const res = await api.get(`/genai/projections/${businessId}?isRefresh=${isRefresh}`);
+  // Historical Projections
+  static async getBusinessProjections(businessId: number): Promise<ProjectionsResponse> {
+    const res = await api.get(`/business/${businessId}/projections`);
     if (!res.data || !res.data.success) {
-      throw new Error(res.data?.message || "Failed to fetch projections");
+      throw new Error(res.data?.message || "Failed to fetch historical projections");
     }
     return res.data.data as ProjectionsResponse;
+  }
+
+  static async saveBusinessProjections(businessId: number, projections: ProjectionData[]): Promise<void> {
+    const res = await api.post(`/business/${businessId}/projections`, { projections });
+    if (!res.data || !res.data.success) {
+      throw new Error(res.data?.message || "Failed to save historical projections");
+    }
   }
 }

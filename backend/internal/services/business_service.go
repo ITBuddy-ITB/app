@@ -491,11 +491,11 @@ func (s *BusinessService) StoreLegalAnalysisComparison(businessID uint, comparis
 // GetStoredLegalAnalysis retrieves ALL legal analysis (existing + missing) from the database
 func (s *BusinessService) GetStoredLegalAnalysis(businessID uint) (*models.LegalComparison, error) {
 	var (
-		missingLegals        []models.MissingLegal
-		missingProductLegals []models.MissingProductLegal
-		existingLegals       []models.Legal
+		missingLegals         []models.MissingLegal
+		missingProductLegals  []models.MissingProductLegal
+		existingLegals        []models.Legal
 		existingProductLegals []models.ProductLegal
-		products             []models.Product
+		products              []models.Product
 	)
 
 	// Get existing business legals
@@ -611,7 +611,6 @@ func (s *BusinessService) GetStoredLegalAnalysis(businessID uint) (*models.Legal
 
 	return comparison, nil
 }
-
 
 // ClearStoredLegalAnalysis removes existing analysis data
 func (s *BusinessService) ClearStoredLegalAnalysis(businessID uint) error {
@@ -737,3 +736,153 @@ func (s *BusinessService) ClearStoredLegalAnalysis(businessID uint) error {
 
 // 	return comparison, nil
 // }
+
+// ===== Historical Projection Management =====
+
+// ProjectionData represents historical financial data for a specific year
+type ProjectionData struct {
+	Year      int     `json:"year"`
+	Revenue   float64 `json:"revenue"`
+	Expenses  float64 `json:"expenses"`
+	NetIncome float64 `json:"netIncome"`
+	CashFlow  float64 `json:"cashFlow"`
+}
+
+// HistoricalProjectionsResponse represents the response for historical financial data
+type HistoricalProjectionsResponse struct {
+	BusinessName           string           `json:"business_name"`
+	Projections            []ProjectionData `json:"projections"`
+	TotalHistoricalRevenue float64          `json:"total_historical_revenue"`
+	AverageGrowthRate      string           `json:"average_growth_rate"`
+	FirstProfitYear        string           `json:"first_profit_year"`
+	GeneratedAt            string           `json:"generated_at"`
+}
+
+// GetBusinessHistoricalProjections retrieves historical financial data for a business
+func (s *BusinessService) GetBusinessHistoricalProjections(businessID uint) (*HistoricalProjectionsResponse, error) {
+	// Get business info
+	business, err := s.GetBusinessByID(businessID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get stored historical projections from database
+	var historicalProjections []models.HistoricalProjection
+	if err := s.DB.Where("business_id = ?", businessID).
+		Order("year ASC").
+		Find(&historicalProjections).Error; err != nil {
+		return nil, err
+	}
+
+	// Convert database records to response format
+	var projections []ProjectionData
+	currentYear := time.Now().Year()
+
+	// If we have stored data, use it
+	if len(historicalProjections) > 0 {
+		for _, hp := range historicalProjections {
+			projections = append(projections, ProjectionData{
+				Year:      hp.Year,
+				Revenue:   hp.Revenue,
+				Expenses:  hp.Expenses,
+				NetIncome: hp.NetIncome,
+				CashFlow:  hp.CashFlow,
+			})
+		}
+	} else {
+		// If no stored data, return empty structure for last 5 years
+		for i := 5; i >= 1; i-- {
+			projections = append(projections, ProjectionData{
+				Year:      currentYear - i,
+				Revenue:   0,
+				Expenses:  0,
+				NetIncome: 0,
+				CashFlow:  0,
+			})
+		}
+	}
+
+	// Calculate totals and metrics
+	totalRevenue := 0.0
+	firstProfitYear := "N/A"
+	for _, proj := range projections {
+		totalRevenue += proj.Revenue
+		if proj.NetIncome > 0 && firstProfitYear == "N/A" {
+			firstProfitYear = fmt.Sprintf("%d", proj.Year)
+		}
+	}
+
+	// Calculate average growth rate
+	avgGrowthRate := "0%"
+	if len(projections) > 1 {
+		validGrowths := 0
+		totalGrowth := 0.0
+		for i := 1; i < len(projections); i++ {
+			if projections[i-1].Revenue > 0 {
+				growth := ((projections[i].Revenue - projections[i-1].Revenue) / projections[i-1].Revenue) * 100
+				totalGrowth += growth
+				validGrowths++
+			}
+		}
+		if validGrowths > 0 {
+			avgGrowthRate = fmt.Sprintf("%.1f%%", totalGrowth/float64(validGrowths))
+		}
+	}
+
+	return &HistoricalProjectionsResponse{
+		BusinessName:           business.Name,
+		Projections:            projections,
+		TotalHistoricalRevenue: totalRevenue,
+		AverageGrowthRate:      avgGrowthRate,
+		FirstProfitYear:        firstProfitYear,
+		GeneratedAt:            time.Now().Format("2006-01-02 15:04:05"),
+	}, nil
+}
+
+// SaveBusinessHistoricalProjections saves historical financial data for a business
+func (s *BusinessService) SaveBusinessHistoricalProjections(businessID uint, projections []ProjectionData) error {
+	// Validate data
+	if len(projections) != 5 {
+		return fmt.Errorf("exactly 5 years of historical data required")
+	}
+
+	// Validate that all years are in the past
+	currentYear := time.Now().Year()
+	for _, proj := range projections {
+		if proj.Year >= currentYear {
+			return fmt.Errorf("historical data must be from past years only")
+		}
+	}
+
+	// Verify business exists
+	var business models.Business
+	if err := s.DB.First(&business, businessID).Error; err != nil {
+		return fmt.Errorf("business not found")
+	}
+
+	// Use transaction to ensure data consistency
+	return s.DB.Transaction(func(tx *gorm.DB) error {
+		// First, delete existing historical projections for this business
+		if err := tx.Where("business_id = ?", businessID).Delete(&models.HistoricalProjection{}).Error; err != nil {
+			return err
+		}
+
+		// Insert new historical projections
+		for _, proj := range projections {
+			historicalProjection := models.HistoricalProjection{
+				BusinessID: businessID,
+				Year:       proj.Year,
+				Revenue:    proj.Revenue,
+				Expenses:   proj.Expenses,
+				NetIncome:  proj.NetIncome,
+				CashFlow:   proj.CashFlow,
+			}
+
+			if err := tx.Create(&historicalProjection).Error; err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+}

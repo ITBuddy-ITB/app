@@ -46,8 +46,3 @@ func (s *GenAIService) GenerateBusinessSuggestions(businessID uint, isRefresh bo
 func (s *GenAIService) GetInvestmentAdviceWithContext(userQuery string, preferences map[string]interface{}) (*genai.InvestmentChatResponse, error) {
 	return s.Service.GetInvestmentAdviceWithContext(userQuery, preferences)
 }
-
-// GenerateProjections generates financial projections for a business
-func (s *GenAIService) GenerateProjections(businessID uint, isRefresh bool) (*genai.ProjectionsResponse, error) {
-	return s.Service.GenerateProjections(businessID, isRefresh)
-}

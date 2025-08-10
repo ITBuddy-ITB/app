@@ -16,50 +16,60 @@ const ProjectionsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [projections, setProjections] = useState<ProjectionData[]>([
-    { year: new Date().getFullYear() + 1, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
-    { year: new Date().getFullYear() + 2, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
-    { year: new Date().getFullYear() + 3, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
-    { year: new Date().getFullYear() + 4, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
-    { year: new Date().getFullYear() + 5, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
+    { year: new Date().getFullYear() - 5, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
+    { year: new Date().getFullYear() - 4, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
+    { year: new Date().getFullYear() - 3, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
+    { year: new Date().getFullYear() - 2, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
+    { year: new Date().getFullYear() - 1, revenue: 0, expenses: 0, netIncome: 0, cashFlow: 0 },
   ]);
 
-  const fetchAll = useCallback(
-    async (isRefresh = false) => {
-      try {
-        setLoading(true);
-        setError(null);
+  const fetchAll = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        const bizPromise = BusinessService.getBusinessById(parseInt(businessId!));
-        const projPromise = BusinessService.getBusinessProjections(parseInt(businessId!), isRefresh);
+      const bizPromise = BusinessService.getBusinessById(parseInt(businessId!));
+      const projPromise = BusinessService.getBusinessProjections(parseInt(businessId!));
 
-        const [biz, projResp] = await Promise.all([bizPromise, projPromise]);
+      const [biz, projResp] = await Promise.all([bizPromise, projPromise]);
 
-        setBusiness(biz);
+      setBusiness(biz);
 
-        if (projResp && projResp.projections && projResp.projections.length > 0) {
-          setProjections(
-            projResp.projections.map((p) => ({
-              year: p.year,
-              revenue: p.revenue,
-              expenses: p.expenses,
-              netIncome: p.netIncome,
-              cashFlow: p.cashFlow,
-            }))
-          );
-        }
-      } catch (err: unknown) {
-        console.error("Gagal memuat proyeksi atau bisnis:", err);
-        setError(err instanceof Error ? err.message : "Gagal memuat proyeksi");
-      } finally {
-        setLoading(false);
+      if (projResp && projResp.projections && projResp.projections.length > 0) {
+        setProjections(
+          projResp.projections.map((p) => ({
+            year: p.year,
+            revenue: p.revenue,
+            expenses: p.expenses,
+            netIncome: p.netIncome,
+            cashFlow: p.cashFlow,
+          }))
+        );
       }
-    },
-    [businessId]
-  );
+    } catch (err: unknown) {
+      console.error("Gagal memuat proyeksi atau bisnis:", err);
+      setError(err instanceof Error ? err.message : "Gagal memuat data historis");
+    } finally {
+      setLoading(false);
+    }
+  }, [businessId]);
 
   useEffect(() => {
     if (businessId) fetchAll();
   }, [businessId, fetchAll]);
+
+  const saveProjections = async () => {
+    try {
+      setLoading(true);
+      await BusinessService.saveBusinessProjections(parseInt(businessId!), projections);
+      // Optionally show a success message here
+    } catch (err: unknown) {
+      console.error("Gagal menyimpan data historis:", err);
+      setError(err instanceof Error ? err.message : "Gagal menyimpan data historis");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleProjectionChange = (index: number, field: keyof ProjectionData, value: string) => {
     const updatedProjections = [...projections];
@@ -88,7 +98,7 @@ const ProjectionsPage: React.FC = () => {
     return `${growth >= 0 ? "+" : ""}${growth.toFixed(1)}%`;
   };
 
-  const getTotalProjectedRevenue = (): number => {
+  const getTotalHistoricalRevenue = (): number => {
     return projections.reduce((total, proj) => total + proj.revenue, 0);
   };
 
@@ -144,11 +154,14 @@ const ProjectionsPage: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Proyeksi Investasi</h1>
-            <p className="text-gray-600">Proyeksi keuangan 5 tahun untuk {business.name}</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Data Historis Keuangan</h1>
+            <p className="text-gray-600">Data keuangan historis 5 tahun terakhir untuk {business.name}</p>
           </div>
           <div className="flex space-x-4">
-            <button onClick={() => fetchAll(true)} className="bg-brown-bg hover:bg-brown-accent-light text-brown-primary px-2 py-2 rounded-lg">
+            <button onClick={saveProjections} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+              Simpan Data Historis
+            </button>
+            <button onClick={() => fetchAll()} className="bg-brown-bg hover:bg-brown-accent-light text-brown-primary px-2 py-2 rounded-lg">
               Segarkan
             </button>
             <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
@@ -171,9 +184,9 @@ const ProjectionsPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Pendapatan Diproyeksikan</h3>
-              <p className="text-2xl font-bold text-green-600">Rp{getTotalProjectedRevenue().toLocaleString()}</p>
-              <p className="text-sm text-gray-500">Total 5 tahun</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Pendapatan Historis</h3>
+              <p className="text-2xl font-bold text-green-600">Rp{getTotalHistoricalRevenue().toLocaleString()}</p>
+              <p className="text-sm text-gray-500">Total 5 tahun terakhir</p>
             </div>
           </div>
 
@@ -202,9 +215,9 @@ const ProjectionsPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Tahun Break-Even</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Tahun Break-Even Historis</h3>
               <p className="text-2xl font-bold text-brown-accent">{projections.find((p) => p.netIncome > 0)?.year || "T/A"}</p>
-              <p className="text-sm text-gray-500">Tahun pertama profit</p>
+              <p className="text-sm text-gray-500">Tahun pertama profit historis</p>
             </div>
           </div>
         </div>
@@ -212,8 +225,8 @@ const ProjectionsPage: React.FC = () => {
         {/* Projections Table */}
         <div className="bg-white shadow rounded-lg overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Proyeksi Keuangan 5 Tahun</h2>
-            <p className="text-sm text-gray-600 mt-1">Masukkan data keuangan proyeksi Anda untuk 5 tahun ke depan</p>
+            <h2 className="text-xl font-semibold text-gray-900">Data Keuangan Historis 5 Tahun</h2>
+            <p className="text-sm text-gray-600 mt-1">Masukkan data keuangan historis Anda untuk 5 tahun terakhir</p>
           </div>
 
           <div className="overflow-x-auto">
@@ -272,23 +285,23 @@ const ProjectionsPage: React.FC = () => {
 
         {/* Investment Metrics */}
         <div className="bg-white shadow rounded-lg p-6 mt-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Metrik Investasi</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Metrik Keuangan Historis</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-lg font-bold text-gray-900">Rp{projections.reduce((sum, p) => sum + p.netIncome, 0).toLocaleString()}</div>
-              <div className="text-sm text-gray-600">Total Pendapatan Bersih (5 Tahun)</div>
+              <div className="text-sm text-gray-600">Total Pendapatan Bersih Historis (5 Tahun)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-lg font-bold text-gray-900">Rp{projections.reduce((sum, p) => sum + p.cashFlow, 0).toLocaleString()}</div>
-              <div className="text-sm text-gray-600">Total Arus Kas (5 Tahun)</div>
+              <div className="text-sm text-gray-600">Total Arus Kas Historis (5 Tahun)</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-lg font-bold text-gray-900">{projections.filter((p) => p.netIncome > 0).length}/5</div>
-              <div className="text-sm text-gray-600">Tahun Profit</div>
+              <div className="text-sm text-gray-600">Tahun Profit Historis</div>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-lg">
               <div className="text-lg font-bold text-gray-900">{getTotalGrowthRate()}</div>
-              <div className="text-sm text-gray-600">Total Pertumbuhan (5 Tahun)</div>
+              <div className="text-sm text-gray-600">Total Pertumbuhan Historis (5 Tahun)</div>
             </div>
           </div>
         </div>

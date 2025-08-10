@@ -35,22 +35,3 @@ type AISuggestionsResponse struct {
 	Suggestions  []AISuggestion `json:"suggestions"`
 	GeneratedAt  string         `json:"generated_at"`
 }
-
-// ProjectionItem represents a single year's financial projection
-type ProjectionItem struct {
-	Year      int     `json:"year"`
-	Revenue   float64 `json:"revenue"`
-	Expenses  float64 `json:"expenses"`
-	NetIncome float64 `json:"netIncome"`
-	CashFlow  float64 `json:"cashFlow"`
-}
-
-// ProjectionsResponse represents the complete financial projections response
-type ProjectionsResponse struct {
-	BusinessName          string           `json:"business_name"`
-	Projections           []ProjectionItem `json:"projections"`
-	TotalProjectedRevenue float64          `json:"total_projected_revenue"`
-	AverageGrowthRate     string           `json:"average_growth_rate"`
-	BreakEvenYear         string           `json:"break_even_year"`
-	GeneratedAt           string           `json:"generated_at"`
-}

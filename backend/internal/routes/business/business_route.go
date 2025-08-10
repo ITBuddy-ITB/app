@@ -41,5 +41,9 @@ func SetupBusinessRoutes(router *gin.Engine) {
 		businessGroup.GET("/:id/financial/history", businessController.GetBusinessFinancialHistory)
 		businessGroup.POST("/:id/financial", businessController.CreateBusinessFinancial)
 		businessGroup.PUT("/:id/financial", businessController.UpdateBusinessFinancial)
+
+		// Historical projections routes
+		businessGroup.GET("/:id/projections", businessController.GetBusinessProjections)
+		businessGroup.POST("/:id/projections", businessController.SaveBusinessProjections)
 	}
 }
