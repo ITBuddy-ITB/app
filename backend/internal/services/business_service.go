@@ -374,40 +374,45 @@ func (s *BusinessService) GetAllBusinessesWithPagination(page, limit int, indust
 	var businesses []models.Business
 	var total int64
 
-	query := s.DB.Model(&models.Business{}).
-		Preload("Products").
-		Preload("Financials", func(db *gorm.DB) *gorm.DB {
-			return db.Order("created_at DESC") // Load financials ordered by most recent first
-		}).
-		Preload("Legals")
+       query := s.DB.Model(&models.Business{}).
+	       Joins("JOIN products ON products.business_id = businesses.id").
+	       Joins("JOIN legals ON legals.business_id = businesses.id").
+	       Joins("JOIN financials ON financials.business_id = businesses.id").
+	       Preload("Products").
+	       Preload("Financials", func(db *gorm.DB) *gorm.DB {
+		       return db.Order("created_at DESC")
+	       }).
+	       Preload("Legals").
+			   Group("businesses.id").
+			   Having("COUNT(DISTINCT products.id) > 0 AND COUNT(DISTINCT legals.id) > 0 AND COUNT(DISTINCT financials.id) > 0")
 
-	// Apply filters
-	if industry != "" {
-		query = query.Where("industry = ?", industry)
-	}
-	if search != "" {
-		query = query.Where("name ILIKE ? OR description ILIKE ?", "%"+search+"%", "%"+search+"%")
-	}
+       // Apply filters
+       if industry != "" {
+	       query = query.Where("industry = ?", industry)
+       }
+       if search != "" {
+	       query = query.Where("name ILIKE ? OR description ILIKE ?", "%"+search+"%", "%"+search+"%")
+       }
 
-	// Get total count
-	if err := query.Count(&total).Error; err != nil {
-		return nil, 0, err
-	}
+       // Get total count
+       if err := query.Count(&total).Error; err != nil {
+	       return nil, 0, err
+       }
 
-	// Apply pagination
-	offset := (page - 1) * limit
-	if err := query.Offset(offset).Limit(limit).Find(&businesses).Error; err != nil {
-		return nil, 0, err
-	}
+       // Apply pagination
+       offset := (page - 1) * limit
+       if err := query.Offset(offset).Limit(limit).Find(&businesses).Error; err != nil {
+	       return nil, 0, err
+       }
 
-	// Set the latest financial record as the primary financial for compatibility
-	for i := range businesses {
-		if len(businesses[i].Financials) > 0 {
-			businesses[i].Financial = &businesses[i].Financials[0] // Most recent is first due to DESC order
-		}
-	}
+       // Set the latest financial record as the primary financial for compatibility
+       for i := range businesses {
+	       if len(businesses[i].Financials) > 0 {
+		       businesses[i].Financial = &businesses[i].Financials[0]
+	       }
+       }
 
-	return businesses, total, nil
+       return businesses, total, nil
 }
 
 func (s *BusinessService) StoreLegalAnalysisComparison(businessID uint, comparison *models.LegalComparison) error {
