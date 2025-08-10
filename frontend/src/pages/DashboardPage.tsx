@@ -12,7 +12,7 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen relative overflow-hidden"
+      className="relative min-h-screen overflow-hidden"
       style={{
         background: `
           linear-gradient(135deg, #602a1d 0%, #dbd7d2 20%, #f1edea 40%, #dbd7d2 60%, #602a1d 100%),
@@ -20,12 +20,18 @@ const DashboardPage: React.FC = () => {
           radial-gradient(circle at 75% 75%, rgba(96, 42, 29, 0.2) 0%, transparent 50%),
           conic-gradient(from 90deg at 50% 50%, rgba(96, 42, 29, 0.1) 0%, transparent 25%, rgba(96, 42, 29, 0.1) 50%, transparent 75%)
         `,
-      }}>
+      }}
+    >
       {/* Animated Background Patterns */}
-      <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
         {/* Floating orbs */}
         <motion.div
-          className="absolute top-32 left-16 w-48 h-48 rounded-full opacity-20 blur-3xl"
+          className="absolute w-48 h-48 rounded-full top-32 left-16 opacity-20 blur-3xl"
           style={{ backgroundColor: "#602a1d" }}
           animate={{
             y: [0, -30, 0],
@@ -39,7 +45,7 @@ const DashboardPage: React.FC = () => {
           }}
         />
         <motion.div
-          className="absolute top-60 right-24 w-36 h-36 rounded-full opacity-15 blur-3xl"
+          className="absolute rounded-full top-60 right-24 w-36 h-36 opacity-15 blur-3xl"
           style={{ backgroundColor: "#602a1d" }}
           animate={{
             y: [0, 35, 0],
@@ -54,7 +60,7 @@ const DashboardPage: React.FC = () => {
           }}
         />
         <motion.div
-          className="absolute bottom-40 left-1/3 w-40 h-40 rounded-full opacity-25 blur-3xl"
+          className="absolute w-40 h-40 rounded-full opacity-25 bottom-40 left-1/3 blur-3xl"
           style={{ backgroundColor: "#602a1d" }}
           animate={{
             y: [0, -25, 0],
@@ -84,10 +90,27 @@ const DashboardPage: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-10">
-        <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <main className="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <motion.div
+            className="p-4 mb-6 text-center border shadow-lg rounded-xl backdrop-blur-sm"
+            style={{
+              backgroundColor: "rgba(239, 68, 68, 0.1)",
+              borderColor: "rgba(239, 68, 68, 0.3)",
+              boxShadow: "0 10px 40px rgba(239, 68, 68, 0.1)",
+            }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <p className="text-sm font-medium" style={{ color: "#dc2626" }}>
+              Halaman dashboard ini <b className="font-extrabold">coming soon</b> dengan sistem transaksi melalui
+              xendit, midtrans atau semacamnya
+            </p>
+          </motion.div>
+
           {/* Investment Readiness Header */}
           <motion.div
-            className="rounded-2xl shadow-2xl text-white p-8 mb-8 backdrop-blur-sm border"
+            className="p-8 mb-8 text-white border shadow-2xl rounded-2xl backdrop-blur-sm"
             style={{
               background: "linear-gradient(135deg, #602a1d 0%, rgba(96, 42, 29, 0.9) 100%)",
               borderColor: "rgba(255, 255, 255, 0.2)",
@@ -95,10 +118,11 @@ const DashboardPage: React.FC = () => {
             }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}>
+            transition={{ duration: 0.4 }}
+          >
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2">Dasbor Kesiapan Investasi SINAR</h1>
+                <h1 className="mb-2 text-3xl font-bold">Dasbor Kesiapan Investasi SINAR</h1>
                 <p className="text-white/80">Lacak perjalanan Anda dari UMKM ke bisnis siap investasi dengan SINAR</p>
               </div>
               <div className="text-center">
@@ -109,7 +133,7 @@ const DashboardPage: React.FC = () => {
           </motion.div>
 
           {/* Key Metrics Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 title: "Pendapatan Bulanan",
@@ -152,7 +176,7 @@ const DashboardPage: React.FC = () => {
               return (
                 <motion.div
                   key={index}
-                  className="rounded-xl shadow-lg border p-6 backdrop-blur-sm"
+                  className="p-6 border shadow-lg rounded-xl backdrop-blur-sm"
                   style={{
                     backgroundColor: "rgba(241, 237, 234, 0.8)",
                     borderColor: "rgba(96, 42, 29, 0.2)",
@@ -164,7 +188,8 @@ const DashboardPage: React.FC = () => {
                   whileHover={{
                     y: -5,
                     boxShadow: "0 20px 60px rgba(96, 42, 29, 0.2)",
-                  }}>
+                  }}
+                >
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
@@ -173,13 +198,16 @@ const DashboardPage: React.FC = () => {
                       <p className="text-2xl font-bold" style={{ color: "#602a1d" }}>
                         {metric.value}
                       </p>
-                      <p className="text-xs flex items-center mt-1" style={{ color: metric.color }}>
+                      <p className="flex items-center mt-1 text-xs" style={{ color: metric.color }}>
                         <TrendingUp className="w-3 h-3 mr-1" />
                         {metric.change}
                       </p>
                     </div>
-                    <div className="h-12 w-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: metric.bgColor }}>
-                      <Icon className="h-6 w-6" style={{ color: metric.color }} />
+                    <div
+                      className="flex items-center justify-center w-12 h-12 rounded-lg"
+                      style={{ backgroundColor: metric.bgColor }}
+                    >
+                      <Icon className="w-6 h-6" style={{ color: metric.color }} />
                     </div>
                   </div>
                 </motion.div>
@@ -188,9 +216,9 @@ const DashboardPage: React.FC = () => {
           </div>
 
           {/* Investment Requirements Progress */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          <div className="grid grid-cols-1 gap-8 mb-8 lg:grid-cols-2">
             <motion.div
-              className="rounded-xl shadow-lg border p-6 backdrop-blur-sm"
+              className="p-6 border shadow-lg rounded-xl backdrop-blur-sm"
               style={{
                 backgroundColor: "rgba(241, 237, 234, 0.8)",
                 borderColor: "rgba(96, 42, 29, 0.2)",
@@ -198,8 +226,9 @@ const DashboardPage: React.FC = () => {
               }}
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}>
-              <h3 className="text-lg font-semibold mb-6" style={{ color: "#602a1d" }}>
+              transition={{ duration: 0.4, delay: 0.3 }}
+            >
+              <h3 className="mb-6 text-lg font-semibold" style={{ color: "#602a1d" }}>
                 Daftar Periksa Kesiapan Investasi
               </h3>
               <div className="space-y-4">
@@ -216,27 +245,31 @@ const DashboardPage: React.FC = () => {
                     className="flex items-center justify-between"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.4 + index * 0.05 }}>
+                    transition={{ duration: 0.3, delay: 0.4 + index * 0.05 }}
+                  >
                     <div className="flex items-center space-x-3">
                       <div
-                        className="w-5 h-5 rounded-full flex items-center justify-center"
+                        className="flex items-center justify-center w-5 h-5 rounded-full"
                         style={{
                           backgroundColor: req.completed ? "rgba(96, 42, 29, 0.2)" : "rgba(156, 163, 175, 0.2)",
-                        }}>
+                        }}
+                      >
                         {req.completed && <CheckCircle className="w-3 h-3" style={{ color: "#602a1d" }} />}
                       </div>
                       <span className="text-sm" style={{ color: req.completed ? "#602a1d" : "rgba(96, 42, 29, 0.6)" }}>
                         {req.item}
                       </span>
                     </div>
-                    {req.critical && <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Critical</span>}
+                    {req.critical && (
+                      <span className="px-2 py-1 text-xs text-red-800 bg-red-100 rounded">Critical</span>
+                    )}
                   </motion.div>
                 ))}
               </div>
             </motion.div>
 
             <motion.div
-              className="rounded-xl shadow-lg border p-6 backdrop-blur-sm"
+              className="p-6 border shadow-lg rounded-xl backdrop-blur-sm"
               style={{
                 backgroundColor: "rgba(241, 237, 234, 0.8)",
                 borderColor: "rgba(96, 42, 29, 0.2)",
@@ -244,8 +277,9 @@ const DashboardPage: React.FC = () => {
               }}
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: 0.35 }}>
-              <h3 className="text-lg font-semibold mb-6" style={{ color: "#602a1d" }}>
+              transition={{ duration: 0.4, delay: 0.35 }}
+            >
+              <h3 className="mb-6 text-lg font-semibold" style={{ color: "#602a1d" }}>
                 Aksi Cepat
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -264,11 +298,12 @@ const DashboardPage: React.FC = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3, delay: 0.45 + index * 0.05 }}
                       whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}>
+                      whileTap={{ scale: 0.95 }}
+                    >
                       {action.to ? (
                         <Link
                           to={action.to}
-                          className="text-white p-4 rounded-lg transition-all duration-200 text-center block w-full shadow-lg"
+                          className="block w-full p-4 text-center text-white transition-all duration-200 rounded-lg shadow-lg"
                           style={{
                             backgroundColor: action.bg,
                             boxShadow: "0 8px 32px rgba(96, 42, 29, 0.3)",
@@ -278,13 +313,14 @@ const DashboardPage: React.FC = () => {
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.boxShadow = "0 8px 32px rgba(96, 42, 29, 0.3)";
-                          }}>
-                          <Icon className="h-6 w-6 mx-auto mb-2" />
+                          }}
+                        >
+                          <Icon className="w-6 h-6 mx-auto mb-2" />
                           <span className="text-sm font-medium">{action.label}</span>
                         </Link>
                       ) : (
                         <button
-                          className="text-white p-4 rounded-lg transition-all duration-200 text-center block w-full shadow-lg"
+                          className="block w-full p-4 text-center text-white transition-all duration-200 rounded-lg shadow-lg"
                           style={{
                             backgroundColor: action.bg,
                             boxShadow: "0 8px 32px rgba(96, 42, 29, 0.3)",
@@ -294,8 +330,9 @@ const DashboardPage: React.FC = () => {
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.boxShadow = "0 8px 32px rgba(96, 42, 29, 0.3)";
-                          }}>
-                          <Icon className="h-6 w-6 mx-auto mb-2" />
+                          }}
+                        >
+                          <Icon className="w-6 h-6 mx-auto mb-2" />
                           <span className="text-sm font-medium">{action.label}</span>
                         </button>
                       )}
@@ -308,7 +345,7 @@ const DashboardPage: React.FC = () => {
 
           {/* Growth Recommendations */}
           <motion.div
-            className="rounded-xl shadow-lg border p-6 backdrop-blur-sm"
+            className="p-6 border shadow-lg rounded-xl backdrop-blur-sm"
             style={{
               backgroundColor: "rgba(241, 237, 234, 0.8)",
               borderColor: "rgba(96, 42, 29, 0.2)",
@@ -316,47 +353,52 @@ const DashboardPage: React.FC = () => {
             }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.6 }}>
-            <h3 className="text-lg font-semibold mb-6" style={{ color: "#602a1d" }}>
+            transition={{ duration: 0.4, delay: 0.6 }}
+          >
+            <h3 className="mb-6 text-lg font-semibold" style={{ color: "#602a1d" }}>
               Investment Readiness Recommendations
             </h3>
             <div className="space-y-4">
               <motion.div
-                className="flex items-start space-x-4 p-4 rounded-lg border backdrop-blur-sm"
+                className="flex items-start p-4 space-x-4 border rounded-lg backdrop-blur-sm"
                 style={{
                   backgroundColor: "rgba(251, 191, 36, 0.1)",
                   borderColor: "rgba(251, 191, 36, 0.3)",
                 }}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.7 }}>
+                transition={{ duration: 0.3, delay: 0.7 }}
+              >
                 <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
                 <div>
                   <h4 className="font-medium" style={{ color: "#602a1d" }}>
                     Improve Profit Margin
                   </h4>
-                  <p className="text-sm mt-1" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                    Your current profit margin of {profitMargin}% needs to reach 20% to attract private investors. Consider optimizing operational costs and increasing revenue streams.
+                  <p className="mt-1 text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                    Your current profit margin of {profitMargin}% needs to reach 20% to attract private investors.
+                    Consider optimizing operational costs and increasing revenue streams.
                   </p>
                 </div>
               </motion.div>
 
               <motion.div
-                className="flex items-start space-x-4 p-4 rounded-lg border backdrop-blur-sm"
+                className="flex items-start p-4 space-x-4 border rounded-lg backdrop-blur-sm"
                 style={{
                   backgroundColor: "rgba(96, 42, 29, 0.1)",
                   borderColor: "rgba(96, 42, 29, 0.3)",
                 }}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.8 }}>
+                transition={{ duration: 0.3, delay: 0.8 }}
+              >
                 <CheckCircle className="w-5 h-5 mt-0.5" style={{ color: "#602a1d" }} />
                 <div>
                   <h4 className="font-medium" style={{ color: "#602a1d" }}>
                     Complete Corporate Governance
                   </h4>
-                  <p className="text-sm mt-1" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                    Establish board of directors, audit committee, and implement proper internal controls to meet private equity investment requirements.
+                  <p className="mt-1 text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                    Establish board of directors, audit committee, and implement proper internal controls to meet
+                    private equity investment requirements.
                   </p>
                 </div>
               </motion.div>
