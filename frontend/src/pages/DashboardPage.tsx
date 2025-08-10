@@ -112,36 +112,36 @@ const DashboardPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {[
               {
-                title: "Monthly Revenue",
-                value: `IDR ${(monthlyRevenue / 1000000000).toFixed(1)}B`,
-                change: "+12.5% from last month",
+                title: "Pendapatan Bulanan",
+                value: `IDR ${(monthlyRevenue / 1000000000).toFixed(1)}M`,
+                change: "+12.5% dari bulan lalu",
                 icon: DollarSign,
                 color: "#602a1d",
                 bgColor: "rgba(96, 42, 29, 0.1)",
                 delay: 0.1,
               },
               {
-                title: "Profit Margin",
+                title: "Margin Keuntungan",
                 value: `${profitMargin}%`,
-                change: "Target: 20% for IPO",
+                change: "Target: 20% untuk IPO",
                 icon: TrendingUp,
                 color: "#602a1d",
                 bgColor: "rgba(96, 42, 29, 0.1)",
                 delay: 0.15,
               },
               {
-                title: "Compliance Score",
+                title: "Skor Kepatuhan",
                 value: `${complianceScore}%`,
-                change: "Need 95% for listing",
+                change: "Butuh 95% untuk listing",
                 icon: FileText,
                 color: "#602a1d",
                 bgColor: "rgba(96, 42, 29, 0.1)",
                 delay: 0.2,
               },
               {
-                title: "Business Stage",
-                value: "Growing",
-                change: "Scale-up phase",
+                title: "Tahap Bisnis",
+                value: "Berkembang",
+                change: "Fase pertumbuhan",
                 icon: Users,
                 color: "#f97316",
                 bgColor: "rgba(249, 115, 22, 0.1)",
@@ -200,16 +200,16 @@ const DashboardPage: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.3 }}>
               <h3 className="text-lg font-semibold mb-6" style={{ color: "#602a1d" }}>
-                Investment Readiness Checklist
+                Daftar Periksa Kesiapan Investasi
               </h3>
               <div className="space-y-4">
                 {[
-                  { item: "Financial Audits (2 years)", completed: true, critical: true },
-                  { item: "Legal Compliance", completed: true, critical: true },
-                  { item: "Corporate Governance", completed: false, critical: true },
-                  { item: "Consistent Profitability", completed: false, critical: true },
-                  { item: "Business Valuation", completed: false, critical: false },
-                  { item: "Growth Strategy Documentation", completed: false, critical: false },
+                  { item: "Audit Keuangan (2 tahun)", completed: true, critical: true },
+                  { item: "Kepatuhan Hukum", completed: true, critical: true },
+                  { item: "Tata Kelola Perusahaan", completed: false, critical: true },
+                  { item: "Profitabilitas Konsisten", completed: false, critical: true },
+                  { item: "Penilaian Bisnis", completed: false, critical: false },
+                  { item: "Dokumentasi Strategi Pertumbuhan", completed: false, critical: false },
                 ].map((req, index) => (
                   <motion.div
                     key={index}
@@ -246,14 +246,14 @@ const DashboardPage: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4, delay: 0.35 }}>
               <h3 className="text-lg font-semibold mb-6" style={{ color: "#602a1d" }}>
-                Quick Actions
+                Aksi Cepat
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { to: "/business", icon: Building2, label: "Manage Business", bg: "#602a1d" },
-                  { to: null, icon: FileText, label: "Generate Report", bg: "#602a1d" },
-                  { to: null, icon: Target, label: "Set Goals", bg: "#602a1d" },
-                  { to: "/investments", icon: DollarSign, label: "Investments", bg: "#602a1d" },
+                  { to: "/business", icon: Building2, label: "Kelola Bisnis", bg: "#602a1d" },
+                  { to: null, icon: FileText, label: "Buat Laporan", bg: "#602a1d" },
+                  { to: null, icon: Target, label: "Tetapkan Target", bg: "#602a1d" },
+                  { to: "/investments", icon: DollarSign, label: "Investasi", bg: "#602a1d" },
                 ].map((action, index) => {
                   const Icon = action.icon;
 

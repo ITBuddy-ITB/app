@@ -66,7 +66,7 @@ const BusinessDetailPage: React.FC = () => {
               animate={{ rotate: 360 }}
               transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
             />
-            <p className="text-lg text-brown-primary/80">Loading business details...</p>
+            <p className="text-lg text-brown-primary/80">Memuat detail bisnis...</p>
           </motion.div>
         </div>
       </div>
@@ -87,10 +87,10 @@ const BusinessDetailPage: React.FC = () => {
               <AlertCircle className="w-10 h-10 text-red-600" />
             </motion.div>
             <h2 className="text-2xl font-bold mb-4" style={{ color: "#602a1d" }}>
-              Something went wrong
+              Terjadi Kesalahan
             </h2>
             <p className="text-lg mb-6" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-              {error || "Business not found"}
+              {error || "Bisnis tidak ditemukan"}
             </p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
@@ -102,7 +102,7 @@ const BusinessDetailPage: React.FC = () => {
                   color: "#f1edea",
                 }}>
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Businesses
+                Kembali ke Daftar Bisnis
               </Link>
             </motion.div>
           </motion.div>
@@ -115,7 +115,7 @@ const BusinessDetailPage: React.FC = () => {
   const stage = getBusinessStage(investmentScore);
 
   return (
-    <div className="min-h-screen bg-brown-bg relative overflow-hidden">
+    <div className="min-h-screen bg-brown-bg relative overflow-hidden pb-20">
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <motion.div
@@ -167,7 +167,7 @@ const BusinessDetailPage: React.FC = () => {
               <motion.div whileHover={{ x: -5 }} transition={{ duration: 0.2 }}>
                 <Link to="/business" className="inline-flex items-center transition-colors duration-200 backdrop-blur-sm px-3 py-2 rounded-lg" style={{ color: "rgba(96, 42, 29, 0.8)" }}>
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  <span className="font-medium">Back to Business Portfolio</span>
+                  <span className="font-medium">Kembali ke Portofolio Bisnis</span>
                 </Link>
               </motion.div>
               {/* Create New Business Button */}
@@ -181,7 +181,7 @@ const BusinessDetailPage: React.FC = () => {
                     color: "#f1edea",
                   }}>
                   <Plus className="w-4 h-4 mr-2" />
-                  <span>Create New Business</span>
+                  <span>Buat Bisnis Baru</span>
                 </Link>
               </motion.div>
             </div>
@@ -259,7 +259,7 @@ const BusinessDetailPage: React.FC = () => {
                       <div className="flex items-center mb-1">
                         <Target className="w-3 h-3 mr-1" style={{ color: "#f1edea" }} />
                         <span className="font-medium" style={{ color: "#f1edea" }}>
-                          Type
+                          Tipe
                         </span>
                       </div>
                       <span className="font-medium text-xs" style={{ color: "rgba(241, 237, 234, 0.9)" }}>
@@ -278,7 +278,7 @@ const BusinessDetailPage: React.FC = () => {
                       <div className="flex items-center mb-1">
                         <Building2 className="w-3 h-3 mr-1" style={{ color: "#f1edea" }} />
                         <span className="font-medium" style={{ color: "#f1edea" }}>
-                          Industry
+                          Industri
                         </span>
                       </div>
                       <span className="font-medium text-xs" style={{ color: "rgba(241, 237, 234, 0.9)" }}>
@@ -297,11 +297,11 @@ const BusinessDetailPage: React.FC = () => {
                       <div className="flex items-center mb-1">
                         <DollarSign className="w-3 h-3 mr-1" style={{ color: "#f1edea" }} />
                         <span className="font-medium" style={{ color: "#f1edea" }}>
-                          Market Cap
+                          Kapitalisasi Pasar
                         </span>
                       </div>
                       <span className="font-medium text-xs" style={{ color: "rgba(241, 237, 234, 0.9)" }}>
-                        IDR {(business.market_cap / 1000000000).toFixed(1)}B
+                        IDR {(business.market_cap / 1000000000).toFixed(1)}M
                       </span>
                     </motion.div>
                   )}
@@ -316,7 +316,7 @@ const BusinessDetailPage: React.FC = () => {
                       <div className="flex items-center mb-1">
                         <Calendar className="w-3 h-3 mr-1" style={{ color: "#f1edea" }} />
                         <span className="font-medium" style={{ color: "#f1edea" }}>
-                          Founded
+                          Didirikan
                         </span>
                       </div>
                       <span className="font-medium text-xs" style={{ color: "rgba(241, 237, 234, 0.9)" }}>
@@ -339,11 +339,11 @@ const BusinessDetailPage: React.FC = () => {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.5 }}>
                   <div className="text-2xl sm:text-3xl font-bold mb-2 text-white drop-shadow-lg">{investmentScore}%</div>
-                  <div className="text-white font-semibold text-sm mb-3 drop-shadow-md">Investment Ready</div>
+                  <div className="text-white font-semibold text-sm mb-3 drop-shadow-md">Siap Investasi</div>
                   <div className="w-full bg-white/30 rounded-full h-2 mb-3 shadow-inner">
                     <div className="bg-white h-2 rounded-full transition-all duration-1000 shadow-sm" style={{ width: `${investmentScore}%` }}></div>
                   </div>
-                  <p className="text-white/90 text-xs font-medium drop-shadow-sm">{investmentScore >= 80 ? "Ready for investment!" : investmentScore >= 60 ? "Almost ready!" : "Keep building!"}</p>
+                  <p className="text-white/90 text-xs font-medium drop-shadow-sm">{investmentScore >= 80 ? "Siap untuk investasi!" : investmentScore >= 60 ? "Hampir siap!" : "Terus kembangkan!"}</p>
                 </motion.div>
               </div>
             </div>
@@ -361,14 +361,14 @@ const BusinessDetailPage: React.FC = () => {
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-brown-bg rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Package className="w-5 h-5 sm:w-6 sm:h-6 text-brown-primary" />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-brown-primary transition-colors">Products</h3>
-              <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm">Manage your business products and services</p>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-brown-primary transition-colors">Produk</h3>
+              <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm">Kelola produk dan layanan bisnis Anda</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   {business.products && business.products.length > 0 ? (
                     <>
                       <CheckCircle className="w-3 h-3 mr-1 text-brown-accent" />
-                      {business.products.length} products
+                      {business.products.length} produk
                     </>
                   ) : (
                     <>
@@ -390,14 +390,14 @@ const BusinessDetailPage: React.FC = () => {
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-brown-bg rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Scale className="w-5 h-5 sm:w-6 sm:h-6 text-brown-primary" />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-brown-primary transition-colors">Legal Documents</h3>
-              <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm">Upload and manage legal certificates</p>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-brown-primary transition-colors">Dokumen Legal</h3>
+              <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm">Unggah dan kelola sertifikat legal</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   {business.legals && business.legals.length > 0 ? (
                     <>
                       <CheckCircle className="w-3 h-3 mr-1 text-brown-accent" />
-                      {business.legals.length} documents
+                      {business.legals.length} dokumen
                     </>
                   ) : (
                     <>
@@ -419,14 +419,14 @@ const BusinessDetailPage: React.FC = () => {
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-brown-bg rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                 <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-brown-primary" />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-brown-primary transition-colors">Financial Data</h3>
-              <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm">Add financial information and statements</p>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-brown-primary transition-colors">Data Keuangan</h3>
+              <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm">Tambahkan informasi dan laporan keuangan</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   {business.financial ? (
                     <>
                       <CheckCircle className="w-3 h-3 mr-1 text-brown-accent" />
-                      Complete
+                      Lengkap
                     </>
                   ) : (
                     <>
@@ -448,8 +448,8 @@ const BusinessDetailPage: React.FC = () => {
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-brown-bg rounded-xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
                 <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-brown-primary" />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-brown-primary transition-colors">Projections</h3>
-              <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm">Financial projections and growth forecasts</p>
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2 group-hover:text-brown-primary transition-colors">Proyeksi</h3>
+              <p className="text-gray-600 mb-3 leading-relaxed text-xs sm:text-sm">Proyeksi keuangan dan perkiraan pertumbuhan</p>
               <div className="flex items-center justify-center text-xs text-gray-500">
                 <span className="flex items-center">
                   <Clock className="w-3 h-3 mr-1 text-gray-400" />
@@ -508,7 +508,7 @@ const BusinessDetailPage: React.FC = () => {
             <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: 4 }}>
               <Award className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-brown-accent" />
             </motion.div>
-            Investment Readiness Breakdown
+            Rincian Kesiapan Investasi
           </motion.h2>
 
           <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -520,13 +520,13 @@ const BusinessDetailPage: React.FC = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}>
                 <DollarSign className={`w-5 h-5 sm:w-6 sm:h-6 ${business.financial ? "text-white" : "text-gray-400"}`} />
               </motion.div>
-              <h3 className="font-semibold text-brown-primary mb-1 text-xs sm:text-sm">Financial Data</h3>
-              <p className="text-xs text-brown-text/70 mb-2">30% of total score</p>
+              <h3 className="font-semibold text-brown-primary mb-1 text-xs sm:text-sm">Data Keuangan</h3>
+              <p className="text-xs text-brown-text/70 mb-2">30% dari total skor</p>
               <div
                 className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium shadow-sm transition-all duration-300 ${
                   business.financial ? "bg-brown-accent/20 text-brown-primary border border-brown-accent/30" : "bg-gray-100 text-gray-600 border border-gray-200"
                 }`}>
-                {business.financial ? "Complete" : "Missing"}
+                {business.financial ? "Lengkap" : "Belum lengkap"}
               </div>
             </motion.div>
 
@@ -538,13 +538,13 @@ const BusinessDetailPage: React.FC = () => {
                 whileHover={{ scale: 1.1, rotate: -5 }}>
                 <Scale className={`w-5 h-5 sm:w-6 sm:h-6 ${business.legals && business.legals.length > 0 ? "text-white" : "text-gray-400"}`} />
               </motion.div>
-              <h3 className="font-semibold text-brown-primary mb-1 text-xs sm:text-sm">Legal Documents</h3>
-              <p className="text-xs text-brown-text/70 mb-2">25% of total score</p>
+              <h3 className="font-semibold text-brown-primary mb-1 text-xs sm:text-sm">Dokumen Legal</h3>
+              <p className="text-xs text-brown-text/70 mb-2">25% dari total skor</p>
               <div
                 className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium shadow-sm transition-all duration-300 ${
                   business.legals && business.legals.length > 0 ? "bg-brown-accent/20 text-brown-primary border border-brown-accent/30" : "bg-gray-100 text-gray-600 border border-gray-200"
                 }`}>
-                {business.legals && business.legals.length > 0 ? `${business.legals.length} docs` : "Missing"}
+                {business.legals && business.legals.length > 0 ? `${business.legals.length} dokumen` : "Belum lengkap"}
               </div>
             </motion.div>
 
@@ -556,13 +556,13 @@ const BusinessDetailPage: React.FC = () => {
                 whileHover={{ scale: 1.1, rotate: 5 }}>
                 <Package className={`w-5 h-5 sm:w-6 sm:h-6 ${business.products && business.products.length > 0 ? "text-white" : "text-gray-400"}`} />
               </motion.div>
-              <h3 className="font-semibold text-brown-primary mb-1 text-xs sm:text-sm">Products</h3>
-              <p className="text-xs text-brown-text/70 mb-2">20% of total score</p>
+              <h3 className="font-semibold text-brown-primary mb-1 text-xs sm:text-sm">Produk</h3>
+              <p className="text-xs text-brown-text/70 mb-2">20% dari total skor</p>
               <div
                 className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium shadow-sm transition-all duration-300 ${
                   business.products && business.products.length > 0 ? "bg-brown-accent/20 text-brown-primary border border-brown-accent/30" : "bg-gray-100 text-gray-600 border border-gray-200"
                 }`}>
-                {business.products && business.products.length > 0 ? `${business.products.length} products` : "Missing"}
+                {business.products && business.products.length > 0 ? `${business.products.length} produk` : "Belum lengkap"}
               </div>
             </motion.div>
 
@@ -574,13 +574,13 @@ const BusinessDetailPage: React.FC = () => {
                 whileHover={{ scale: 1.1, rotate: -5 }}>
                 <TrendingUp className={`w-5 h-5 sm:w-6 sm:h-6 ${business.market_cap && business.market_cap > 10000000000 ? "text-white" : "text-gray-400"}`} />
               </motion.div>
-              <h3 className="font-semibold text-brown-primary mb-1 text-xs sm:text-sm">Market Cap</h3>
+              <h3 className="font-semibold text-brown-primary mb-1 text-xs sm:text-sm">Kapitalisasi Pasar</h3>
               <p className="text-xs text-brown-text/70 mb-2">15% + 10% bonus</p>
               <div
                 className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-medium shadow-sm transition-all duration-300 ${
                   business.market_cap && business.market_cap > 10000000000 ? "bg-brown-accent/20 text-brown-primary border border-brown-accent/30" : "bg-gray-100 text-gray-600 border border-gray-200"
                 }`}>
-                {business.market_cap && business.market_cap > 10000000000 ? "Qualified" : "Below threshold"}
+                {business.market_cap && business.market_cap > 10000000000 ? "Memenuhi syarat" : "Di bawah ambang batas"}
               </div>
             </motion.div>
           </div>

@@ -154,17 +154,17 @@ const ProjectionsPage: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Data Historis Keuangan</h1>
-            <p className="text-gray-600">Data keuangan historis 5 tahun terakhir untuk {business.name}</p>
+            <h1 className="text-3xl font-bold text-brown-primary mb-2">Data Historis Keuangan</h1>
+            <p className="text-brown-secondary">Data keuangan historis 5 tahun terakhir untuk {business.name}</p>
           </div>
           <div className="flex space-x-4">
-            <button onClick={saveProjections} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+            <button onClick={saveProjections} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
               Simpan Data Historis
             </button>
-            <button onClick={() => fetchAll()} className="bg-brown-bg hover:bg-brown-accent-light text-brown-primary px-2 py-2 rounded-lg">
+            <button onClick={() => fetchAll()} className="bg-brown-bg hover:bg-brown-accent-light text-brown-primary px-2 py-2 rounded-lg transition-colors">
               Segarkan
             </button>
-            <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+            <Link to={`/business/${businessId}/details`} className="bg-brown-bg hover:bg-brown-bg-light text-brown-primary px-4 py-2 rounded-lg transition-colors">
               Kembali ke Bisnis
             </Link>
           </div>
@@ -172,7 +172,7 @@ const ProjectionsPage: React.FC = () => {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg p-6 border border-brown-accent">
             <div className="text-center">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,26 +184,26 @@ const ProjectionsPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Pendapatan Historis</h3>
+              <h3 className="text-lg font-semibold text-brown-primary mb-2">Total Pendapatan Historis</h3>
               <p className="text-2xl font-bold text-green-600">Rp{getTotalHistoricalRevenue().toLocaleString()}</p>
-              <p className="text-sm text-gray-500">Total 5 tahun terakhir</p>
+              <p className="text-sm text-brown-secondary">Total 5 tahun terakhir</p>
             </div>
           </div>
 
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg p-6 border border-brown-accent">
             <div className="text-center">
               <div className="w-12 h-12 bg-brown-bg rounded-lg flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-brown-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Rata-rata Tingkat Pertumbuhan</h3>
+              <h3 className="text-lg font-semibold text-brown-primary mb-2">Rata-rata Tingkat Pertumbuhan</h3>
               <p className="text-2xl font-bold text-brown-primary">{getAverageGrowthRate()}</p>
-              <p className="text-sm text-gray-500">Tahun ke tahun</p>
+              <p className="text-sm text-brown-secondary">Tahun ke tahun</p>
             </div>
           </div>
 
-          <div className="bg-white shadow rounded-lg p-6">
+          <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg p-6 border border-brown-accent">
             <div className="text-center">
               <div className="w-12 h-12 bg-brown-accent-light rounded-lg flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-brown-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -215,36 +215,36 @@ const ProjectionsPage: React.FC = () => {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Tahun Break-Even Historis</h3>
+              <h3 className="text-lg font-semibold text-brown-primary mb-2">Tahun Break-Even Historis</h3>
               <p className="text-2xl font-bold text-brown-accent">{projections.find((p) => p.netIncome > 0)?.year || "T/A"}</p>
-              <p className="text-sm text-gray-500">Tahun pertama profit historis</p>
+              <p className="text-sm text-brown-secondary">Tahun pertama profit historis</p>
             </div>
           </div>
         </div>
 
         {/* Projections Table */}
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Data Keuangan Historis 5 Tahun</h2>
-            <p className="text-sm text-gray-600 mt-1">Masukkan data keuangan historis Anda untuk 5 tahun terakhir</p>
+        <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg overflow-hidden border border-brown-accent">
+          <div className="px-6 py-4 border-b border-brown-accent">
+            <h2 className="text-xl font-semibold text-brown-primary">Data Keuangan Historis 5 Tahun</h2>
+            <p className="text-sm text-brown-secondary mt-1">Masukkan data keuangan historis Anda untuk 5 tahun terakhir</p>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-brown-accent">
+              <thead className="bg-brown-bg/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tahun</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pendapatan (Rp)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pengeluaran (Rp)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pendapatan Bersih (Rp)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Arus Kas (Rp)</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tingkat Pertumbuhan</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-brown-secondary uppercase tracking-wider">Tahun</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-brown-secondary uppercase tracking-wider">Pendapatan (Rp)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-brown-secondary uppercase tracking-wider">Pengeluaran (Rp)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-brown-secondary uppercase tracking-wider">Pendapatan Bersih (Rp)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-brown-secondary uppercase tracking-wider">Arus Kas (Rp)</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-brown-secondary uppercase tracking-wider">Tingkat Pertumbuhan</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white/50 divide-y divide-brown-accent">
                 {projections.map((projection, index) => (
-                  <tr key={projection.year} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{projection.year}</td>
+                  <tr key={projection.year} className="hover:bg-white/70 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-brown-primary">{projection.year}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <input
                         type="number"

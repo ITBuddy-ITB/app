@@ -99,12 +99,12 @@ const BusinessPage: React.FC = () => {
             </motion.div>
 
             <motion.h1 className="text-4xl font-bold mb-4 text-brown-primary" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
-              Your{" "}
+              Portofolio{" "}
               <span className="relative inline-block">
-                Business
+                Bisnis
                 <div className="absolute bottom-1 left-0 w-full h-2 opacity-30 -z-10 bg-brown-primary" />
               </span>{" "}
-              Portfolio
+              Anda
             </motion.h1>
 
             <motion.p
@@ -112,7 +112,7 @@ const BusinessPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.3 }}>
-              Manage your complete business profiles with SINAR's comprehensive platform.
+              Kelola profil bisnis lengkap Anda dengan platform komprehensif SINAR.
             </motion.p>
 
             {/* Stats Overview */}
@@ -124,7 +124,7 @@ const BusinessPage: React.FC = () => {
                   boxShadow: "0 12px 40px rgba(96, 42, 29, 0.15)",
                 }}>
                 <div className="text-3xl font-bold mb-2 text-brown-primary">{businesses.length}</div>
-                <div className="text-sm text-brown-primary/70">Active Businesses</div>
+                <div className="text-sm text-brown-primary/70">Bisnis Aktif</div>
               </motion.div>
 
               <motion.div
@@ -134,7 +134,7 @@ const BusinessPage: React.FC = () => {
                   boxShadow: "0 12px 40px rgba(96, 42, 29, 0.15)",
                 }}>
                 <div className="text-3xl font-bold mb-2 text-brown-primary">{businesses.length}</div>
-                <div className="text-sm text-brown-primary/70">Ready for Listing</div>
+                <div className="text-sm text-brown-primary/70">Siap untuk Listing</div>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -144,7 +144,7 @@ const BusinessPage: React.FC = () => {
             {loading ? (
               <motion.div className="text-center py-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 mb-4 border-brown-primary" />
-                <p className="text-brown-primary">Loading your businesses...</p>
+                <p className="text-brown-primary">Memuat bisnis Anda...</p>
               </motion.div>
             ) : error ? (
               <motion.div
@@ -173,11 +173,11 @@ const BusinessPage: React.FC = () => {
                 </motion.div>
 
                 <motion.h3 className="text-3xl font-bold mb-4 text-brown-primary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
-                  No Businesses Ready Yet
+                  Belum Ada Bisnis Siap
                 </motion.h3>
 
                 <motion.p className="text-lg mb-8 max-w-lg mx-auto leading-relaxed text-brown-primary/70" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
-                  You don't have any complete business profiles yet. Create a new business and complete all the required steps to see it listed here.
+                  Anda belum memiliki profil bisnis yang lengkap. Buat bisnis baru dan lengkapi semua langkah yang diperlukan untuk melihatnya terdaftar di sini.
                 </motion.p>
 
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -185,7 +185,7 @@ const BusinessPage: React.FC = () => {
                     to="/business/step-1"
                     className="inline-flex items-center px-8 py-4 text-white rounded-xl font-semibold transition-all duration-300 shadow-xl bg-brown-primary hover:bg-brown-primary-hover">
                     <Plus className="w-5 h-5 mr-2" />
-                    <span>Create New Business</span>
+                    <span>Buat Bisnis Baru</span>
                   </Link>
                 </motion.div>
               </motion.div>
@@ -196,20 +196,18 @@ const BusinessPage: React.FC = () => {
                     <div className="h-8 w-8 rounded-lg flex items-center justify-center mr-3 shadow-lg bg-brown-primary">
                       <TrendingUp className="w-4 h-4 text-white" />
                     </div>
-                    Your Business Portfolio
+                    Portofolio Bisnis Anda
                   </h3>
 
                   <div className="flex items-center space-x-4">
-                    <div className="text-sm text-brown-primary/70">
-                      {businesses.length} {businesses.length === 1 ? "business" : "businesses"}
-                    </div>
+                    <div className="text-sm text-brown-primary/70">{businesses.length} bisnis</div>
 
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Link
                         to="/business/step-1"
                         className="inline-flex items-center px-4 py-2 text-white rounded-lg font-medium transition-all duration-300 shadow-lg text-sm bg-brown-primary hover:bg-brown-primary-hover">
                         <Plus className="w-4 h-4 mr-2" />
-                        <span>New Business</span>
+                        <span>Bisnis Baru</span>
                       </Link>
                     </motion.div>
                   </div>
@@ -217,7 +215,7 @@ const BusinessPage: React.FC = () => {
 
                 {/* Helper text */}
                 <motion.p className="text-sm mb-4 text-brown-primary/60" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
-                  Click on any business card to view details and manage your business information
+                  Klik pada kartu bisnis mana pun untuk melihat detail dan mengelola informasi bisnis Anda
                 </motion.p>
 
                 <div className="grid gap-4">

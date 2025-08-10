@@ -122,8 +122,8 @@ const ProductsPage: React.FC = () => {
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Manajemen Produk</h1>
-          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+          <h1 className="text-3xl font-bold text-brown-primary">Manajemen Produk</h1>
+          <Link to={`/business/${businessId}/details`} className="bg-brown-bg hover:bg-brown-bg-light text-brown-primary px-4 py-2 rounded-lg transition-colors">
             Kembali ke Bisnis
           </Link>
         </div>
@@ -131,19 +131,19 @@ const ProductsPage: React.FC = () => {
         {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
 
         {/* Add Products Section */}
-        <div className="bg-white shadow rounded-lg p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Tambah Produk Baru</h3>
-          <p className="text-gray-600 mb-4">Masukkan nama produk, satu per baris:</p>
+        <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg p-6 mb-8 border border-brown-accent">
+          <h3 className="text-lg font-semibold text-brown-primary mb-4">Tambah Produk Baru</h3>
+          <p className="text-brown-secondary mb-4">Masukkan nama produk, satu per baris:</p>
 
           <div className="mb-4">
-            <label htmlFor="productsFile" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="productsFile" className="block text-sm font-medium text-brown-primary mb-2">
               Unggah File Produk (PDF)
             </label>
             <input
               id="productsFile"
               type="file"
               accept="application/pdf"
-              className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 
+              className="block w-full text-sm text-brown-secondary file:mr-4 file:py-2 file:px-4 
                  file:rounded-md file:border-0 file:text-sm file:font-semibold 
                  file:bg-brown-bg file:text-brown-primary hover:file:bg-brown-bg-light"
               onChange={handleProductsFileOnChange}
@@ -167,23 +167,28 @@ const ProductsPage: React.FC = () => {
         </div>
 
         {/* Existing Products */}
-        <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Produk yang Ada</h3>
+        <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg p-6 border border-brown-accent">
+          <h3 className="text-lg font-semibold text-brown-primary mb-4">Produk yang Ada</h3>
 
           {products.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">Belum ada produk yang ditambahkan.</p>
+            <p className="text-brown-secondary text-center py-8">Belum ada produk yang ditambahkan.</p>
           ) : (
             <div className="space-y-4">
               {products.map((product, index) => (
-                <div key={product.ID || index} className="border border-gray-200 rounded-lg p-4 relative">
+                <div key={product.ID || index} className="border border-brown-accent rounded-lg p-4 relative bg-white/50">
                   <button onClick={() => product.ID && handleDeleteProduct(product.ID)} className="absolute top-2 right-2 p-1 bg-red-100 hover:bg-red-200 text-red-600 rounded-full">
                     <X size={16} />
                   </button>
 
                   <div className="grid grid-cols-1 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
-                      <input type="text" className="w-full border rounded-lg px-3 py-2" value={product.name} onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)} />
+                      <label className="block text-sm font-medium text-brown-primary mb-1">Nama Produk</label>
+                      <input
+                        type="text"
+                        className="w-full border border-brown-accent rounded-lg px-3 py-2 focus:ring-2 focus:ring-brown-primary focus:border-brown-primary"
+                        value={product.name}
+                        onChange={(e) => product.ID && handleUpdateProduct(product.ID, "name", e.target.value)}
+                      />
                     </div>
                   </div>
                 </div>

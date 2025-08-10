@@ -203,14 +203,14 @@ const InvestmentPage: React.FC = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                    Total Opportunities
+                    Total Peluang
                   </p>
                   <p className="text-2xl font-bold" style={{ color: "#602a1d" }}>
                     {pagination.total}
                   </p>
                   <p className="text-xs flex items-center mt-1" style={{ color: "#602a1d" }}>
                     <ArrowUpRight className="w-3 h-3 mr-1" />
-                    Available to invest
+                    Siap untuk investasi
                   </p>
                 </div>
                 <div className="h-12 w-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}>

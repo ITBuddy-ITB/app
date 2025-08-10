@@ -79,7 +79,7 @@ const LegalStepsPage: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <button onClick={() => navigate(-1)} className="flex items-center text-gray-600 hover:text-gray-800 transition-colors">
+            <button onClick={() => navigate(-1)} className="flex items-center text-brown-secondary hover:text-brown-primary transition-colors">
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
@@ -87,20 +87,20 @@ const LegalStepsPage: React.FC = () => {
             </button>
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Cara Mendapatkan: {legalTypeName}</h1>
+          <h1 className="text-3xl font-bold text-brown-primary mb-2">Cara Mendapatkan: {legalTypeName}</h1>
 
-          <p className="text-gray-600 mb-6">Ikuti langkah-langkah berikut untuk mendapatkan dokumen legal Anda.</p>
+          <p className="text-brown-secondary mb-6">Ikuti langkah-langkah berikut untuk mendapatkan dokumen legal Anda.</p>
 
           {/* Progress Bar */}
-          <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-6 shadow-lg mb-6 border border-brown-accent">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Progres</span>
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium text-brown-primary">Progres</span>
+              <span className="text-sm font-medium text-brown-primary">
                 {completedSteps.size} dari {steps.length} langkah selesai
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div className="bg-blue-600 h-3 rounded-full transition-all duration-300 ease-out" style={{ width: `${getProgressPercentage()}%` }}></div>
+            <div className="w-full bg-brown-bg rounded-full h-3">
+              <div className="bg-brown-primary h-3 rounded-full transition-all duration-300 ease-out" style={{ width: `${getProgressPercentage()}%` }}></div>
             </div>
             {getProgressPercentage() === 100 && (
               <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
@@ -125,15 +125,15 @@ const LegalStepsPage: React.FC = () => {
             return (
               <div
                 key={step.step_number}
-                className={`bg-white rounded-lg shadow-sm border-2 transition-all duration-200 ${
-                  isCurrent ? "border-blue-500 shadow-lg" : isCompleted ? "border-green-200" : isAccessible ? "border-gray-200 hover:border-gray-300" : "border-gray-100 opacity-60"
+                className={`bg-white/80 backdrop-blur-sm rounded-lg shadow-lg border-2 transition-all duration-200 ${
+                  isCurrent ? "border-brown-primary shadow-xl" : isCompleted ? "border-green-200" : isAccessible ? "border-brown-accent hover:border-brown-primary" : "border-brown-bg opacity-60"
                 }`}>
                 <div className="p-6">
                   <div className="flex items-start space-x-4">
                     {/* Step Number/Icon */}
                     <div
                       className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
-                        isCompleted ? "bg-green-100 text-green-800" : isAccessible ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-400"
+                        isCompleted ? "bg-green-100 text-green-800" : isAccessible ? "bg-brown-bg text-brown-primary" : "bg-brown-bg/50 text-brown-secondary"
                       }`}>
                       {isCompleted ? (
                         <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
@@ -146,9 +146,9 @@ const LegalStepsPage: React.FC = () => {
 
                     {/* Step Content */}
                     <div className="flex-1">
-                      <h3 className={`text-lg font-semibold mb-3 ${isAccessible ? "text-gray-900" : "text-gray-400"}`}>Step {step.step_number}</h3>
+                      <h3 className={`text-lg font-semibold mb-3 ${isAccessible ? "text-brown-primary" : "text-brown-secondary"}`}>Step {step.step_number}</h3>
 
-                      <p className={`mb-4 leading-relaxed ${isAccessible ? "text-gray-700" : "text-gray-400"}`}>{step.description}</p>
+                      <p className={`mb-4 leading-relaxed ${isAccessible ? "text-brown-secondary" : "text-brown-secondary/60"}`}>{step.description}</p>
 
                       {/* Action Buttons */}
                       <div className="flex items-center space-x-3">
@@ -156,7 +156,7 @@ const LegalStepsPage: React.FC = () => {
                           onClick={() => handleRedirect(step.redirect_url)}
                           disabled={!isAccessible || loading}
                           className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                            isAccessible ? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm hover:shadow" : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            isAccessible ? "bg-brown-primary hover:bg-brown-accent text-white shadow-sm hover:shadow" : "bg-brown-bg text-brown-secondary cursor-not-allowed"
                           }`}>
                           {loading ? (
                             <div className="flex items-center">
@@ -182,8 +182,8 @@ const LegalStepsPage: React.FC = () => {
                             isCompleted
                               ? "bg-green-50 border-green-200 text-green-800 hover:bg-green-100"
                               : isAccessible
-                              ? "bg-white border-gray-300 text-gray-700 hover:border-gray-400"
-                              : "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed"
+                              ? "bg-white/80 border-brown-accent text-brown-primary hover:border-brown-primary"
+                              : "bg-brown-bg/50 border-brown-accent text-brown-secondary cursor-not-allowed"
                           }`}>
                           {isCompleted ? (
                             <div className="flex items-center">
