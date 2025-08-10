@@ -137,26 +137,6 @@ const Step1Page: React.FC = () => {
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.6 }}>
-                <label className="block text-sm font-medium text-brown-primary mb-2">Market Cap</label>
-                <input
-                  type="number"
-                  className="w-full border-2 border-brown-bg/50 rounded-lg px-4 py-2 bg-white/80 backdrop-blur-sm focus:border-brown-accent focus:outline-none focus:ring-2 focus:ring-brown-accent/20 transition-all duration-200 text-brown-text"
-                  value={business.marketCap}
-                  onChange={(e) => setBusiness({ ...business, marketCap: e.target.value })}
-                />
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.7 }}>
-                <label className="block text-sm font-medium text-brown-primary mb-2">Industry</label>
-                <input
-                  type="text"
-                  className="w-full border-2 border-brown-bg/50 rounded-lg px-4 py-2 bg-white/80 backdrop-blur-sm focus:border-brown-accent focus:outline-none focus:ring-2 focus:ring-brown-accent/20 transition-all duration-200 text-brown-text"
-                  value={business.industry}
-                  onChange={(e) => setBusiness({ ...business, industry: e.target.value })}
-                />
-              </motion.div>
-
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.8 }}>
                 <label className="block text-sm font-medium text-brown-primary mb-2">Founded At</label>
                 <input
                   type="date"
@@ -167,7 +147,7 @@ const Step1Page: React.FC = () => {
               </motion.div>
             </div>
 
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.9 }}>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.7 }}>
               <label className="block text-sm font-medium text-brown-primary mb-2">Description</label>
               <textarea
                 className="w-full border-2 border-brown-bg/50 rounded-lg px-4 py-2 bg-white/80 backdrop-blur-sm focus:border-brown-accent focus:outline-none focus:ring-2 focus:ring-brown-accent/20 transition-all duration-200 text-brown-text resize-none"
@@ -180,7 +160,7 @@ const Step1Page: React.FC = () => {
           </motion.div>
 
           {/* Submit */}
-          <motion.div className="flex justify-between items-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 1.0 }}>
+          <motion.div className="flex justify-between items-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.8 }}>
             {error && (
               <motion.span className="text-red-600 bg-red-50 px-3 py-1 rounded-lg text-sm font-medium" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3 }}>
                 {error}

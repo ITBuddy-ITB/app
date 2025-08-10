@@ -101,24 +101,24 @@ const FinancialPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-brown-bg to-white">
+      <div className="min-h-screen bg-brown-bg">
         <div className="max-w-4xl mx-auto py-12 px-4">
-          <div className="text-center">Memuat data keuangan...</div>
+          <div className="text-center text-brown-primary">Memuat data keuangan...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brown-bg to-white">
+    <div className="min-h-screen bg-brown-bg">
       <div className="max-w-4xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Tambah Catatan Keuangan</h1>
-            <p className="text-gray-600">Buat catatan keuangan baru untuk bisnis Anda</p>
+            <h1 className="text-3xl font-bold text-brown-primary mb-2">Tambah Catatan Keuangan</h1>
+            <p className="text-brown-text/70">Buat catatan keuangan baru untuk bisnis Anda</p>
           </div>
-          <Link to={`/business/${businessId}/details`} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">
+          <Link to={`/business/${businessId}/details`} className="bg-brown-bg-light hover:bg-brown-accent/20 text-brown-primary px-4 py-2 rounded-lg transition-colors">
             Back to Business
           </Link>
         </div>
@@ -130,12 +130,12 @@ const FinancialPage: React.FC = () => {
         {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
 
         {/* Financial Form */}
-        <div className="bg-white shadow rounded-lg p-6">
+        <div className="bg-brown-bg-light shadow-lg rounded-xl p-6 border border-brown-primary/20">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Revenue */}
               <div>
-                <label htmlFor="revenue" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="revenue" className="block text-sm font-medium text-brown-primary mb-2">
                   Pendapatan (Rp)
                 </label>
                 <input
@@ -146,7 +146,7 @@ const FinancialPage: React.FC = () => {
                     required: "Revenue is required",
                     min: { value: 0, message: "Revenue must be positive" },
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border-2 border-brown-bg/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-accent/20 focus:border-brown-accent transition-all duration-200 text-brown-text bg-white/80"
                   placeholder="Enter revenue amount"
                 />
                 {errors.revenue && <p className="text-red-500 text-sm mt-1">{errors.revenue.message}</p>}
@@ -154,7 +154,7 @@ const FinancialPage: React.FC = () => {
 
               {/* EBITDA */}
               <div>
-                <label htmlFor="ebitda" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="ebitda" className="block text-sm font-medium text-brown-primary mb-2">
                   EBITDA (Rp)
                 </label>
                 <input
@@ -165,7 +165,7 @@ const FinancialPage: React.FC = () => {
                     required: "EBITDA is required",
                     min: { value: 0, message: "EBITDA must be positive" },
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border-2 border-brown-bg/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-accent/20 focus:border-brown-accent transition-all duration-200 text-brown-text bg-white/80"
                   placeholder="Enter EBITDA amount"
                 />
                 {errors.ebitda && <p className="text-red-500 text-sm mt-1">{errors.ebitda.message}</p>}
@@ -173,7 +173,7 @@ const FinancialPage: React.FC = () => {
 
               {/* Assets */}
               <div>
-                <label htmlFor="assets" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="assets" className="block text-sm font-medium text-brown-primary mb-2">
                   Total Aset (Rp)
                 </label>
                 <input
@@ -184,7 +184,7 @@ const FinancialPage: React.FC = () => {
                     required: "Total assets is required",
                     min: { value: 0, message: "Assets must be positive" },
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border-2 border-brown-bg/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-accent/20 focus:border-brown-accent transition-all duration-200 text-brown-text bg-white/80"
                   placeholder="Enter total assets"
                 />
                 {errors.assets && <p className="text-red-500 text-sm mt-1">{errors.assets.message}</p>}
@@ -192,7 +192,7 @@ const FinancialPage: React.FC = () => {
 
               {/* Liabilities */}
               <div>
-                <label htmlFor="liabilities" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="liabilities" className="block text-sm font-medium text-brown-primary mb-2">
                   Total Kewajiban (Rp)
                 </label>
                 <input
@@ -203,7 +203,7 @@ const FinancialPage: React.FC = () => {
                     required: "Total liabilities is required",
                     min: { value: 0, message: "Liabilities must be positive" },
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border-2 border-brown-bg/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-accent/20 focus:border-brown-accent transition-all duration-200 text-brown-text bg-white/80"
                   placeholder="Enter total liabilities"
                 />
                 {errors.liabilities && <p className="text-red-500 text-sm mt-1">{errors.liabilities.message}</p>}
@@ -211,7 +211,7 @@ const FinancialPage: React.FC = () => {
 
               {/* Equity */}
               <div>
-                <label htmlFor="equity" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="equity" className="block text-sm font-medium text-brown-primary mb-2">
                   Total Ekuitas (Rp)
                 </label>
                 <input
@@ -221,7 +221,7 @@ const FinancialPage: React.FC = () => {
                   {...register("equity", {
                     required: "Total equity is required",
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
+                  className="w-full px-3 py-2 border-2 border-brown-bg/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-accent/20 focus:border-brown-accent transition-all duration-200 text-brown-text bg-white/80"
                   placeholder="Enter total equity"
                 />
                 {errors.equity && <p className="text-red-500 text-sm mt-1">{errors.equity.message}</p>}
@@ -230,14 +230,14 @@ const FinancialPage: React.FC = () => {
 
             {/* Notes */}
             <div>
-              <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="notes" className="block text-sm font-medium text-brown-primary mb-2">
                 Catatan Tambahan
               </label>
               <textarea
                 id="notes"
                 rows={4}
                 {...register("notes")}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brown-primary focus:border-transparent"
+                className="w-full px-3 py-2 border-2 border-brown-bg/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-accent/20 focus:border-brown-accent transition-all duration-200 text-brown-text bg-white/80"
                 placeholder="Enter any additional financial notes or details..."
               />
             </div>
@@ -253,31 +253,31 @@ const FinancialPage: React.FC = () => {
 
         {/* Financial Summary */}
         {financial && (financial.ebitda || financial.assets || financial.liabilities || financial.equity) && (
-          <div className="bg-white shadow rounded-lg p-6 mt-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Ringkasan Keuangan</h2>
+          <div className="bg-brown-bg-light shadow-lg rounded-xl p-6 mt-6 border border-brown-primary/20">
+            <h2 className="text-xl font-semibold text-brown-primary mb-4">Ringkasan Keuangan</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {financial.ebitda && (
                 <div className="text-center p-4 bg-brown-bg-light rounded-lg">
-                  <div className="text-2xl font-bold text-brown-primary">${financial.ebitda.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">EBITDA</div>
+                  <div className="text-2xl font-bold text-brown-primary">Rp{financial.ebitda.toLocaleString()}</div>
+                  <div className="text-sm text-brown-text/60">EBITDA</div>
                 </div>
               )}
               {financial.assets && (
                 <div className="text-center p-4 bg-brown-bg rounded-lg">
-                  <div className="text-2xl font-bold text-brown-primary">${financial.assets.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">Total Assets</div>
+                  <div className="text-2xl font-bold text-brown-primary">Rp{financial.assets.toLocaleString()}</div>
+                  <div className="text-sm text-brown-text/60">Total Assets</div>
                 </div>
               )}
               {financial.liabilities && (
                 <div className="text-center p-4 bg-red-50 rounded-lg">
                   <div className="text-2xl font-bold text-red-600">Rp{financial.liabilities.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">Total Kewajiban</div>
+                  <div className="text-sm text-brown-text/60">Total Kewajiban</div>
                 </div>
               )}
               {financial.equity && financial.liabilities && financial.assets && (
                 <div className="text-center p-4 bg-brown-accent-light rounded-lg">
                   <div className="text-2xl font-bold text-brown-accent">{((financial.equity / financial.assets) * 100).toFixed(1)}%</div>
-                  <div className="text-sm text-gray-600">Equity Ratio</div>
+                  <div className="text-sm text-brown-text/60">Equity Ratio</div>
                 </div>
               )}
             </div>

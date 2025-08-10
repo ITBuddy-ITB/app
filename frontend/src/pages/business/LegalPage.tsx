@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router";
-import {
-  BusinessService,
-  type Legal,
-  type ProductLegal,
-  type Product,
-  type LegalComparison,
-} from "../../services/businessService";
+import { BusinessService, type Legal, type ProductLegal, type Product, type LegalComparison } from "../../services/businessService";
 import LegalRequirements from "../../components/legal/LegalRequirements";
 
 const API_BASE_URL = "http://localhost:8080";
@@ -149,13 +143,7 @@ const LegalPage: React.FC = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Unggah Dokumen Legal (PDF)</label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-            <input
-              type="file"
-              accept=".pdf"
-              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-              className="w-full"
-              required
-            />
+            <input type="file" accept=".pdf" onChange={(e) => setSelectedFile(e.target.files?.[0] || null)} className="w-full" required />
             {selectedFile && <p className="text-sm text-gray-600 mt-2">Dipilih: {selectedFile.name}</p>}
           </div>
         </div>
@@ -187,12 +175,7 @@ const LegalPage: React.FC = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Berlaku Sampai (Opsional)</label>
-          <input
-            type="date"
-            className="w-full border rounded-lg px-3 py-2"
-            value={formData.valid_until}
-            onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
-          />
+          <input type="date" className="w-full border rounded-lg px-3 py-2" value={formData.valid_until} onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })} />
         </div>
 
         <div>
@@ -206,11 +189,7 @@ const LegalPage: React.FC = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50"
-        >
+        <button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
           {loading ? "Mengunggah..." : "Unggah Dokumen"}
         </button>
       </form>
@@ -254,12 +233,7 @@ const LegalPage: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Pilih Produk</label>
-          <select
-            className="w-full border rounded-lg px-3 py-2"
-            value={formData.product_id}
-            onChange={(e) => setFormData({ ...formData, product_id: e.target.value })}
-            required
-          >
+          <select className="w-full border rounded-lg px-3 py-2" value={formData.product_id} onChange={(e) => setFormData({ ...formData, product_id: e.target.value })} required>
             <option value="">Pilih produk...</option>
             {products.map((product) => (
               <option key={product.ID} value={product.ID}>
@@ -272,13 +246,7 @@ const LegalPage: React.FC = () => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Unggah Dokumen Legal (PDF)</label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-            <input
-              type="file"
-              accept=".pdf"
-              onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
-              className="w-full"
-              required
-            />
+            <input type="file" accept=".pdf" onChange={(e) => setSelectedFile(e.target.files?.[0] || null)} className="w-full" required />
             {selectedFile && <p className="text-sm text-gray-600 mt-2">Dipilih: {selectedFile.name}</p>}
           </div>
         </div>
@@ -310,12 +278,7 @@ const LegalPage: React.FC = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Berlaku Sampai (Opsional)</label>
-          <input
-            type="date"
-            className="w-full border rounded-lg px-3 py-2"
-            value={formData.valid_until}
-            onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
-          />
+          <input type="date" className="w-full border rounded-lg px-3 py-2" value={formData.valid_until} onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })} />
         </div>
 
         <div>
@@ -329,11 +292,7 @@ const LegalPage: React.FC = () => {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50"
-        >
+        <button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200 disabled:opacity-50">
           {loading ? "Mengunggah..." : "Unggah Dokumen"}
         </button>
       </form>
@@ -341,23 +300,19 @@ const LegalPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+    <div className="min-h-screen bg-brown-bg">
       <div className="max-w-6xl mx-auto py-12 px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dokumen Legal</h1>
+          <h1 className="text-3xl font-bold text-brown-primary">Dokumen Legal</h1>
           <div className="flex space-x-3">
             <button
               onClick={handleRefreshAnalysis}
               disabled={analysisLoading}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg disabled:opacity-50"
-            >
+              className="bg-brown-primary hover:bg-brown-primary-hover text-white px-4 py-2 rounded-lg disabled:opacity-50 transition-colors">
               {analysisLoading ? "Menganalisis..." : "Segarkan Analisis"}
             </button>
-            <Link
-              to={`/business/${businessId}/details`}
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg"
-            >
+            <Link to={`/business/${businessId}/details`} className="bg-brown-bg-light hover:bg-brown-accent/20 text-brown-primary px-4 py-2 rounded-lg transition-colors">
               Kembali ke Bisnis
             </Link>
           </div>
@@ -369,18 +324,16 @@ const LegalPage: React.FC = () => {
         <div className="flex space-x-1 mb-8">
           <button
             onClick={() => setActiveTab("business")}
-            className={`px-4 py-2 rounded-lg font-medium ${
-              activeTab === "business" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"
-            }`}
-          >
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              activeTab === "business" ? "bg-brown-primary text-white" : "bg-brown-bg-light text-brown-primary hover:bg-brown-accent/20"
+            }`}>
             Dokumen Legal Bisnis
           </button>
           <button
             onClick={() => setActiveTab("product")}
-            className={`px-4 py-2 rounded-lg font-medium ${
-              activeTab === "product" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"
-            }`}
-          >
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              activeTab === "product" ? "bg-brown-primary text-white" : "bg-brown-bg-light text-brown-primary hover:bg-brown-accent/20"
+            }`}>
             Dokumen Legal Produk
           </button>
         </div>
@@ -402,10 +355,7 @@ const LegalPage: React.FC = () => {
             <div className="bg-white shadow rounded-lg p-6">
               <div className="text-center py-8">
                 <p className="text-gray-500 mb-4">Analisis kepatuhan legal belum tersedia</p>
-                <button
-                  onClick={handleRefreshAnalysis}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
-                >
+                <button onClick={handleRefreshAnalysis} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
                   Jalankan Analisis
                 </button>
               </div>
@@ -415,18 +365,14 @@ const LegalPage: React.FC = () => {
 
         {/* Upload Form */}
         <div className="bg-white shadow rounded-lg p-6 mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            {activeTab === "business" ? "Tambah Dokumen Legal Bisnis" : "Tambah Dokumen Legal Produk"}
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{activeTab === "business" ? "Tambah Dokumen Legal Bisnis" : "Tambah Dokumen Legal Produk"}</h3>
 
           {activeTab === "business" ? <BusinessLegalForm /> : <ProductLegalForm />}
         </div>
 
         {/* Existing Documents */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
-            Daftar Dokumen {activeTab === "business" ? "Bisnis" : "Produk"}
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Daftar Dokumen {activeTab === "business" ? "Bisnis" : "Produk"}</h3>
 
           {activeTab === "business" ? (
             businessLegals.length === 0 ? (
@@ -439,21 +385,12 @@ const LegalPage: React.FC = () => {
                       <div className="flex-1">
                         <h4 className="font-medium text-gray-900">{legal.legal_type}</h4>
                         <p className="text-sm text-gray-600">Diterbitkan oleh: {legal.issued_by}</p>
-                        {legal.valid_until && (
-                          <p className="text-sm text-gray-600">
-                            Berlaku sampai: {new Date(legal.valid_until).toLocaleDateString()}
-                          </p>
-                        )}
+                        {legal.valid_until && <p className="text-sm text-gray-600">Berlaku sampai: {new Date(legal.valid_until).toLocaleDateString()}</p>}
                         {legal.notes && <p className="text-sm text-gray-600 mt-2">{legal.notes}</p>}
                       </div>
                       <div className="flex items-center space-x-2">
                         {legal.file_url && (
-                          <a
-                            href={`${API_BASE_URL}${legal.file_url}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 font-medium"
-                          >
+                          <a href={`${API_BASE_URL}${legal.file_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
                             Lihat Dokumen
                           </a>
                         )}
@@ -476,21 +413,12 @@ const LegalPage: React.FC = () => {
                         <h4 className="font-medium text-gray-900">{legal.legal_type}</h4>
                         <p className="text-sm text-gray-600">Produk: {product?.name || "Produk Tidak Diketahui"}</p>
                         <p className="text-sm text-gray-600">Diterbitkan oleh: {legal.issued_by}</p>
-                        {legal.valid_until && (
-                          <p className="text-sm text-gray-600">
-                            Berlaku sampai: {new Date(legal.valid_until).toLocaleDateString()}
-                          </p>
-                        )}
+                        {legal.valid_until && <p className="text-sm text-gray-600">Berlaku sampai: {new Date(legal.valid_until).toLocaleDateString()}</p>}
                         {legal.notes && <p className="text-sm text-gray-600 mt-2">{legal.notes}</p>}
                       </div>
                       <div className="flex items-center space-x-2">
                         {legal.file_url && (
-                          <a
-                            href={`${API_BASE_URL}${legal.file_url}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 font-medium"
-                          >
+                          <a href={`${API_BASE_URL}${legal.file_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 font-medium">
                             Lihat Dokumen
                           </a>
                         )}

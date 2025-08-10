@@ -58,26 +58,15 @@ const BusinessDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div
-        className="min-h-screen relative overflow-hidden"
-        style={{
-          background: `
-            linear-gradient(135deg, #602a1d 0%, #dbd7d2 20%, #f1edea 40%, #dbd7d2 60%, #602a1d 100%),
-            radial-gradient(circle at 30% 20%, rgba(96, 42, 29, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 70% 80%, rgba(96, 42, 29, 0.2) 0%, transparent 50%)
-          `,
-        }}>
+      <div className="min-h-screen bg-brown-bg relative overflow-hidden">
         <div className="relative z-10 max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center py-20" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <motion.div
-              className="inline-block rounded-full h-12 w-12 border-b-2 mb-4"
-              style={{ borderColor: "#602a1d" }}
+              className="inline-block rounded-full h-12 w-12 border-b-2 mb-4 border-brown-primary"
               animate={{ rotate: 360 }}
               transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
             />
-            <p className="text-lg" style={{ color: "rgba(96, 42, 29, 0.8)" }}>
-              Loading business details...
-            </p>
+            <p className="text-lg text-brown-primary/80">Loading business details...</p>
           </motion.div>
         </div>
       </div>
@@ -86,15 +75,7 @@ const BusinessDetailPage: React.FC = () => {
 
   if (error || !business) {
     return (
-      <div
-        className="min-h-screen relative overflow-hidden"
-        style={{
-          background: `
-            linear-gradient(135deg, #602a1d 0%, #dbd7d2 20%, #f1edea 40%, #dbd7d2 60%, #602a1d 100%),
-            radial-gradient(circle at 30% 20%, rgba(96, 42, 29, 0.3) 0%, transparent 50%),
-            radial-gradient(circle at 70% 80%, rgba(96, 42, 29, 0.2) 0%, transparent 50%)
-          `,
-        }}>
+      <div className="min-h-screen bg-brown-bg relative overflow-hidden">
         <div className="relative z-10 max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <motion.div className="text-center py-20" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
             <motion.div
@@ -134,61 +115,48 @@ const BusinessDetailPage: React.FC = () => {
   const stage = getBusinessStage(investmentScore);
 
   return (
-    <div
-      className="min-h-screen relative overflow-hidden"
-      style={{
-        background: `
-          linear-gradient(135deg, #602a1d 0%, #dbd7d2 20%, #f1edea 40%, #dbd7d2 60%, #602a1d 100%),
-          radial-gradient(circle at 30% 20%, rgba(96, 42, 29, 0.3) 0%, transparent 50%),
-          radial-gradient(circle at 70% 80%, rgba(96, 42, 29, 0.2) 0%, transparent 50%),
-          conic-gradient(from 180deg at 50% 50%, rgba(96, 42, 29, 0.1) 0%, transparent 25%, rgba(96, 42, 29, 0.1) 50%, transparent 75%)
-        `,
-      }}>
-      {/* Animated Background Patterns */}
-      <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
-        {/* Floating orbs */}
+    <div className="min-h-screen bg-brown-bg relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
         <motion.div
-          className="absolute top-24 left-20 w-32 h-32 rounded-full opacity-18 blur-3xl"
-          style={{ backgroundColor: "#602a1d" }}
+          className="absolute top-20 left-10 w-32 h-32 bg-brown-primary/20 rounded-full"
           animate={{
-            y: [0, -30, 0],
-            x: [0, 15, 0],
-            scale: [1, 1.1, 1],
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
           }}
           transition={{
-            duration: 12,
+            duration: 6,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
         <motion.div
-          className="absolute top-52 right-16 w-24 h-24 rounded-full opacity-22 blur-3xl"
-          style={{ backgroundColor: "#602a1d" }}
+          className="absolute top-40 right-20 w-24 h-24 bg-brown-accent/30 rounded-full"
           animate={{
-            y: [0, 25, 0],
-            x: [0, -20, 0],
-            scale: [1, 0.9, 1],
+            scale: [1.2, 1, 1.2],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
-            duration: 10,
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2,
+          }}
+        />
+        <motion.div
+          className="absolute bottom-32 left-1/4 w-20 h-20 bg-brown-primary/25 rounded-full"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.4, 0.6, 0.4],
+          }}
+          transition={{
+            duration: 5,
             repeat: Infinity,
             ease: "easeInOut",
             delay: 1,
           }}
         />
-      </motion.div>
-
-      {/* Geometric patterns */}
-      <div
-        className="absolute inset-0 opacity-12"
-        style={{
-          background: `
-            radial-gradient(circle at 25% 35%, #602a1d 2px, transparent 2px),
-            radial-gradient(circle at 75% 65%, #602a1d 1.5px, transparent 1.5px)
-          `,
-          backgroundSize: "70px 70px, 45px 45px",
-        }}
-      />
+      </div>
 
       {/* Content */}
       <div className="relative z-10">

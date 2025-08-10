@@ -30,76 +30,48 @@ const BusinessPage: React.FC = () => {
   }, []);
 
   return (
-    <div
-      className="min-h-screen relative overflow-hidden"
-      style={{
-        background: `
-          linear-gradient(135deg, #602a1d 0%, #dbd7d2 20%, #f1edea 40%, #dbd7d2 60%, #602a1d 100%),
-          radial-gradient(circle at 30% 20%, rgba(96, 42, 29, 0.3) 0%, transparent 50%),
-          radial-gradient(circle at 70% 80%, rgba(96, 42, 29, 0.2) 0%, transparent 50%),
-          conic-gradient(from 180deg at 50% 50%, rgba(96, 42, 29, 0.1) 0%, transparent 25%, rgba(96, 42, 29, 0.1) 50%, transparent 75%)
-        `,
-      }}>
-      {/* Animated Background Patterns */}
-      <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
-        {/* Floating orbs */}
+    <div className="min-h-screen bg-brown-bg relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0">
         <motion.div
-          className="absolute top-24 left-20 w-44 h-44 rounded-full opacity-18 blur-3xl"
-          style={{ backgroundColor: "#602a1d" }}
+          className="absolute top-20 left-10 w-32 h-32 bg-brown-primary/20 rounded-full"
           animate={{
-            y: [0, -35, 0],
-            x: [0, 20, 0],
-            scale: [1, 1.15, 1],
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
           }}
           transition={{
-            duration: 12,
+            duration: 6,
             repeat: Infinity,
             ease: "easeInOut",
           }}
         />
         <motion.div
-          className="absolute top-52 right-16 w-32 h-32 rounded-full opacity-22 blur-3xl"
-          style={{ backgroundColor: "#602a1d" }}
+          className="absolute top-40 right-20 w-24 h-24 bg-brown-accent/30 rounded-full"
           animate={{
-            y: [0, 30, 0],
-            x: [0, -25, 0],
-            scale: [1, 0.85, 1],
+            scale: [1.2, 1, 1.2],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
-            duration: 10,
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2,
+          }}
+        />
+        <motion.div
+          className="absolute bottom-32 left-1/4 w-20 h-20 bg-brown-primary/25 rounded-full"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.4, 0.6, 0.4],
+          }}
+          transition={{
+            duration: 5,
             repeat: Infinity,
             ease: "easeInOut",
             delay: 1,
           }}
         />
-        <motion.div
-          className="absolute bottom-32 left-1/4 w-38 h-38 rounded-full opacity-20 blur-3xl"
-          style={{ backgroundColor: "#602a1d" }}
-          animate={{
-            y: [0, -28, 0],
-            x: [0, 32, 0],
-            scale: [1, 1.25, 1],
-          }}
-          transition={{
-            duration: 14,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 0.5,
-          }}
-        />
-      </motion.div>
-
-      {/* Geometric patterns */}
-      <div
-        className="absolute inset-0 opacity-12"
-        style={{
-          background: `
-            radial-gradient(circle at 25% 35%, #602a1d 2px, transparent 2px),
-            radial-gradient(circle at 75% 65%, #602a1d 1.5px, transparent 1.5px)
-          `,
-          backgroundSize: "70px 70px, 45px 45px",
-        }}
-      />
+      </div>
 
       {/* Content */}
       <div className="relative z-10">
@@ -107,12 +79,7 @@ const BusinessPage: React.FC = () => {
           {/* Header */}
           <motion.div className="text-center mb-8" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
             <motion.div
-              className="inline-flex items-center px-4 py-2 rounded-full mb-6 backdrop-blur-sm border shadow-lg"
-              style={{
-                backgroundColor: "rgba(96, 42, 29, 0.1)",
-                borderColor: "rgba(96, 42, 29, 0.3)",
-                color: "#602a1d",
-              }}
+              className="inline-flex items-center px-4 py-2 rounded-full mb-6 backdrop-blur-sm border shadow-lg bg-brown-primary/10 border-brown-primary/30 text-brown-primary"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}>
@@ -131,18 +98,17 @@ const BusinessPage: React.FC = () => {
               <span className="text-sm font-medium">SINAR Business Platform</span>
             </motion.div>
 
-            <motion.h1 className="text-4xl font-bold mb-4" style={{ color: "#602a1d" }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+            <motion.h1 className="text-4xl font-bold mb-4 text-brown-primary" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
               Your{" "}
               <span className="relative inline-block">
                 Business
-                <div className="absolute bottom-1 left-0 w-full h-2 opacity-30 -z-10" style={{ backgroundColor: "#602a1d" }} />
+                <div className="absolute bottom-1 left-0 w-full h-2 opacity-30 -z-10 bg-brown-primary" />
               </span>{" "}
               Portfolio
             </motion.h1>
 
             <motion.p
-              className="text-lg max-w-2xl mx-auto mb-8 leading-relaxed"
-              style={{ color: "#602a1d" }}
+              className="text-lg max-w-2xl mx-auto mb-8 leading-relaxed text-brown-primary"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.3 }}>
@@ -152,41 +118,23 @@ const BusinessPage: React.FC = () => {
             {/* Stats Overview */}
             <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-xl mx-auto" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }}>
               <motion.div
-                className="rounded-xl p-6 backdrop-blur-sm border shadow-lg"
-                style={{
-                  backgroundColor: "rgba(241, 237, 234, 0.8)",
-                  borderColor: "rgba(96, 42, 29, 0.2)",
-                  boxShadow: "0 8px 32px rgba(96, 42, 29, 0.1)",
-                }}
+                className="rounded-xl p-6 backdrop-blur-sm border shadow-lg bg-brown-bg-light/80 border-brown-primary/20"
                 whileHover={{
                   y: -5,
                   boxShadow: "0 12px 40px rgba(96, 42, 29, 0.15)",
                 }}>
-                <div className="text-3xl font-bold mb-2" style={{ color: "#602a1d" }}>
-                  {businesses.length}
-                </div>
-                <div className="text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                  Active Businesses
-                </div>
+                <div className="text-3xl font-bold mb-2 text-brown-primary">{businesses.length}</div>
+                <div className="text-sm text-brown-primary/70">Active Businesses</div>
               </motion.div>
 
               <motion.div
-                className="rounded-xl p-6 backdrop-blur-sm border shadow-lg"
-                style={{
-                  backgroundColor: "rgba(241, 237, 234, 0.8)",
-                  borderColor: "rgba(96, 42, 29, 0.2)",
-                  boxShadow: "0 8px 32px rgba(96, 42, 29, 0.1)",
-                }}
+                className="rounded-xl p-6 backdrop-blur-sm border shadow-lg bg-brown-bg-light/80 border-brown-primary/20"
                 whileHover={{
                   y: -5,
                   boxShadow: "0 12px 40px rgba(96, 42, 29, 0.15)",
                 }}>
-                <div className="text-3xl font-bold mb-2" style={{ color: "#602a1d" }}>
-                  {businesses.length}
-                </div>
-                <div className="text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                  Ready for Listing
-                </div>
+                <div className="text-3xl font-bold mb-2 text-brown-primary">{businesses.length}</div>
+                <div className="text-sm text-brown-primary/70">Ready for Listing</div>
               </motion.div>
             </motion.div>
           </motion.div>
@@ -195,8 +143,8 @@ const BusinessPage: React.FC = () => {
           <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.5 }}>
             {loading ? (
               <motion.div className="text-center py-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 mb-4" style={{ borderColor: "#602a1d" }} />
-                <p style={{ color: "#602a1d" }}>Loading your businesses...</p>
+                <div className="inline-block animate-spin rounded-full h-10 w-10 border-b-2 mb-4 border-brown-primary" />
+                <p className="text-brown-primary">Loading your businesses...</p>
               </motion.div>
             ) : error ? (
               <motion.div
@@ -216,45 +164,26 @@ const BusinessPage: React.FC = () => {
             ) : businesses.length === 0 ? (
               <motion.div className="text-center py-16" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.6 }}>
                 <motion.div className="relative mb-8" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.7 }}>
-                  <div
-                    className="absolute inset-0 flex items-center justify-center"
-                    style={{
-                      background: "radial-gradient(circle, rgba(96, 42, 29, 0.2) 0%, transparent 70%)",
-                    }}>
-                    <div className="w-24 h-24 rounded-full opacity-30"></div>
+                  <div className="absolute inset-0 flex items-center justify-center bg-brown-primary/20 rounded-full opacity-30">
+                    <div className="w-24 h-24 rounded-full"></div>
                   </div>
-                  <div className="relative mb-6" style={{ color: "rgba(96, 42, 29, 0.4)" }}>
+                  <div className="relative mb-6 text-brown-primary/40">
                     <Building2 className="w-20 h-20 mx-auto" />
                   </div>
                 </motion.div>
 
-                <motion.h3 className="text-3xl font-bold mb-4" style={{ color: "#602a1d" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
+                <motion.h3 className="text-3xl font-bold mb-4 text-brown-primary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}>
                   No Businesses Ready Yet
                 </motion.h3>
 
-                <motion.p
-                  className="text-lg mb-8 max-w-lg mx-auto leading-relaxed"
-                  style={{ color: "rgba(96, 42, 29, 0.7)" }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.9 }}>
+                <motion.p className="text-lg mb-8 max-w-lg mx-auto leading-relaxed text-brown-primary/70" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
                   You don't have any complete business profiles yet. Create a new business and complete all the required steps to see it listed here.
                 </motion.p>
 
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Link
                     to="/business/step-1"
-                    className="inline-flex items-center px-8 py-4 text-white rounded-xl font-semibold transition-all duration-300 shadow-xl"
-                    style={{
-                      backgroundColor: "#602a1d",
-                      boxShadow: "0 10px 40px rgba(96, 42, 29, 0.3)",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 15px 50px rgba(96, 42, 29, 0.4)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 10px 40px rgba(96, 42, 29, 0.3)";
-                    }}>
+                    className="inline-flex items-center px-8 py-4 text-white rounded-xl font-semibold transition-all duration-300 shadow-xl bg-brown-primary hover:bg-brown-primary-hover">
                     <Plus className="w-5 h-5 mr-2" />
                     <span>Create New Business</span>
                   </Link>
@@ -263,32 +192,22 @@ const BusinessPage: React.FC = () => {
             ) : (
               <div className="space-y-6">
                 <motion.div className="flex items-center justify-between" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.3, delay: 0.6 }}>
-                  <h3 className="text-2xl font-bold flex items-center" style={{ color: "#602a1d" }}>
-                    <div className="h-8 w-8 rounded-lg flex items-center justify-center mr-3 shadow-lg" style={{ backgroundColor: "#602a1d" }}>
+                  <h3 className="text-2xl font-bold flex items-center text-brown-primary">
+                    <div className="h-8 w-8 rounded-lg flex items-center justify-center mr-3 shadow-lg bg-brown-primary">
                       <TrendingUp className="w-4 h-4 text-white" />
                     </div>
                     Your Business Portfolio
                   </h3>
 
                   <div className="flex items-center space-x-4">
-                    <div className="text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                    <div className="text-sm text-brown-primary/70">
                       {businesses.length} {businesses.length === 1 ? "business" : "businesses"}
                     </div>
 
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                       <Link
                         to="/business/step-1"
-                        className="inline-flex items-center px-4 py-2 text-white rounded-lg font-medium transition-all duration-300 shadow-lg text-sm"
-                        style={{
-                          backgroundColor: "#602a1d",
-                          boxShadow: "0 4px 16px rgba(96, 42, 29, 0.3)",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 8px 24px rgba(96, 42, 29, 0.4)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 4px 16px rgba(96, 42, 29, 0.3)";
-                        }}>
+                        className="inline-flex items-center px-4 py-2 text-white rounded-lg font-medium transition-all duration-300 shadow-lg text-sm bg-brown-primary hover:bg-brown-primary-hover">
                         <Plus className="w-4 h-4 mr-2" />
                         <span>New Business</span>
                       </Link>
@@ -297,7 +216,7 @@ const BusinessPage: React.FC = () => {
                 </motion.div>
 
                 {/* Helper text */}
-                <motion.p className="text-sm mb-4" style={{ color: "rgba(96, 42, 29, 0.6)" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
+                <motion.p className="text-sm mb-4 text-brown-primary/60" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}>
                   Click on any business card to view details and manage your business information
                 </motion.p>
 
@@ -307,72 +226,43 @@ const BusinessPage: React.FC = () => {
                       <motion.div key={business.ID} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.8 + index * 0.05 }} whileHover={{ y: -2 }}>
                         <Link
                           to={`/business/${business.ID}/details`}
-                          className="relative group block rounded-xl p-6 border transition-all duration-300 overflow-hidden cursor-pointer backdrop-blur-sm shadow-lg"
-                          style={{
-                            backgroundColor: "rgba(241, 237, 234, 0.8)",
-                            borderColor: "rgba(96, 42, 29, 0.2)",
-                            boxShadow: "0 8px 32px rgba(96, 42, 29, 0.1)",
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = "rgba(96, 42, 29, 0.4)";
-                            e.currentTarget.style.backgroundColor = "rgba(241, 237, 234, 0.9)";
-                            e.currentTarget.style.boxShadow = "0 12px 40px rgba(96, 42, 29, 0.2)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = "rgba(96, 42, 29, 0.2)";
-                            e.currentTarget.style.backgroundColor = "rgba(241, 237, 234, 0.8)";
-                            e.currentTarget.style.boxShadow = "0 8px 32px rgba(96, 42, 29, 0.1)";
-                          }}>
+                          className="relative group block rounded-xl p-6 border transition-all duration-300 overflow-hidden cursor-pointer backdrop-blur-sm shadow-lg bg-brown-bg-light/80 border-brown-primary/20 hover:border-brown-primary/40 hover:bg-brown-bg-light/90">
                           <div className="flex items-center justify-between">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center space-x-3 mb-3">
-                                <h4 className="text-xl font-semibold transition-colors duration-200 truncate" style={{ color: "#602a1d" }}>
-                                  {business.name}
-                                </h4>
-                                <span
-                                  className="px-3 py-1 rounded-full text-sm font-medium border flex-shrink-0"
-                                  style={{
-                                    backgroundColor: "rgba(96, 42, 29, 0.1)",
-                                    borderColor: "rgba(96, 42, 29, 0.3)",
-                                    color: "#602a1d",
-                                  }}>
-                                  Active
-                                </span>
+                                <h4 className="text-xl font-semibold transition-colors duration-200 truncate text-brown-primary">{business.name}</h4>
+                                <span className="px-3 py-1 rounded-full text-sm font-medium border flex-shrink-0 bg-brown-primary/10 border-brown-primary/30 text-brown-primary">Active</span>
                               </div>
 
                               <div className="flex items-center space-x-6 mb-3">
                                 {business.type && (
-                                  <span className="flex items-center text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                                    <Target className="w-4 h-4 mr-2" style={{ color: "#602a1d" }} />
+                                  <span className="flex items-center text-sm text-brown-primary/70">
+                                    <Target className="w-4 h-4 mr-2 text-brown-primary" />
                                     {business.type}
                                   </span>
                                 )}
                                 {business.industry && (
-                                  <span className="flex items-center text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                                    <Building2 className="w-4 h-4 mr-2" style={{ color: "#602a1d" }} />
+                                  <span className="flex items-center text-sm text-brown-primary/70">
+                                    <Building2 className="w-4 h-4 mr-2 text-brown-primary" />
                                     {business.industry}
                                   </span>
                                 )}
                               </div>
 
-                              {business.description && (
-                                <p className="text-sm line-clamp-2" style={{ color: "rgba(96, 42, 29, 0.6)" }}>
-                                  {business.description}
-                                </p>
-                              )}
+                              {business.description && <p className="text-sm line-clamp-2 text-brown-primary/60">{business.description}</p>}
                             </div>
 
                             <div className="flex items-center space-x-4 ml-6">
                               {/* Status Indicators */}
                               <div className="flex space-x-2">
-                                <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: "#602a1d" }} title="Complete" />
-                                <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: "#602a1d" }} title="Verified" />
-                                <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: "#602a1d" }} title="Ready" />
+                                <div className="w-3 h-3 rounded-full shadow-sm bg-brown-primary" title="Complete" />
+                                <div className="w-3 h-3 rounded-full shadow-sm bg-brown-primary" title="Verified" />
+                                <div className="w-3 h-3 rounded-full shadow-sm bg-brown-primary" title="Ready" />
                               </div>
 
                               {/* Click indicator */}
                               <div className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200">
-                                <svg className="w-6 h-6" style={{ color: "#602a1d" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-6 h-6 text-brown-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                 </svg>
                               </div>
@@ -380,12 +270,7 @@ const BusinessPage: React.FC = () => {
                           </div>
 
                           {/* Hover effect overlay */}
-                          <div
-                            className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300"
-                            style={{
-                              background: "linear-gradient(135deg, rgba(96, 42, 29, 0.05) 0%, rgba(96, 42, 29, 0.02) 100%)",
-                            }}
-                          />
+                          <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 bg-brown-primary/5" />
                         </Link>
                       </motion.div>
                     );
