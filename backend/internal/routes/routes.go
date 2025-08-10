@@ -11,10 +11,13 @@ import (
 )
 
 func SetupRoutes(router *gin.Engine) {
-	// Setup routes for each module
-	auth.SetupAuthRoutes(router)
-	user.SetupUserRoutes(router)
-	investment.SetupInvestmentRoutes(router)
-	genai.SetupGenAIRoutes(router)
-	business.SetupBusinessRoutes(router)
+	// Create an /api group
+	api := router.Group("/api") 
+
+	// Setup routes for each module under /api
+	auth.SetupAuthRoutes(api)
+	user.SetupUserRoutes(api)
+	investment.SetupInvestmentRoutes(api)
+	genai.SetupGenAIRoutes(api)
+	business.SetupBusinessRoutes(api)
 }

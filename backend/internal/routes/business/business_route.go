@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupBusinessRoutes(router *gin.Engine) {
+func SetupBusinessRoutes(router *gin.RouterGroup) {
 	// Init service
 	businessService := services.NewBusinessService(database.DB)
 
