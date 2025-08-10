@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Lightbulb, Users, ChevronDown, ChevronUp, AlertCircle, Loader2 } from "lucide-react";
+import React, { useEffect, useState, useCallback } from "react";
+import { Lightbulb, Users, ChevronDown, ChevronUp, AlertCircle, Loader2, ExternalLink } from "lucide-react";
+import { Link } from "react-router";
 import api from "../../lib/api";
 
 interface AISuggestion {
@@ -27,46 +28,49 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ businessId, businessName:
   const [error, setError] = useState<string | null>(null);
   const [lastGenerated, setLastGenerated] = useState<string>("");
 
-  const fetchSuggestions = async (isRefresh: boolean = false) => {
-    setLoading(true);
-    setError(null);
+  const fetchSuggestions = useCallback(
+    async (isRefresh: boolean = false) => {
+      setLoading(true);
+      setError(null);
 
-    try {
-      const response = await api.get(`/genai/business-suggestions/${businessId}?isRefresh=${isRefresh}`);
+      try {
+        const response = await api.get(`/genai/business-suggestions/${businessId}?isRefresh=${isRefresh}`);
 
-      if (!response.data) {
-        if (response.status === 404) {
-          throw new Error("Bisnis tidak ditemukan");
-        } else if (response.status === 500) {
-          throw new Error("Terjadi kesalahan server, silakan coba lagi");
-        } else {
-          throw new Error("Gagal mengambil saran AI");
+        if (!response.data) {
+          if (response.status === 404) {
+            throw new Error("Bisnis tidak ditemukan");
+          } else if (response.status === 500) {
+            throw new Error("Terjadi kesalahan server, silakan coba lagi");
+          } else {
+            throw new Error("Gagal mengambil saran AI");
+          }
         }
-      }
 
-      const data = response.data;
+        const data = response.data;
 
-      if (data.success && data.data) {
-        const aiResponse: AISuggestionsResponse = data.data;
-        setSuggestions(Array.isArray(aiResponse.suggestions) ? aiResponse.suggestions : []);
-        setBusinessName(aiResponse.business_name || "");
-        setLastGenerated(aiResponse.generated_at || "");
-      } else {
-        throw new Error("Format response tidak valid");
+        if (data.success && data.data) {
+          const aiResponse: AISuggestionsResponse = data.data;
+          setSuggestions(Array.isArray(aiResponse.suggestions) ? aiResponse.suggestions : []);
+          setBusinessName(aiResponse.business_name || "");
+          setLastGenerated(aiResponse.generated_at || "");
+        } else {
+          throw new Error("Format response tidak valid");
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Terjadi kesalahan tidak diketahui");
+        setSuggestions([]);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Terjadi kesalahan tidak diketahui");
-      setSuggestions([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [businessId]
+  );
 
   useEffect(() => {
     if (businessId) {
       fetchSuggestions(false);
     }
-  }, [businessId]);
+  }, [businessId, fetchSuggestions]);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -83,6 +87,14 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ businessId, businessName:
 
   const getCategoryIcon = (category: string) => {
     switch (category.toLowerCase()) {
+      case "legal documents":
+        return "⚖️";
+      case "financial data":
+        return "💰";
+      case "product information":
+        return "📦";
+      case "profile completion":
+        return "👤";
       case "marketing & branding":
         return "📊";
       case "product development":
@@ -98,6 +110,26 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ businessId, businessName:
       default:
         return "💡";
     }
+  };
+
+  const getActionLink = (suggestion: string, category: string) => {
+    const lowerSuggestion = suggestion.toLowerCase();
+    const lowerCategory = category.toLowerCase();
+
+    if (lowerCategory.includes("legal") || lowerSuggestion.includes("legal") || lowerSuggestion.includes("dokumen")) {
+      return `/business/${businessId}/legal`;
+    }
+    if (lowerCategory.includes("financial") || lowerSuggestion.includes("finansial") || lowerSuggestion.includes("keuangan")) {
+      return `/business/${businessId}/finance`;
+    }
+    if (lowerCategory.includes("product") || lowerSuggestion.includes("produk")) {
+      return `/business/${businessId}/products`;
+    }
+    if (lowerSuggestion.includes("proyeksi") || lowerSuggestion.includes("projections")) {
+      return `/business/${businessId}/projections`;
+    }
+
+    return null;
   };
 
   const formatDate = (dateString: string) => {
@@ -122,7 +154,7 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ businessId, businessName:
         <div className="flex items-center">
           <Lightbulb className="w-5 h-5 mr-2 text-amber-500" />
           <div>
-            <h2 className="text-xl font-bold text-gray-900">AI Suggestions {businessName && `for ${businessName}`}</h2>
+            <h2 className="text-xl font-bold text-gray-900">Saran untuk Melengkapi Profil Bisnis {businessName && `- ${businessName}`}</h2>
             {lastGenerated && <p className="text-xs text-gray-500 mt-1">Dibuat pada: {formatDate(lastGenerated)}</p>}
           </div>
         </div>
@@ -165,24 +197,46 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ businessId, businessName:
         {/* Suggestions List */}
         {!loading && suggestions.length > 0 && (
           <div className="space-y-4">
-            {suggestions.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-start p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
-                <div className="flex-shrink-0 mr-3">
-                  <span className="text-lg">{getCategoryIcon(item.category)}</span>
-                </div>
-                <div className="flex-grow">
-                  <div className="flex items-start justify-between mb-2">
-                    <span className="text-xs font-medium px-2 py-1 rounded-full bg-blue-100 text-blue-800">{item.category}</span>
-                    <span className={`text-xs font-medium px-2 py-1 rounded-full ${getPriorityColor(item.priority)}`}>
-                      {item.priority}
-                    </span>
+            <div className="text-sm text-gray-600 bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+              <p className="font-medium text-blue-800 mb-1">Untuk kelancaran investasi, pastikan profil bisnis Anda lengkap:</p>
+              <ul className="list-disc list-inside text-blue-700 space-y-1">
+                <li>Hak merek dan dokumen legal</li>
+                <li>Surat terkait produk</li>
+                <li>Data finansial (sesuai laporan pajak)</li>
+              </ul>
+            </div>
+
+            {suggestions.map((item, idx) => {
+              const actionLink = getActionLink(item.suggestion, item.category);
+              const SuggestionWrapper = actionLink ? Link : "div";
+              const wrapperProps = actionLink ? { to: actionLink } : { to: "#" };
+
+              return (
+                <SuggestionWrapper
+                  key={idx}
+                  {...wrapperProps}
+                  className={`flex items-start p-4 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 rounded-lg shadow-sm transition-all duration-300 ${
+                    actionLink ? "hover:shadow-md hover:border-amber-200 cursor-pointer group" : ""
+                  }`}>
+                  <div className="flex-shrink-0 mr-3">
+                    <span className="text-lg">{getCategoryIcon(item.category)}</span>
                   </div>
-                  <p className="text-sm text-gray-700 leading-relaxed">{item.suggestion}</p>
-                </div>
-              </div>
-            ))}
+                  <div className="flex-grow">
+                    <div className="flex items-start justify-between mb-2">
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-blue-100 text-blue-800">{item.category}</span>
+                      <span className={`text-xs font-medium px-2 py-1 rounded-full ${getPriorityColor(item.priority)}`}>{item.priority}</span>
+                    </div>
+                    <p className="text-sm text-gray-700 leading-relaxed">{item.suggestion}</p>
+                    {actionLink && (
+                      <div className="flex items-center mt-2 text-xs text-blue-600 group-hover:text-blue-800">
+                        <ExternalLink className="w-3 h-3 mr-1" />
+                        <span>Klik untuk melengkapi</span>
+                      </div>
+                    )}
+                  </div>
+                </SuggestionWrapper>
+              );
+            })}
           </div>
         )}
 
@@ -199,7 +253,7 @@ const AISuggestions: React.FC<AISuggestionsProps> = ({ businessId, businessName:
         {!loading && suggestions.length > 0 && (
           <div className="mt-5 flex items-center text-xs text-gray-500 border-t pt-4">
             <Users className="w-4 h-4 mr-1" />
-            Saran ini dihasilkan secara otomatis oleh AI berdasarkan analisis profil bisnis dan tren pasar Indonesia.
+            Saran ini dihasilkan secara otomatis oleh AI berdasarkan analisis profil bisnis dan kebutuhan investasi.
           </div>
         )}
       </div>
