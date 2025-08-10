@@ -9,7 +9,8 @@ import ChatModal from "../../components/ChatModal";
 import { ChatService } from "../../services/aiChatService";
 
 const InvestmentPage: React.FC = () => {
-  const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } = useInvestment();
+  const { businesses, loading, error, pagination, fetchBusinesses, searchBusinesses, changePage, changeLimit } =
+    useInvestment();
 
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -47,7 +48,7 @@ const InvestmentPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen relative overflow-hidden"
+      className="relative min-h-screen overflow-hidden"
       style={{
         background: `
           linear-gradient(135deg, #602a1d 0%, #dbd7d2 20%, #f1edea 40%, #dbd7d2 60%, #602a1d 100%),
@@ -55,12 +56,18 @@ const InvestmentPage: React.FC = () => {
           radial-gradient(circle at 70% 80%, rgba(96, 42, 29, 0.2) 0%, transparent 50%),
           conic-gradient(from 180deg at 50% 50%, rgba(96, 42, 29, 0.1) 0%, transparent 25%, rgba(96, 42, 29, 0.1) 50%, transparent 75%)
         `,
-      }}>
+      }}
+    >
       {/* Animated Background Patterns */}
-      <motion.div className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+      >
         {/* Floating orbs */}
         <motion.div
-          className="absolute top-24 left-20 w-44 h-44 rounded-full opacity-18 blur-3xl"
+          className="absolute rounded-full top-24 left-20 w-44 h-44 opacity-18 blur-3xl"
           style={{ backgroundColor: "#602a1d" }}
           animate={{
             y: [0, -35, 0],
@@ -74,7 +81,7 @@ const InvestmentPage: React.FC = () => {
           }}
         />
         <motion.div
-          className="absolute top-52 right-16 w-32 h-32 rounded-full opacity-22 blur-3xl"
+          className="absolute w-32 h-32 rounded-full top-52 right-16 opacity-22 blur-3xl"
           style={{ backgroundColor: "#602a1d" }}
           animate={{
             y: [0, 30, 0],
@@ -89,7 +96,7 @@ const InvestmentPage: React.FC = () => {
           }}
         />
         <motion.div
-          className="absolute bottom-32 left-1/4 w-38 h-38 rounded-full opacity-20 blur-3xl"
+          className="absolute rounded-full bottom-32 left-1/4 w-38 h-38 opacity-20 blur-3xl"
           style={{ backgroundColor: "#602a1d" }}
           animate={{
             y: [0, -28, 0],
@@ -119,11 +126,16 @@ const InvestmentPage: React.FC = () => {
 
       {/* Content */}
       <div className="relative z-10">
-        <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
           {/* Header */}
-          <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+          <motion.div
+            className="mb-12 text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
             <motion.div
-              className="inline-flex items-center px-4 py-2 rounded-full mb-6 backdrop-blur-sm border shadow-lg"
+              className="inline-flex items-center px-4 py-2 mb-6 border rounded-full shadow-lg backdrop-blur-sm"
               style={{
                 backgroundColor: "rgba(96, 42, 29, 0.1)",
                 borderColor: "rgba(96, 42, 29, 0.3)",
@@ -131,7 +143,8 @@ const InvestmentPage: React.FC = () => {
               }}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}>
+              transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
+            >
               <motion.div
                 animate={{
                   rotate: [0, 360, 360, 0, 0, 0, 0, 0],
@@ -141,25 +154,35 @@ const InvestmentPage: React.FC = () => {
                   repeat: Infinity,
                   repeatDelay: 4,
                   ease: "easeInOut",
-                }}>
+                }}
+              >
                 <Trophy className="w-4 h-4 mr-2" />
               </motion.div>
-              <span className="text-sm font-medium">SINAR Investment Platform</span>
+              <span className="text-sm font-medium">Platform Investasi SINAR</span>
             </motion.div>
 
-            <div className="flex justify-between items-center mb-6">
-              <motion.h1 className="text-4xl font-bold" style={{ color: "#602a1d" }} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+            <div className="flex items-center justify-between mb-6">
+              <motion.h1
+                className="text-4xl font-bold"
+                style={{ color: "#602a1d" }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+              >
                 Peluang{" "}
                 <span className="relative inline-block">
                   Investasi
-                  <div className="absolute bottom-1 left-0 w-full h-2 opacity-30 -z-10" style={{ backgroundColor: "#602a1d" }} />
+                  <div
+                    className="absolute left-0 w-full h-2 bottom-1 opacity-30 -z-10"
+                    style={{ backgroundColor: "#602a1d" }}
+                  />
                 </span>{" "}
                 Swasta
               </motion.h1>
 
               <motion.button
                 onClick={() => setShowChatModal(true)}
-                className="py-2 px-4 hover:scale-105 duration-200 cursor-pointer rounded-lg backdrop-blur-sm border shadow-lg"
+                className="px-4 py-2 duration-200 border rounded-lg shadow-lg cursor-pointer hover:scale-105 backdrop-blur-sm"
                 style={{
                   backgroundColor: "rgba(96, 42, 29, 0.1)",
                   borderColor: "rgba(96, 42, 29, 0.3)",
@@ -172,25 +195,33 @@ const InvestmentPage: React.FC = () => {
                   backgroundColor: "rgba(96, 42, 29, 0.15)",
                   borderColor: "rgba(96, 42, 29, 0.4)",
                   boxShadow: "0 8px 32px rgba(96, 42, 29, 0.2)",
-                }}>
+                }}
+              >
                 Tanya AI
               </motion.button>
             </div>
 
             <motion.p
-              className="text-xl max-w-3xl mx-auto leading-relaxed"
+              className="max-w-3xl mx-auto text-xl leading-relaxed"
               style={{ color: "rgba(96, 42, 29, 0.8)" }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.4 }}>
-              Temukan bisnis Indonesia yang menjanjikan melalui platform investasi komprehensif SINAR. Dukung pertumbuhan sambil meraih keuntungan yang menarik.
+              transition={{ duration: 0.4, delay: 0.4 }}
+            >
+              Temukan bisnis Indonesia yang menjanjikan melalui platform investasi komprehensif SINAR. Dukung
+              pertumbuhan sambil meraih keuntungan yang menarik.
             </motion.p>
           </motion.div>
 
           {/* Investment Stats */}
-          <motion.div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.5 }}>
+          <motion.div
+            className="grid grid-cols-1 gap-6 mb-12 md:grid-cols-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.5 }}
+          >
             <motion.div
-              className="rounded-xl shadow-lg border p-6 backdrop-blur-sm"
+              className="p-6 border shadow-lg rounded-xl backdrop-blur-sm"
               style={{
                 backgroundColor: "rgba(241, 237, 234, 0.8)",
                 borderColor: "rgba(96, 42, 29, 0.2)",
@@ -199,7 +230,8 @@ const InvestmentPage: React.FC = () => {
               whileHover={{
                 y: -5,
                 boxShadow: "0 12px 40px rgba(96, 42, 29, 0.2)",
-              }}>
+              }}
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
@@ -208,19 +240,22 @@ const InvestmentPage: React.FC = () => {
                   <p className="text-2xl font-bold" style={{ color: "#602a1d" }}>
                     {pagination.total}
                   </p>
-                  <p className="text-xs flex items-center mt-1" style={{ color: "#602a1d" }}>
+                  <p className="flex items-center mt-1 text-xs" style={{ color: "#602a1d" }}>
                     <ArrowUpRight className="w-3 h-3 mr-1" />
                     Siap untuk investasi
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}>
-                  <Building2 className="h-6 w-6" style={{ color: "#602a1d" }} />
+                <div
+                  className="flex items-center justify-center w-12 h-12 rounded-lg"
+                  style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}
+                >
+                  <Building2 className="w-6 h-6" style={{ color: "#602a1d" }} />
                 </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="rounded-xl shadow-lg border p-6 backdrop-blur-sm"
+              className="p-6 border shadow-lg rounded-xl backdrop-blur-sm"
               style={{
                 backgroundColor: "rgba(241, 237, 234, 0.8)",
                 borderColor: "rgba(96, 42, 29, 0.2)",
@@ -229,28 +264,32 @@ const InvestmentPage: React.FC = () => {
               whileHover={{
                 y: -5,
                 boxShadow: "0 12px 40px rgba(96, 42, 29, 0.2)",
-              }}>
+              }}
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                    With Financial Data
+                    Dengan Data Keuangan
                   </p>
                   <p className="text-2xl font-bold" style={{ color: "#602a1d" }}>
                     {businesses.filter((b) => b.financial).length}
                   </p>
-                  <p className="text-xs flex items-center mt-1" style={{ color: "#602a1d" }}>
+                  <p className="flex items-center mt-1 text-xs" style={{ color: "#602a1d" }}>
                     <TrendingUp className="w-3 h-3 mr-1" />
-                    Ready for analysis
+                    Siap dianalisis
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}>
-                  <DollarSign className="h-6 w-6" style={{ color: "#602a1d" }} />
+                <div
+                  className="flex items-center justify-center w-12 h-12 rounded-lg"
+                  style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}
+                >
+                  <DollarSign className="w-6 h-6" style={{ color: "#602a1d" }} />
                 </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="rounded-xl shadow-lg border p-6 backdrop-blur-sm"
+              className="p-6 border shadow-lg rounded-xl backdrop-blur-sm"
               style={{
                 backgroundColor: "rgba(241, 237, 234, 0.8)",
                 borderColor: "rgba(96, 42, 29, 0.2)",
@@ -259,16 +298,17 @@ const InvestmentPage: React.FC = () => {
               whileHover={{
                 y: -5,
                 boxShadow: "0 12px 40px rgba(96, 42, 29, 0.2)",
-              }}>
+              }}
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                    With Legal Docs
+                    Dengan Dokumen Legal
                   </p>
                   <p className="text-2xl font-bold" style={{ color: "#602a1d" }}>
                     {businesses.filter((b) => b.legals && b.legals.length > 0).length}
                   </p>
-                  <p className="text-xs flex items-center mt-1" style={{ color: "#602a1d" }}>
+                  <p className="flex items-center mt-1 text-xs" style={{ color: "#602a1d" }}>
                     <motion.div
                       animate={{
                         scale: [1, 1.2, 1],
@@ -279,20 +319,24 @@ const InvestmentPage: React.FC = () => {
                         repeat: Infinity,
                         repeatDelay: 1,
                         ease: "easeInOut",
-                      }}>
+                      }}
+                    >
                       <Star className="w-3 h-3 mr-1" />
                     </motion.div>
-                    Legally compliant
+                    Legal terpenuhi
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}>
-                  <FileText className="h-6 w-6" style={{ color: "#602a1d" }} />
+                <div
+                  className="flex items-center justify-center w-12 h-12 rounded-lg"
+                  style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}
+                >
+                  <FileText className="w-6 h-6" style={{ color: "#602a1d" }} />
                 </div>
               </div>
             </motion.div>
 
             <motion.div
-              className="rounded-xl shadow-lg border p-6 backdrop-blur-sm"
+              className="p-6 border shadow-lg rounded-xl backdrop-blur-sm"
               style={{
                 backgroundColor: "rgba(241, 237, 234, 0.8)",
                 borderColor: "rgba(96, 42, 29, 0.2)",
@@ -301,22 +345,26 @@ const InvestmentPage: React.FC = () => {
               whileHover={{
                 y: -5,
                 boxShadow: "0 12px 40px rgba(96, 42, 29, 0.2)",
-              }}>
+              }}
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                    Industries
+                    Industri
                   </p>
                   <p className="text-2xl font-bold" style={{ color: "#602a1d" }}>
                     {industries.length}
                   </p>
-                  <p className="text-xs flex items-center mt-1" style={{ color: "#602a1d" }}>
+                  <p className="flex items-center mt-1 text-xs" style={{ color: "#602a1d" }}>
                     <Users className="w-3 h-3 mr-1" />
-                    Diverse sectors
+                    Beragam sektor
                   </p>
                 </div>
-                <div className="h-12 w-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}>
-                  <Target className="h-6 w-6" style={{ color: "#602a1d" }} />
+                <div
+                  className="flex items-center justify-center w-12 h-12 rounded-lg"
+                  style={{ backgroundColor: "rgba(96, 42, 29, 0.1)" }}
+                >
+                  <Target className="w-6 h-6" style={{ color: "#602a1d" }} />
                 </div>
               </div>
             </motion.div>
@@ -324,7 +372,7 @@ const InvestmentPage: React.FC = () => {
 
           {/* Search and Filters */}
           <motion.div
-            className="rounded-lg shadow-sm p-6 mb-8 backdrop-blur-sm border"
+            className="p-6 mb-8 border rounded-lg shadow-sm backdrop-blur-sm"
             style={{
               backgroundColor: "rgba(241, 237, 234, 0.8)",
               borderColor: "rgba(96, 42, 29, 0.2)",
@@ -332,19 +380,20 @@ const InvestmentPage: React.FC = () => {
             }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.6 }}>
+            transition={{ duration: 0.4, delay: 0.6 }}
+          >
             <form onSubmit={handleSearch} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                 <div>
-                  <label htmlFor="search" className="block text-sm font-medium mb-1" style={{ color: "#602a1d" }}>
-                    Search Businesses
+                  <label htmlFor="search" className="block mb-1 text-sm font-medium" style={{ color: "#602a1d" }}>
+                    Cari Bisnis
                   </label>
                   <input
                     type="text"
                     id="search"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search by name or description..."
+                    placeholder="Cari berdasarkan nama atau deskripsi..."
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 backdrop-blur-sm"
                     style={{
                       backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -362,8 +411,8 @@ const InvestmentPage: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="industry" className="block text-sm font-medium mb-1" style={{ color: "#602a1d" }}>
-                    Industry
+                  <label htmlFor="industry" className="block mb-1 text-sm font-medium" style={{ color: "#602a1d" }}>
+                    Industri
                   </label>
                   <select
                     id="industry"
@@ -382,8 +431,9 @@ const InvestmentPage: React.FC = () => {
                     onBlur={(e) => {
                       e.target.style.borderColor = "rgba(96, 42, 29, 0.3)";
                       e.target.style.boxShadow = "none";
-                    }}>
-                    <option value="">All Industries</option>
+                    }}
+                  >
+                    <option value="">Semua Industri</option>
                     {industries.map((industry) => (
                       <option key={industry} value={industry}>
                         {industry}
@@ -394,7 +444,7 @@ const InvestmentPage: React.FC = () => {
                 <div className="flex items-end">
                   <motion.button
                     type="submit"
-                    className="w-full py-2 px-4 rounded-md transition-colors backdrop-blur-sm border shadow-lg"
+                    className="w-full px-4 py-2 transition-colors border rounded-md shadow-lg backdrop-blur-sm"
                     style={{
                       backgroundColor: "#602a1d",
                       borderColor: "rgba(96, 42, 29, 0.3)",
@@ -405,8 +455,9 @@ const InvestmentPage: React.FC = () => {
                       scale: 1.02,
                       boxShadow: "0 8px 32px rgba(96, 42, 29, 0.3)",
                     }}
-                    whileTap={{ scale: 0.98 }}>
-                    Search
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Cari
                   </motion.button>
                 </div>
               </div>
@@ -414,13 +465,18 @@ const InvestmentPage: React.FC = () => {
           </motion.div>
 
           {/* Results Summary */}
-          <motion.div className="flex justify-between items-center mb-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.7 }}>
+          <motion.div
+            className="flex items-center justify-between mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.7 }}
+          >
             <p style={{ color: "rgba(96, 42, 29, 0.8)" }}>
-              Showing {businesses.length} of {pagination.total} businesses
+              Menampilkan {businesses.length} dari {pagination.total} bisnis
             </p>
             <div className="flex items-center gap-2">
               <label htmlFor="limit" className="text-sm" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                Show:
+                Tampilkan:
               </label>
               <select
                 id="limit"
@@ -436,7 +492,8 @@ const InvestmentPage: React.FC = () => {
                   backgroundColor: "rgba(255, 255, 255, 0.9)",
                   borderColor: "rgba(96, 42, 29, 0.3)",
                   color: "#602a1d",
-                }}>
+                }}
+              >
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={20}>20</option>
@@ -447,22 +504,27 @@ const InvestmentPage: React.FC = () => {
 
           {/* Loading State */}
           {loading && (
-            <motion.div className="flex justify-center items-center py-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2" style={{ borderColor: "#602a1d" }} />
+            <motion.div
+              className="flex items-center justify-center py-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <div className="w-12 h-12 border-b-2 rounded-full animate-spin" style={{ borderColor: "#602a1d" }} />
             </motion.div>
           )}
 
           {/* Error State */}
           {error && (
             <motion.div
-              className="border rounded-lg p-4 mb-6 backdrop-blur-sm"
+              className="p-4 mb-6 border rounded-lg backdrop-blur-sm"
               style={{
                 backgroundColor: "rgba(239, 68, 68, 0.1)",
                 borderColor: "rgba(239, 68, 68, 0.3)",
                 color: "#dc2626",
               }}
               initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}>
+              animate={{ opacity: 1, scale: 1 }}
+            >
               <p>{error}</p>
             </motion.div>
           )}
@@ -470,12 +532,22 @@ const InvestmentPage: React.FC = () => {
           {/* Business Grid */}
           {!loading && !error && (
             <>
-              <motion.div className="space-y-8 mb-8" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.8 }}>
+              <motion.div
+                className="mb-8 space-y-8"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.8 }}
+              >
                 <h2 className="text-2xl font-bold" style={{ color: "#602a1d" }}>
-                  Investment Opportunities
+                  Peluang Investasi
                 </h2>
                 {businesses.map((business, index) => (
-                  <motion.div key={business.ID} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.9 + index * 0.05 }}>
+                  <motion.div
+                    key={business.ID}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.9 + index * 0.05 }}
+                  >
                     <BusinessCard business={business} onViewDetails={handleViewDetails} />
                   </motion.div>
                 ))}
@@ -483,17 +555,27 @@ const InvestmentPage: React.FC = () => {
 
               {/* Empty State */}
               {businesses.length === 0 && (
-                <motion.div className="text-center py-12" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                  <p className="text-lg mb-4" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
-                    No businesses found
+                <motion.div
+                  className="py-12 text-center"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                >
+                  <p className="mb-4 text-lg" style={{ color: "rgba(96, 42, 29, 0.7)" }}>
+                    Tidak ada bisnis ditemukan
                   </p>
-                  <p style={{ color: "rgba(96, 42, 29, 0.5)" }}>Try adjusting your search criteria</p>
+                  <p style={{ color: "rgba(96, 42, 29, 0.5)" }}>Coba ubah kriteria pencarian Anda</p>
                 </motion.div>
               )}
 
               {/* Pagination */}
               {pagination.totalPages > 1 && (
-                <motion.div className="flex justify-center items-center space-x-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 1.0 }}>
+                <motion.div
+                  className="flex items-center justify-center space-x-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 1.0 }}
+                >
                   <motion.button
                     onClick={() => handlePageChange(pagination.page - 1)}
                     disabled={pagination.page <= 1}
@@ -503,12 +585,15 @@ const InvestmentPage: React.FC = () => {
                       borderColor: "rgba(96, 42, 29, 0.3)",
                       color: "#602a1d",
                     }}
-                    whileHover={{ scale: 1.05 }}>
-                    Previous
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    Sebelumnya
                   </motion.button>
 
                   {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
-                    .filter((page) => page === 1 || page === pagination.totalPages || Math.abs(page - pagination.page) <= 2)
+                    .filter(
+                      (page) => page === 1 || page === pagination.totalPages || Math.abs(page - pagination.page) <= 2
+                    )
                     .map((page, index, array) => (
                       <React.Fragment key={page}>
                         {index > 0 && array[index - 1] !== page - 1 && (
@@ -518,13 +603,16 @@ const InvestmentPage: React.FC = () => {
                         )}
                         <motion.button
                           onClick={() => handlePageChange(page)}
-                          className={`px-3 py-2 text-sm border rounded-md backdrop-blur-sm ${page === pagination.page ? "border-opacity-50" : ""}`}
+                          className={`px-3 py-2 text-sm border rounded-md backdrop-blur-sm ${
+                            page === pagination.page ? "border-opacity-50" : ""
+                          }`}
                           style={{
                             backgroundColor: page === pagination.page ? "#602a1d" : "rgba(241, 237, 234, 0.8)",
                             borderColor: page === pagination.page ? "#602a1d" : "rgba(96, 42, 29, 0.3)",
                             color: page === pagination.page ? "#f1edea" : "#602a1d",
                           }}
-                          whileHover={{ scale: 1.05 }}>
+                          whileHover={{ scale: 1.05 }}
+                        >
                           {page}
                         </motion.button>
                       </React.Fragment>
@@ -539,8 +627,9 @@ const InvestmentPage: React.FC = () => {
                       borderColor: "rgba(96, 42, 29, 0.3)",
                       color: "#602a1d",
                     }}
-                    whileHover={{ scale: 1.05 }}>
-                    Next
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    Berikutnya
                   </motion.button>
                 </motion.div>
               )}
