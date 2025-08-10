@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupGenAIRoutes(router *gin.Engine) {
+func SetupGenAIRoutes(router *gin.RouterGroup) {
 	// Initialize services
 	genAIService := services.NewGenAIService(database.DB)
 

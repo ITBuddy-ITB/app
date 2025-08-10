@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupAuthRoutes(router *gin.Engine) {
+func SetupAuthRoutes(router *gin.RouterGroup) {
 	// Initialize services
 	userService := services.NewUserService(database.DB)
 	jwtSecret := os.Getenv("JWT_SECRET")

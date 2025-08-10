@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupUserRoutes(router *gin.Engine) {
+func SetupUserRoutes(router *gin.RouterGroup) {
 	// Initialize services
 	userService := services.NewUserService(database.DB)
 
